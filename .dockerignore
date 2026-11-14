@@ -1,0 +1,10 @@
+.git
+.venv
+.superpowers
+**/__pycache__
+**/*.py[cod]
+**/node_modules
+**/dist
+**/.pytest_cache
+**/.mypy_cache
+.env

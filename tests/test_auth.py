@@ -17,6 +17,7 @@ from backend.ontology_service.app.security import (
     hash_password,
     require_role,
 )
+from backend.ontology_service.app.routers.auth import LoginRequest
 
 
 class AuthTests(unittest.IsolatedAsyncioTestCase):
@@ -55,6 +56,11 @@ class AuthTests(unittest.IsolatedAsyncioTestCase):
     async def asyncTearDown(self) -> None:
         await self.client.aclose()
         self.engine.dispose()
+
+    def test_default_admin_email_is_accepted_by_login_schema(self) -> None:
+        request = LoginRequest(email=self.settings.admin_email, password=self.settings.admin_password)
+
+        self.assertEqual(request.email, "admin@example.com")
 
     async def test_login_returns_bearer_token(self) -> None:
         response = await self.client.post(
