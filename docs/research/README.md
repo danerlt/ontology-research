@@ -48,7 +48,15 @@
 
 ## 研读卡片
 
-卡片按主题存放在 `docs/research/articles/`。每篇保留官方原文链接，英文短摘录及中文译文总计不超过 25 个英文词，并提供原创中文摘要、术语、疑问/待验证项和本体管理系统复刻启示。
+卡片按主题存放在 `docs/research/articles/`。目标格式是保留官方原文链接、合规短摘录及中文译文，并记录原创中文摘要、术语、疑问/待验证项和本体管理系统复刻启示。
 
-- [本体管理系统复刻需求基线](replica-requirements.md)（阶段五交付）
-- [阶段实施计划](../../IMPLEMENTATION_PLAN.md)
+当前目录工具为直接相关页面生成了 676 张卡片文件；其中 20 张已完成首轮研读，656 张仍待填写。最近一次覆盖检查结果为：已有卡片 676 张、缺卡 0、未完成 656、超出摘录限制 0。**页面编目完成不等于逐篇研读完成。**
+
+可用以下命令复核：
+
+```powershell
+python scripts/check_research_coverage.py
+```
+
+- [本体管理系统复刻需求基线](replica-requirements.md)
+- [本体管理系统设计说明](../superpowers/specs/2026-11-14-ontology-management-system-design.md)

@@ -109,10 +109,10 @@
 
 **接口：** API 客户端统一注入 Bearer token，将 401 带回登录页；Pinia 保存本地登录态；页面调用阶段 1-3 API。
 
-- [ ] 写登录路由守卫、viewer 不可见审批操作、未授权工具禁用、API 错误中文反馈组件测试。
-- [ ] 运行组件测试确认失败。
-- [ ] 实现中文控制台、对象类型/对象浏览、提案提交/审阅、Action 执行、Agent 工具会话/事件和审计视图。
-- [ ] 运行组件测试和 `npm run build`。
+- [x] 写登录路由守卫、viewer 不可见审批操作、未授权工具禁用、API 错误中文反馈组件测试。
+- [x] 运行组件测试确认失败。
+- [x] 实现中文控制台、对象类型/对象浏览、提案提交/审阅、Action 执行、Agent 工具会话/事件和审计视图。
+- [x] 运行组件测试（7 项）和 `npm run build`。
 
 ## 阶段 5：Docker Compose、数据初始化、全量验证和推送
 
@@ -122,12 +122,12 @@
 
 **接口：** Compose 服务 `web`、`ontology-api`、`agent-service`、`postgres`、`redis`；本地入口 `http://localhost:5173`；本地管理员账号由 `.env.example` 提供，JWT/数据库可在 `.env` 覆盖。
 
-- [ ] 写 Compose 静态配置测试：五个服务、健康检查、Postgres 卷、必填服务环境变量；`.env` 被忽略。
-- [ ] 运行检查确认 Compose 文件缺失而失败。
-- [ ] 实现服务镜像、Compose 编排、启动迁移、幂等演示 Ontology 数据；按需要使用 `docker compose --env-file .env.example`，README 给出可复制命令。
-- [ ] 运行 `docker compose config`、全量 unittest、前端测试/构建、Python 编译检查。
-- [ ] 启动完整栈并冒烟登录、提交/合并本体提案、查询对象、执行 Action、创建 Agent 会话/工具调用、查看审计；重启后确认数据保留。
-- [ ] 自查差异与敏感文件，提交中文 commit；将本地分支按用户要求改名 `main`，设置 `git@github.com:danerlt/ontology-research.git` 为 `origin` 并推送 `main`。
+- [x] 写 Compose 静态配置测试：五个服务、健康检查、Postgres 卷、必填服务环境变量；`.env` 被忽略。
+- [x] 运行检查确认 Compose 配置，并为默认管理员邮箱补充回归测试。
+- [x] 实现服务镜像、Compose 编排、启动迁移、幂等演示数据和中文 README。
+- [x] 运行 `docker compose config`、全量 81 项 unittest、7 项前端测试/构建、Python 编译检查。
+- [x] 启动完整栈并冒烟登录、提案审阅、对象 Action、Agent 工具调用、审计；重启后确认数据保留。
+- [ ] 自查差异与敏感文件，提交中文 commit；设置 SSH `origin`、将分支改名 `main` 并推送。
 
 ---
 
@@ -138,5 +138,7 @@
 | 阶段 1：本体 API 骨架、身份与数据模型 | 已完成 | 登录/角色与 PostgreSQL 迁移 |
 | 阶段 2：本体建模、提案治理、对象和 Action | 已完成 | 结构提案、对象链接、Action、敏感字段与审计闭环 |
 | 阶段 3：Agent 服务、工具授权与会话事件 | 已完成 | Agent 双重授权、HTTP 工具调用、Redis 事件与 PostgreSQL 轨迹 |
-| 阶段 4：Vue 管理工作台 | 未开始 | |
-| 阶段 5：Docker Compose、演示数据和交付 | 未开始 | |
+| 阶段 4：Vue 管理工作台 | 已完成 | 7 项组件测试与生产构建通过 |
+| 阶段 5：Docker Compose、演示数据和交付 | 进行中 | 五个服务健康；端到端流程和重启数据持久性通过；待提交推送 |
+
+> 说明：本体工作台代码交付与逐篇研究卡片是不同的完成条件。676 张直接相关卡片中，20 张已完成，656 张仍待研读。当前系统是基于核心文档启发的本地原型，不代表完成全量文档研读或完整复刻 Palantir 功能。
