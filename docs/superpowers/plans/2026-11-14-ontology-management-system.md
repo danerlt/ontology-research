@@ -72,10 +72,10 @@
 
 **接口：** `GET /api/ontology`；`GET /api/object-types`；`POST /api/proposals`；`POST /api/proposals/{id}/submit`；`POST /api/proposals/{id}/merge`；`POST /api/proposals/{id}/reject`。提案保存 base_revision 与 JSON 变更集合。
 
-- [ ] 写 `test_editor_can_submit_object_type_proposal`、`test_editor_cannot_merge_schema_proposal`、`test_stale_schema_proposal_is_rejected`、`test_merge_increments_revision_and_writes_audit`。
-- [ ] 运行治理测试确认路由/服务未实现而失败。
-- [ ] 实现对象类型/属性/链接定义提案、权限校验、版本乐观锁和事务化合并。
-- [ ] 运行治理测试及完整 Python 回归。
+- [x] 写 `test_editor_can_submit_object_type_proposal`、`test_editor_cannot_merge_schema_proposal`、`test_stale_schema_proposal_is_rejected`、`test_merge_increments_revision_and_writes_audit`，并覆盖属性/链接、驳回和回滚。
+- [x] 运行治理测试确认提案路由缺失而失败。
+- [x] 实现对象类型/属性/链接定义提案、权限校验、版本乐观锁和事务化合并。
+- [x] 运行 8 项治理测试确认通过。
 
 ### Task 4：对象检索、关系与 Action
 
@@ -136,7 +136,7 @@
 | 阶段 | 状态 | 结果 |
 | --- | --- | --- |
 | 阶段 1：本体 API 骨架、身份与数据模型 | 已完成 | 登录/角色与 PostgreSQL 迁移 |
-| 阶段 2：本体建模、提案治理、对象和 Action | 未开始 | |
+| 阶段 2：本体建模、提案治理、对象和 Action | 进行中 | 提案版本与权限闭环已交付 |
 | 阶段 3：Agent 服务、工具授权与会话事件 | 未开始 | |
 | 阶段 4：Vue 管理工作台 | 未开始 | |
 | 阶段 5：Docker Compose、演示数据和交付 | 未开始 | |

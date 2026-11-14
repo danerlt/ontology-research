@@ -61,7 +61,7 @@
 **目标**：交付可审阅的本体结构变更、对象查询和受校验 Action 写入。
 **成功标准**：提案审批以版本检查保护 schema；对象/链接 API 可用；Action 按属性白名单、类型和角色校验并原子写审计。
 **测试**：`backend/tests/test_governance.py`、`test_objects_actions.py`、`test_audit.py`；阶段 1 全套回归。
-**状态**：未开始
+**状态**：进行中
 
 ### Task 3：本体元数据和提案审阅
 
