@@ -2,3 +2,7 @@
 __pycache__/
 *.py[cod]
 *.jsonl.checkpoint
+.venv/
+.env
+node_modules/
+dist/

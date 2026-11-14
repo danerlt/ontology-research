@@ -1,169 +1,140 @@
-# Palantir Ontology 与 Agent 研究资料实施计划
+# 本体管理系统实施计划
 
-> **执行要求：** 按阶段完成；阶段内先写测试，再实现最小功能。阶段状态随进展更新。全部阶段完成后删除本文件。
+> **执行要求：** 按阶段小步交付；业务行为先写失败测试。每阶段完成后更新状态。本计划所有阶段完成后删除。
 
-**目标：** 编目 Palantir 官方 Ontology/Agent 文档，为全部直接相关页面制作中文研读卡片，并沉淀供后续仿制系统设计使用的需求基线。
+**目标：** 实现可通过 Docker Compose 本地启动的本体管理与 Agent 工具工作台。
 
-**架构：** 使用 Python 标准库抓取官方 sitemap 与主题入口页导航，仅提取文档元数据；目录为 JSONL，研读卡片与需求基线为 Markdown。所有直接相关页面由目录驱动生成卡片模板，并按主题人工核对原文、官方中文版本和功能状态。
+**架构：** Vue 3 控制台访问独立的 FastAPI 本体 API 与 Agent 运行服务。PostgreSQL 保存权威业务状态，Redis 保存 Agent 短期会话/事件；服务间通过受限 HTTP API 通信。
 
-**技术栈：** Python 3、标准库 `urllib`/`html.parser`/`xml.etree`/`json`/`unittest`、Markdown。此阶段不增加第三方依赖。
+**技术栈：** Vue 3、TypeScript、Vite、Pinia、Python 3.12、FastAPI、SQLAlchemy 2、Pydantic、Alembic、PostgreSQL、Redis、Docker Compose。
 
-**设计文档：** `docs/superpowers/specs/2026-11-14-palantir-ontology-agent-docs-design.md`
+**设计文档：** `docs/superpowers/specs/2026-11-14-ontology-management-system-design.md`
 
 ## 全局约束
 
-- 只访问 Palantir 官方公开文档域名；请求前读取并遵守 `robots.txt`。
-- 站点 sitemap 最多返回 5,000 条；必须结合 Ontology、权限、Action Types、Functions、Agent、MCP 等官方主题入口页的导航链接补充发现。
-- 抓取器只把标题、规范 URL、语言、栏目、更新时间、导航来源、配对链接、分类和状态写入目录；不得把文章全文落盘。
-- 每份研读卡片通过官方链接指向全文；同一来源的英文直接摘录总量不超过 25 个词，并配中文译文及原创中文解读。
-- `直接相关` 页面必须全部有已完成卡片；`补充参考` 页面只编目并说明关联理由。
-- 标注抓取时间、人工核对时间，以及 Beta、coming soon、deprecated、更名等可能变化的状态。
-- 所有面向读者的目录、卡片、计划和说明使用中文；代码标识符保持英文。
-- 本计划只覆盖文档研究与需求基线。复刻系统的产品设计和实现另建设计文档与计划。
+- 中文产品界面、文档、日志和提交信息；代码标识符使用英文。
+- `.env.example` 可提交；实际 `.env`、密码、JWT 密钥不得提交。
+- PostgreSQL 为生产开发数据库；所有 schema 变更由 `alembic revision` 生成迁移。
+- 管理 API 是本体结构和对象写入的唯一权威入口；Agent 服务只能调用授权 API。
+- Agent 工具按 Agent 授权和当前操作者角色双重校验；服务端拒绝未授权操作。
+- API 和 Agent 服务对外分别提供健康检查；Compose 使用持久化卷和健康依赖。
+- 仅实现可本地演示的确定性 Agent 工具调用，不要求外部模型密钥。
 
 ## 审查重点
 
-- sitemap XML 格式错误或缺字段：`tests/test_palantir_docs_catalog.py::test_parse_sitemap_rejects_malformed_xml` 确认错误可见且不产生伪造条目。
-- HTML 缺少标题/规范链接或导航结构变化：`tests/test_palantir_docs_catalog.py::test_parse_doc_page_reports_missing_title_and_canonical_url` 确认缺失字段与页面 URL 可诊断。
-- sitemap 与导航重复发现同一页面：`tests/test_palantir_docs_catalog.py::test_merge_candidates_deduplicates_and_tracks_sources` 确认按规范 URL 去重并合并发现来源。
-- 页面链接指向非 Palantir 域名、非 Foundry 文档或带追踪参数：`tests/test_palantir_docs_catalog.py::test_normalize_doc_url_rejects_external_and_non_foundry_urls` 确认只保留允许页面并规范化 URL。
-- 英中页面 slug 不完全对应或功能状态不同：`tests/test_palantir_docs_catalog.py::test_find_zh_counterpart_flags_ambiguous_slug` 确认不确定配对标记为待人工核对。
+- 非管理员批准结构提案：必须拒绝，覆盖于阶段 2 的 `test_editor_cannot_merge_schema_proposal`。
+- 过期版本的提案：不得覆盖较新结构，覆盖于阶段 2 的 `test_stale_schema_proposal_is_rejected`。
+- Action 尝试修改未授权属性：整笔事务拒绝且对象不变，覆盖于阶段 2 的 `test_action_rejects_properties_outside_allowlist`。
+- Agent 调用未授权工具或越权 Action：拒绝并记录审计，覆盖于阶段 3 的 `test_agent_cannot_call_ungranted_tool` 与 `test_agent_action_respects_actor_role`。
+- Redis 暂时不可用或首次数据库初始化：服务提供可诊断健康状态，Compose 重启后持久业务数据仍在，覆盖于阶段 5 的启动与重启冒烟检查。
 
 ---
 
-## 阶段 1：官方文档目录抓取器
+## 阶段 1：后端骨架、身份与本体数据模型
 
-### Task 1: 官方文档目录抓取器
+**目标**：搭好 API、数据库、登录/角色和核心 SQLAlchemy 模型，建立可迁移、可测试的本地运行骨架。
+**成功标准**：健康检查、登录和角色依赖可用；本体、对象类型、属性、链接、对象、Action、提案及审计模型可在测试数据库建表；Alembic 迁移由命令生成。
+**测试**：`python -m unittest discover -s backend/tests -p "test_*.py" -v`；对 unauthenticated、viewer/editor/admin 角色执行路由访问断言。
+**状态**：进行中
 
-**目标：** 建立可重复运行的脚本，从官方 sitemap 与主题页面导航发现候选文档，只提取元数据。
-**成功标准：** 可从 sitemap 和种子页收集 URL、解析页面标题/规范 URL/栏目/更新时间，按规范 URL 去重并生成 JSONL；遇到错误会记录页面与原因；不保存正文。
-**测试：** `python -m unittest discover -s tests -v`；覆盖 sitemap XML、HTML 元数据、URL 安全、重复 URL 和异常页面。
-**状态：** 已完成
+### Task 1：服务脚手架与认证
 
-**入口页面：**
-- `https://www.palantir.com/docs/foundry/ontology/overview`
-- `https://www.palantir.com/docs/foundry/action-types/overview`
-- `https://www.palantir.com/docs/foundry/functions/overview`
-- `https://www.palantir.com/docs/foundry/object-permissioning/overview`
-- `https://www.palantir.com/docs/foundry/aip/agent-stack`
-- `https://www.palantir.com/docs/foundry/agent-builder/overview`
-- `https://www.palantir.com/docs/foundry/agent-sdk/getting-started`
-- `https://www.palantir.com/docs/foundry/agents/overview`
-- `https://www.palantir.com/docs/foundry/ontology-mcp`
-- `https://www.palantir.com/docs/foundry/palantir-mcp/overview`
+**文件**：新增 `backend/ontology_service/app/{main.py,config.py,database.py,security.py}`、`backend/ontology_service/app/routers/auth.py`、`backend/pyproject.toml`、`backend/tests/test_auth.py`。
 
-**文件：**
-- 创建：`scripts/crawl_palantir_docs.py`
-- 创建：`tests/test_palantir_docs_catalog.py`
-- 生成：`data/palantir_docs_catalog.jsonl`
+- [ ] 写测试：登录成功签发 JWT、错误凭据返回 401、JWT 缺失/过期被拒绝、viewer 不能调用管理员依赖。
+- [ ] 运行测试，确认因 app/登录接口缺失失败。
+- [ ] 实现 Settings（环境变量）、SQLAlchemy session 依赖、密码哈希、JWT 和角色依赖。
+- [ ] 运行测试确认通过；`python -m compileall backend/ontology_service`。
 
-**接口：**
-- `normalize_doc_url(url: str) -> str | None`：仅返回官方 Foundry 文档 URL，去掉追踪参数和片段。
-- `is_allowed_by_robots(robots_text: str, page_url: str, user_agent: str) -> bool`：依据官方 robots 规则判断是否可请求页面。`parse_sitemap(xml_text: str) -> list[dict[str, str]]`：返回规范 URL 与可用的 `lastmod`。
-- `parse_doc_page(html_text: str, page_url: str) -> dict[str, object]`：返回标题、canonical URL、描述、栏目/导航链接元数据；不返回正文。`merge_candidates(candidates: list[dict[str, object]]) -> list[dict[str, object]]`：按规范 URL 去重并合并来源。
-- `crawl_catalog(seed_urls: list[str], output_path: Path, max_pages: int | None = None) -> dict[str, int]`：合并 sitemap/导航候选、低频获取页面、记录错误并写出 JSONL。
+### Task 2：领域模型与 Alembic
 
-- [x] **步骤 1：编写失败测试**：新增 `test_robots_policy_denies_disallowed_path`（断言 robots 禁止的路径不可请求）；新增 `test_parse_sitemap_extracts_lastmod_and_deduplicates_urls`、`test_parse_sitemap_rejects_malformed_xml`、`test_parse_doc_page_extracts_metadata_without_body`、`test_parse_doc_page_reports_missing_title_and_canonical_url`、`test_parse_doc_page_ignores_svg_accessibility_titles`、`test_normalize_doc_url_removes_tracking_and_fragment`、`test_normalize_doc_url_rejects_external_and_non_foundry_urls`、`test_merge_candidates_deduplicates_and_tracks_sources`，分别锁定 sitemap、元数据、不落正文、URL 与来源合并行为。
-- [x] **步骤 2：运行测试确认失败**：运行 `python -m unittest discover -s tests -v`；预期缺少被测函数导致失败。
-- [x] **步骤 3：实现纯解析函数**：在 `scripts/crawl_palantir_docs.py` 中实现上述 URL、sitemap 和 HTML 解析接口。
-- [x] **步骤 4：运行测试确认通过**：重复运行同一 unittest 命令，预期新增测试通过。
-- [x] **步骤 5：编写抓取管道失败测试**：新增 `test_crawl_catalog_writes_metadata_only_jsonl`（断言写入元数据且正文标记不落盘）；新增 `test_crawl_catalog_records_page_fetch_errors`（断言失败页面保留在目录并带错误状态）。
-- [x] **步骤 6：运行测试确认抓取管道测试失败**：运行 `python -m unittest discover -s tests -v`；预期新测试因 `crawl_catalog` 尚未实现而失败。
-- [x] **步骤 7：实现低频网络抓取与 JSONL 输出**：添加官方主题入口种子、robots 检查、低频请求、有限重试、gzip 响应解压和可读错误记录；失败页面保留诊断元数据。
-- [x] **步骤 8：运行完整测试确认通过**：运行 `python -m unittest discover -s tests -v`，12 项测试通过，覆盖 gzip 解压。
-- [x] **步骤 9：执行一次有页数上限的真实编目**：官方 sitemap 与主题入口共发现 619 个候选页面；限抓 4 页，成功 4 页、失败 0 页、待处理 615 页；检查目录字段仅含元数据，没有正文内容。
+**文件**：新增 `backend/ontology_service/app/models/` 下的 `ontology.py`、`objects.py`、`governance.py`、`audit.py`，`backend/ontology_service/alembic.ini`、`backend/ontology_service/alembic/env.py`、`backend/tests/test_models.py`。
 
-**状态：** 已完成
+- [ ] 写测试：属性 API 名唯一、对象记录关联类型、审计事件保存操作者与时间、Action/提案状态枚举受限。
+- [ ] 运行测试确认失败。
+- [ ] 实现模型、PostgreSQL JSONB（测试使用兼容 JSON 类型）和 Alembic 元数据加载。
+- [ ] 用 `alembic revision --autogenerate -m "初始化本体管理数据模型"` 生成迁移，不手写 revision 文件。
+- [ ] 在 PostgreSQL 上执行升级；运行模型测试与 Python 编译检查。
 
-## 阶段 2：完整编目、分类与英中配对
+## 阶段 2：本体管理、对象操作、Action 与提案治理
 
-### Task 2: 完整编目与英中配对
+**目标**：交付可审阅的本体结构变更、对象查询和受校验 Action 写入。
+**成功标准**：提案审批以版本检查保护 schema；对象/链接 API 可用；Action 按属性白名单、类型和角色校验并原子写审计。
+**测试**：`backend/tests/test_governance.py`、`test_objects_actions.py`、`test_audit.py`；阶段 1 全套回归。
+**状态**：未开始
 
-**目标：** 完成 Ontology/Agent 相关页面发现，逐页判为直接相关或补充参考，查找官方中文对应页面。
-**成功标准：** 每个目录项包含语言、栏目、发现来源、关联理由、相关性、英文/中文链接、研读状态；所有直接相关页面进入待研读清单；可疑配对显式标记人工核对。
-**测试：** 单元测试覆盖路由分类、中文 URL 配对、重复别名和不确定配对；运行完整 unittest 命令。
-**状态：** 已完成
+### Task 3：本体元数据和提案审阅
 
-**文件：**
-- 修改：`scripts/crawl_palantir_docs.py`
-- 修改：`tests/test_palantir_docs_catalog.py`
-- 创建：`docs/research/README.md`
-- 更新：`data/palantir_docs_catalog.jsonl`
+**文件**：新增 `backend/ontology_service/app/routers/ontology.py`、`proposals.py`、`backend/ontology_service/app/services/governance.py`、`backend/ontology_service/app/schemas/ontology.py`、`backend/tests/test_governance.py`。
 
-- [x] **步骤 1：写分类、配对、吞吐和续跑行为测试**：覆盖 Ontology/Agent 与 REST API 版本分类、数据连接代理排除、补充页识别、精确/模糊配对、受控并发、检查点和断点续抓。
-- [x] **步骤 2：运行测试确认失败**：新接口测试按预期失败；实现检查点时，回归发现 pending 计算顺序错误，修正后继续验证。
-- [x] **步骤 3：实现分类、配对与受控并发**：添加路径分类、仅精确路由自动配对、相似 slug 候选人工核对；8 个工作线程共享每 0.5 秒一个请求的全局速率门；JSONL 检查点支持续抓并定期报告进度。
-- [x] **步骤 4：运行测试确认通过**：运行完整 unittest 命令，23 项测试通过；通过 Python 编译检查。
-- [x] **步骤 5：人工复核候选清单**：核查分类规则待复核页，确认全部 Ontology/Agent API v1/v2 直接相关；6 个补充页分别为数据连接代理运行时 4 页与 Gaia 地理空间消费示例 2 页；相似 slug 配对保留人工复核状态。
-- [x] **步骤 6：生成中文索引**：在 `docs/research/README.md` 汇总页面数、主题范围、相关性、英中配对、人工复核状态与抓取失败记录。
+- [ ] 写测试：editor 可提交新增类型/属性/链接提案；admin 可批准或拒绝；viewer/editor 不可合并；旧 revision 提案冲突返回 409；成功合并只递增一个版本并产生审计。
+- [ ] 运行测试确认失败。
+- [ ] 实现元数据读取、提案状态流转、事务化应用与版本冲突检查。
+- [ ] 运行治理测试确认通过。
 
-## 阶段 3：研读卡片模板与本体治理批次
+### Task 4：对象、链接和 Action
 
-### Task 3: 研读卡片与本体治理
+**文件**：新增 `backend/ontology_service/app/routers/objects.py`、`actions.py`、`backend/ontology_service/app/services/action_engine.py`、`backend/ontology_service/app/schemas/objects.py`、`backend/tests/test_objects_actions.py`。
 
-**目标：** 为每个直接相关页面生成卡片模板，并完成本体基础/管理、动作/函数/权限批次的所有直接相关页面。
-**成功标准：** 每篇卡片包含英中来源、核对日期、短摘录与译文、原创中文要点、术语、疑问、复刻启示；本体和治理主题下所有直接相关目录项均标记完成。
-**测试：** 测试卡片文件名稳定、模板链接/字段完整、仅直接相关页面生成必读卡片；运行完整 unittest 命令，并用覆盖检查确认直接相关页面全部有卡片。
-**状态：** 未开始
+- [ ] 写测试：对象类型校验、按类型/关键词分页查询、对象详情/链接、Action 成功更新、错误字段/无权限时拒绝且不部分写入。
+- [ ] 运行测试确认失败。
+- [ ] 实现对象检索、详情、链接查询和事务化 Action 执行；记录变更前后值。
+- [ ] 运行测试确认通过。
 
-**文件：**
-- 创建：`scripts/build_research_cards.py`
-- 创建：`scripts/check_research_coverage.py`
-- 创建：`tests/test_research_cards.py`
-- 创建：`docs/research/articles/_TEMPLATE.md`
-- 创建：`docs/research/articles/ontology/` 下对应研读卡片
-- 创建：`docs/research/articles/governance/` 下对应研读卡片
-- 修改：`data/palantir_docs_catalog.jsonl`
-- 修改：`docs/research/README.md`
+## 阶段 3：Agent 注册、授权工具、会话与事件
 
-- [ ] **步骤 1：写模板生成/覆盖检查失败测试**：新增 `test_card_filename_is_stable_for_doc_url`（断言稳定文件名）；新增 `test_build_card_contains_source_metadata_and_required_sections`（断言标题、英中链接、日期和研读小节齐全）；新增 `test_build_research_cards_skips_supplement_reference`（断言只生成直接相关卡片）；新增 `test_coverage_checker_reports_missing_direct_card`（断言缺卡时检查失败）；新增 `test_card_validation_rejects_more_than_25_english_words`（断言超出摘录上限时报错）。
-- [ ] **步骤 2：运行测试确认失败**：运行 `python -m unittest discover -s tests -v`。
-- [ ] **步骤 3：实现模板与覆盖检查器**：模板预填标题、URL、官方中文链接、类别、日期、状态和待填写小节；覆盖检查器逐页核验目录与卡片状态，并检查每篇英文摘录不超过 25 词。
-- [ ] **步骤 4：运行测试确认通过**：运行完整 unittest 命令。
-- [ ] **步骤 5：完成本体/治理主题卡片**：按主题批次核对官方英文和中文页面，逐篇补充短摘录、译文、解读、术语、问题、复刻启示与核对日期。
-- [ ] **步骤 6：更新目录和批次状态**：仅在卡片各字段完成后将该页面标记为已完成。
-- [ ] **步骤 7：运行覆盖检查**：运行 `python scripts/check_research_coverage.py`；预期本阶段主题的直接相关页面未完成数为 0。
+**目标**：实现独立 Agent 服务，可在显式权限范围内发现本体对象、读取对象、执行 Action 并检查调用轨迹。
+**成功标准**：工具授权与操作者角色都在服务端校验；会话短期状态/事件进入 Redis，执行结果和审计进入 PostgreSQL；Redis 错误有明确响应。
+**测试**：`agent_service/tests/test_agent_tools.py`、`test_sessions.py`；工具调用联测本体 API 测试服务。
+**状态**：未开始
 
-## 阶段 4：Agent、Ontology MCP 与平台 MCP 批次
+### Task 5：Agent API 和会话存储
 
-### Task 4: Agent 与 MCP 研读
+**文件**：新增 `backend/agent_service/app/{main.py,config.py,redis_store.py,api_client.py}`、`routers/agents.py`、`sessions.py`、`tools.py`、`backend/agent_service/pyproject.toml`、`backend/agent_service/tests/test_agent_tools.py`、`test_sessions.py`。
 
-**目标：** 完成 Agent 构建/运行与通过 Ontology/MCP 接入本体主题下所有直接相关页面。
-**成功标准：** Agent Builder、Agent SDK、Agent Stack/Manager、Pro-code agents、Ontology MCP、Palantir MCP，以及 AIP Logic/Workshop/Automate/SDK 中符合范围的页面均有完成卡片；区分本体数据操作与本体结构管理、区分 Agent 消费端与开发端权限。
-**测试：** 运行完整 unittest 和覆盖检查；人工按来源链接复核产品名称、权限边界、审批/审计与 Beta/coming soon 状态。
-**状态：** 未开始
+- [ ] 写测试：无效 JWT 被拒绝；Agent 仅能运行显式授权工具；越权 Action 返回拒绝并留审计；会话创建、事件写入/读取和结束状态可观测。
+- [ ] 运行测试确认失败。
+- [ ] 实现 Agent/工具配置、Redis 活跃会话与事件、受控本体 API 客户端和健康路由。
+- [ ] 运行 Agent 服务测试与本体 API 回归。
 
-**文件：**
-- 创建：`docs/research/articles/agents/` 下对应研读卡片
-- 创建：`docs/research/articles/mcp/` 下对应研读卡片
-- 修改：`data/palantir_docs_catalog.jsonl`
-- 修改：`docs/research/README.md`
-- 修改：`scripts/check_research_coverage.py`（仅在覆盖检查确需调整时）
+## 阶段 4：Vue 管理控制台
 
-- [ ] **步骤 1：完成 Agent 构建/运行卡片**：逐篇梳理 Agent Builder、Agent SDK、Agent Stack、Agent Manager、Pro-code agents 及范围内的 AIP Logic 页面。
-- [ ] **步骤 2：完成 Agent/MCP 集成卡片**：逐篇梳理 Ontology MCP 与 Palantir MCP，覆盖资源暴露、权限限制、工具、提案审查、外部数据流、安全和审计。
-- [ ] **步骤 3：检查页面状态和术语一致性**：复核 Agent Studio/Chatbot Studio/Agent Builder 等名称以及文档中的 Beta、路线图和弃用说明。
-- [ ] **步骤 4：运行完整 unittest 与覆盖检查**：预期所有直接相关页面未完成数为 0。
-- [ ] **步骤 5：更新主题索引**：补齐页面状态、官方中文覆盖、疑问和来源日期。
+**目标**：实现中文 Web 控制台，覆盖本体建模、数据、提案、Agent 和审计的端到端工作流。
+**成功标准**：登录后能浏览/筛选对象类型和对象、创建并审批提案、执行 Action、创建 Agent 会话并调用工具、查看事件/审计；错误/空/加载状态清楚。
+**测试**：`npm run build`；组件测试覆盖路由守卫、提案审批权限和 Agent 未授权工具不可点用；API 联调冒烟。
+**状态**：未开始
 
-## 阶段 5：复刻需求基线与系统设计交接
+### Task 6：Vue 项目与控制台页面
 
-### Task 5: 复刻需求基线
+**文件**：新增 `frontend/package.json`、`vite.config.ts`、`src/{main.ts,router.ts,stores/auth.ts,api/client.ts}`，布局/组件和 `views/` 下 `Overview.vue`、`Ontology.vue`、`Objects.vue`、`Proposals.vue`、`Agents.vue`、`Audit.vue`。
 
-**目标：** 汇总公开文档支持的功能与设计推论，交付下一阶段本体管理系统设计输入。
-**成功标准：** `replica-requirements.md` 清晰划分本体模型、元数据管理、数据读写、动作/函数、权限、版本/审批、Agent 接入、审计和可观测性；每项标注来源与“官方明示/设计推论”；未决产品范围列为下一阶段问题。
-**测试：** 运行完整 unittest 和覆盖检查；人工逐项确认需求有来源链接，事实与推论分开，未将 Palantir 私有实现当成事实。
-**状态：** 未开始
+- [ ] 先写关键组件测试：匿名访问跳登录、viewer 无审批按钮、未授权工具不可触发、错误 API 显示中文提示。
+- [ ] 运行测试确认失败。
+- [ ] 实现登录态、侧栏导航、六个工作视图和服务 API 接入；提供演示数据友好的默认概览。
+- [ ] 运行组件测试和 `npm run build`。
 
-**文件：**
-- 创建：`docs/research/replica-requirements.md`
-- 修改：`docs/research/README.md`
+## 阶段 5：Compose 集成、演示数据、说明和交付
 
-- [ ] **步骤 1：按系统能力整理证据**：从研读卡片提取实体/链接/动作、权限、写入审计、Agent 工具、审批和操作观测能力。
-- [ ] **步骤 2：标注事实与推论**：每条需求附支持它的官方来源链接，并区分官方文档直接陈述和本项目的设计判断。
-- [ ] **步骤 3：复核全部直接相关卡片覆盖**：运行 `python -m unittest discover -s tests -v` 和 `python scripts/check_research_coverage.py`；预期测试通过且未完成页数为 0。
-- [ ] **步骤 4：交接下一阶段**：基于该需求基线重新进行本体管理系统产品设计和实施规划，再选择 Vue/React、FastAPI、PostgreSQL/MySQL、Redis、Docker 和服务边界；本计划完成后删除。
+**目标**：一条命令启动全部服务并能完成演示工作流；完成配置与中文文档，提交并推送。
+**成功标准**：`docker compose up --build` 后各健康检查通过；数据库迁移/种子可重复；前端可访问；Compose 重启保留本体和审计数据；测试/构建通过；提交推送至 `danerlt` 目标仓库。
+**测试**：后端单测、前端组件测试与构建、`docker compose config`、Compose 冒烟（登录、提案审批、对象 Action、Agent 工具调用、审计、重启后数据保留）。
+**状态**：未开始
 
+### Task 7：容器化与可重复初始化
 
+**文件**：新增 `Dockerfile`（前端、本体服务、Agent 服务）、`docker-compose.yml`、`.env.example`、`backend/ontology_service/app/seed.py`、中文 `README.md`。
 
+- [ ] 写启动契约检查：Compose 服务清单/健康检查/依赖顺序/环境变量缺项和实际密钥不得被版本控制。
+- [ ] 运行 `docker compose config` 确认初始化约束测试先失败。
+- [ ] 实现服务镜像、持久卷、Redis、启动迁移与幂等演示数据；文档说明本地账号、地址、模块和 API。
+- [ ] 启动完整 Compose，修复启动/迁移问题，执行端到端冒烟和重启数据持久性检查。
+- [ ] 运行全部测试、前端构建、格式/编译检查；审查 `git diff` 与密钥扫描。
+- [ ] 询问 GitHub 用户名下适合的现存目标仓库；配置 SSH remote，提交中文信息并推送。
 
+## 交付顺序与检查点
+
+1. 阶段 1 完成后得到可登录、数据库可迁移的服务骨架。
+2. 阶段 2 完成后得到有权限与审计保护的本体管理闭环。
+3. 阶段 3 完成后得到 Agent 会话和授权工具服务。
+4. 阶段 4 完成后得到可操作的浏览器端应用。
+5. 阶段 5 完成后得到一条命令启动、可重启保留数据、可推送的完整交付。
