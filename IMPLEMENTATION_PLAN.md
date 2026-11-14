@@ -38,7 +38,7 @@
 **目标：** 建立可重复运行的脚本，从官方 sitemap 与主题页面导航发现候选文档，只提取元数据。
 **成功标准：** 可从 sitemap 和种子页收集 URL、解析页面标题/规范 URL/栏目/更新时间，按规范 URL 去重并生成 JSONL；遇到错误会记录页面与原因；不保存正文。
 **测试：** `python -m unittest discover -s tests -v`；覆盖 sitemap XML、HTML 元数据、URL 安全、重复 URL 和异常页面。
-**状态：** 进行中
+**状态：** 已完成
 
 **入口页面：**
 - `https://www.palantir.com/docs/foundry/ontology/overview`
@@ -82,7 +82,7 @@
 **目标：** 完成 Ontology/Agent 相关页面发现，逐页判为直接相关或补充参考，查找官方中文对应页面。
 **成功标准：** 每个目录项包含语言、栏目、发现来源、关联理由、相关性、英文/中文链接、研读状态；所有直接相关页面进入待研读清单；可疑配对显式标记人工核对。
 **测试：** 单元测试覆盖路由分类、中文 URL 配对、重复别名和不确定配对；运行完整 unittest 命令。
-**状态：** 未开始
+**状态：** 已完成
 
 **文件：**
 - 修改：`scripts/crawl_palantir_docs.py`
@@ -90,12 +90,12 @@
 - 创建：`docs/research/README.md`
 - 更新：`data/palantir_docs_catalog.jsonl`
 
-- [ ] **步骤 1：写分类与配对失败测试**：新增 `test_classify_page_marks_direct_ontology_agent_pages`（断言本体/动作/权限/Agent/MCP 页为直接相关）；新增 `test_classify_page_marks_unrelated_analytics_supplement`（断言通用分析页为补充参考）；新增 `test_find_zh_counterpart_matches_discovered_translation`（断言正确配对）；新增 `test_find_zh_counterpart_flags_ambiguous_slug`（断言不确定配对需人工复核）。
-- [ ] **步骤 2：运行测试确认失败**：运行 `python -m unittest discover -s tests -v`。
-- [ ] **步骤 3：实现分类与配对**：添加 `classify_page(url, title, description)` 和 `find_zh_counterpart(en_url, discovered_urls)`；分类结果包含值、理由与置信状态。
-- [ ] **步骤 4：运行测试确认通过**：运行完整 unittest 命令。
-- [ ] **步骤 5：人工复核候选清单**：检查主要主题导航覆盖、Sitemap 上限造成的缺口、中文译页错配和页面状态，按设计文档的相关性规则修正目录。
-- [ ] **步骤 6：生成中文索引**：在 `docs/research/README.md` 汇总主题、页面数、直接相关页数、中文覆盖情况、待复核和抓取失败记录。
+- [x] **步骤 1：写分类、配对、吞吐和续跑行为测试**：覆盖 Ontology/Agent 与 REST API 版本分类、数据连接代理排除、补充页识别、精确/模糊配对、受控并发、检查点和断点续抓。
+- [x] **步骤 2：运行测试确认失败**：新接口测试按预期失败；实现检查点时，回归发现 pending 计算顺序错误，修正后继续验证。
+- [x] **步骤 3：实现分类、配对与受控并发**：添加路径分类、仅精确路由自动配对、相似 slug 候选人工核对；8 个工作线程共享每 0.5 秒一个请求的全局速率门；JSONL 检查点支持续抓并定期报告进度。
+- [x] **步骤 4：运行测试确认通过**：运行完整 unittest 命令，23 项测试通过；通过 Python 编译检查。
+- [x] **步骤 5：人工复核候选清单**：核查分类规则待复核页，确认全部 Ontology/Agent API v1/v2 直接相关；6 个补充页分别为数据连接代理运行时 4 页与 Gaia 地理空间消费示例 2 页；相似 slug 配对保留人工复核状态。
+- [x] **步骤 6：生成中文索引**：在 `docs/research/README.md` 汇总页面数、主题范围、相关性、英中配对、人工复核状态与抓取失败记录。
 
 ## 阶段 3：研读卡片模板与本体治理批次
 

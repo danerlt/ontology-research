@@ -3,6 +3,7 @@ import gzip
 import json
 from pathlib import Path
 from tempfile import TemporaryDirectory
+from threading import Barrier, Lock
 import unittest
 from unittest.mock import patch
 
@@ -206,6 +207,8 @@ class PalantirDocsCatalogTests(unittest.TestCase):
         self.assertEqual(len(records), 1)
         self.assertEqual(records[0]["title"], "Ontology overview")
         self.assertEqual(records[0]["fetch_status"], "ok")
+        self.assertEqual(records[0]["description"], "Ontology overview page.")
+        self.assertEqual(records[0]["section"], "ontology")
         self.assertNotIn(body_marker, catalog_text)
 
     def test_crawl_catalog_records_page_fetch_errors(self):
@@ -271,6 +274,219 @@ class PalantirDocsCatalogTests(unittest.TestCase):
         request = mocked_urlopen.call_args.args[0]
         self.assertEqual(request.get_header("Accept-encoding"), "gzip")
         self.assertEqual(result, expected_text)
+
+    def test_classify_page_marks_direct_ontology_agent_pages(self):
+        classify_page = self.require_function("classify_page")
+        direct_pages = [
+            "https://www.palantir.com/docs/foundry/ontology/overview",
+            "https://www.palantir.com/docs/foundry/action-types/overview",
+            "https://www.palantir.com/docs/foundry/object-permissioning/overview",
+            "https://www.palantir.com/docs/foundry/agent-builder/overview",
+            "https://www.palantir.com/docs/foundry/agent-sdk/getting-started",
+            "https://www.palantir.com/docs/foundry/ontology-mcp/getting-started",
+            "https://www.palantir.com/docs/foundry/palantir-mcp/overview",
+        ]
+
+        results = [classify_page(url, "示例文档标题", "") for url in direct_pages]
+
+        self.assertTrue(all(result["relevance"] == "direct" for result in results))
+
+    def test_classify_page_marks_unrelated_analytics_supplement(self):
+        classify_page = self.require_function("classify_page")
+
+        result = classify_page(
+            "https://www.palantir.com/docs/foundry/contour/overview",
+            "Contour overview",
+            "Explore dashboards and charts.",
+        )
+
+        self.assertEqual(result["relevance"], "supplement")
+
+    def test_classify_page_marks_ontology_v2_api_direct(self):
+        classify_page = self.require_function("classify_page")
+
+        result = classify_page(
+            "https://www.palantir.com/docs/foundry/api/v2/ontologies-v2-resources/ontology-objects/get-object",
+            "Get Object (v2, latest)",
+            "",
+        )
+
+        self.assertEqual(result["relevance"], "direct")
+
+    def test_classify_page_marks_ontology_api_reference_direct(self):
+        classify_page = self.require_function("classify_page")
+
+        result = classify_page(
+            "https://www.palantir.com/docs/foundry/api/ontology-resources/actions/validate-action",
+            "Validate Action • API Reference",
+            "",
+        )
+
+        self.assertEqual(result["relevance"], "direct")
+
+    def test_classify_page_marks_ontology_v1_api_compatibility_direct(self):
+        classify_page = self.require_function("classify_page")
+
+        result = classify_page(
+            "https://www.palantir.com/docs/foundry/api/v1/ontology-resources/objects/get-object",
+            "Get Object (v1)",
+            "",
+        )
+
+        self.assertEqual(result["relevance"], "direct")
+        self.assertIn("兼容性", result["relevance_reason"])
+
+    def test_classify_page_marks_data_connection_agent_supplement(self):
+        classify_page = self.require_function("classify_page")
+
+        result = classify_page(
+            "https://www.palantir.com/docs/zh/foundry/data-connection/agent-worker-runtime",
+            "Direct connections, agents, and agent proxies • Agent worker",
+            "",
+        )
+
+        self.assertEqual(result["relevance"], "supplement")
+
+    def test_classify_page_marks_ontology_sdk_direct(self):
+        classify_page = self.require_function("classify_page")
+
+        result = classify_page(
+            "https://www.palantir.com/docs/foundry/ontology-sdk/generate-osdk-for-other-languages",
+            "Generate OSDK for other languages",
+            "",
+        )
+
+        self.assertEqual(result["relevance"], "direct")
+
+    def test_find_zh_counterpart_matches_discovered_translation(self):
+        find_zh_counterpart = self.require_function("find_zh_counterpart")
+        english_url = "https://www.palantir.com/docs/foundry/ontology/overview"
+        discovered_urls = [
+            "https://www.palantir.com/docs/zh/foundry/ontology/overview",
+            "https://www.palantir.com/docs/zh/foundry/action-types/overview",
+        ]
+
+        result = find_zh_counterpart(english_url, discovered_urls)
+
+        self.assertEqual(
+            result["counterpart_url"],
+            "https://www.palantir.com/docs/zh/foundry/ontology/overview",
+        )
+
+    def test_find_zh_counterpart_flags_ambiguous_slug(self):
+        find_zh_counterpart = self.require_function("find_zh_counterpart")
+        english_url = "https://www.palantir.com/docs/foundry/aip/overview"
+        discovered_urls = [
+            "https://www.palantir.com/docs/zh/foundry/aip-logic/overview",
+            "https://www.palantir.com/docs/zh/foundry/aip-agent/overview",
+        ]
+
+        result = find_zh_counterpart(english_url, discovered_urls)
+
+        self.assertEqual(result["status"], "ambiguous")
+        self.assertIsNone(result["counterpart_url"])
+        self.assertEqual(len(result["candidates"]), 2)
+
+    def test_crawl_catalog_uses_bounded_concurrent_page_fetches(self):
+        crawl_catalog = self.require_function("crawl_catalog")
+        seed_urls = [
+            f"https://www.palantir.com/docs/foundry/ontology/page-{index}"
+            for index in range(4)
+        ]
+        robots = "User-agent: *\nAllow: /\n"
+        sitemap = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>"
+        barrier = Barrier(4)
+        lock = Lock()
+        state = {"active": 0, "maximum": 0}
+
+        def fake_fetch(url):
+            if url == crawler.ROBOTS_URL:
+                return robots
+            if url == crawler.SITEMAP_URL:
+                return sitemap
+            with lock:
+                state["active"] += 1
+                state["maximum"] = max(state["maximum"], state["active"])
+            try:
+                barrier.wait(timeout=3)
+            finally:
+                with lock:
+                    state["active"] -= 1
+            return (
+                "<html><head><title>Ontology page</title>"
+                f'<link rel="canonical" href="{url}"></head></html>'
+            )
+
+        with TemporaryDirectory() as temporary_directory:
+            output_path = Path(temporary_directory) / "catalog.jsonl"
+            with patch.object(crawler, "fetch_text", side_effect=fake_fetch):
+                with patch.object(crawler, "REQUEST_DELAY_SECONDS", 0):
+                    stats = crawl_catalog(
+                        seed_urls,
+                        output_path,
+                        max_pages=4,
+                        max_concurrency=4,
+                    )
+
+        self.assertEqual(stats["fetched"], 4)
+        self.assertEqual(state["maximum"], 4)
+
+    def test_crawl_catalog_checkpoints_progress_and_resumes(self):
+        crawl_catalog = self.require_function("crawl_catalog")
+        seed_urls = [
+            "https://www.palantir.com/docs/foundry/ontology/first",
+            "https://www.palantir.com/docs/foundry/ontology/second",
+        ]
+        robots = "User-agent: *\nAllow: /\n"
+        sitemap = "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"></urlset>"
+        seen_urls = []
+
+        def fake_fetch(url):
+            if url == crawler.ROBOTS_URL:
+                return robots
+            if url == crawler.SITEMAP_URL:
+                return sitemap
+            seen_urls.append(url)
+            return (
+                "<html><head><title>Ontology page</title>"
+                f'<link rel="canonical" href="{url}"></head></html>'
+            )
+
+        def interrupt_after_first_page(_progress):
+            raise InterruptedError("测试模拟中断")
+
+        with TemporaryDirectory() as temporary_directory:
+            output_path = Path(temporary_directory) / "catalog.jsonl"
+            checkpoint_path = output_path.with_suffix(".jsonl.checkpoint")
+            with patch.object(crawler, "fetch_text", side_effect=fake_fetch):
+                with patch.object(crawler, "REQUEST_DELAY_SECONDS", 0):
+                    with self.assertRaises(InterruptedError):
+                        crawl_catalog(
+                            seed_urls,
+                            output_path,
+                            max_pages=2,
+                            max_concurrency=1,
+                            progress_callback=interrupt_after_first_page,
+                        )
+
+                    self.assertTrue(checkpoint_path.exists())
+                    seen_urls.clear()
+                    stats = crawl_catalog(
+                        seed_urls,
+                        output_path,
+                        max_pages=2,
+                        max_concurrency=1,
+                    )
+
+            records = [
+                json.loads(line)
+                for line in output_path.read_text(encoding="utf-8").splitlines()
+            ]
+
+        self.assertEqual(stats["fetched"], 2)
+        self.assertEqual(seen_urls, [seed_urls[1]])
+        self.assertEqual(len(records), 2)
+        self.assertFalse(checkpoint_path.exists())
 
 
 if __name__ == "__main__":
