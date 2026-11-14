@@ -15,6 +15,7 @@ class AddObjectTypeChange(BaseModel):
     api_name: ApiName
     display_name: str = Field(min_length=1, max_length=160)
     description: str = Field(default="", max_length=2000)
+    primary_key_property: ApiName = "id"
 
 
 class AddPropertyChange(BaseModel):
@@ -26,6 +27,7 @@ class AddPropertyChange(BaseModel):
     required: bool = False
     editable: bool = True
     unique_value: bool = False
+    sensitive: bool = False
     options: dict = Field(default_factory=dict)
 
 

@@ -61,41 +61,41 @@
 **目标**：交付可审阅的本体结构变更、对象查询和受校验 Action 写入。
 **成功标准**：提案审批以版本检查保护 schema；对象/链接 API 可用；Action 按属性白名单、类型和角色校验并原子写审计。
 **测试**：`backend/tests/test_governance.py`、`test_objects_actions.py`、`test_audit.py`；阶段 1 全套回归。
-**状态**：进行中
+**状态**：已完成
 
 ### Task 3：本体元数据和提案审阅
 
 **文件**：新增 `backend/ontology_service/app/routers/ontology.py`、`proposals.py`、`backend/ontology_service/app/services/governance.py`、`backend/ontology_service/app/schemas/ontology.py`、`backend/tests/test_governance.py`。
 
-- [ ] 写测试：editor 可提交新增类型/属性/链接提案；admin 可批准或拒绝；viewer/editor 不可合并；旧 revision 提案冲突返回 409；成功合并只递增一个版本并产生审计。
-- [ ] 运行测试确认失败。
-- [ ] 实现元数据读取、提案状态流转、事务化应用与版本冲突检查。
-- [ ] 运行治理测试确认通过。
+- [x] 写测试：editor 可提交新增类型/属性/链接提案；admin 可批准或拒绝；viewer/editor 不可合并；旧 revision 提案冲突返回 409；成功合并只递增一个版本并产生审计。
+- [x] 运行测试确认失败。
+- [x] 实现元数据读取、提案状态流转、事务化应用与版本冲突检查。
+- [x] 运行治理测试确认通过。
 
 ### Task 4：对象、链接和 Action
 
 **文件**：新增 `backend/ontology_service/app/routers/objects.py`、`actions.py`、`backend/ontology_service/app/services/action_engine.py`、`backend/ontology_service/app/schemas/objects.py`、`backend/tests/test_objects_actions.py`。
 
-- [ ] 写测试：对象类型校验、按类型/关键词分页查询、对象详情/链接、Action 成功更新、错误字段/无权限时拒绝且不部分写入。
-- [ ] 运行测试确认失败。
-- [ ] 实现对象检索、详情、链接查询和事务化 Action 执行；记录变更前后值。
-- [ ] 运行测试确认通过。
+- [x] 写测试：对象类型校验、按类型/关键词分页查询、对象详情/链接、Action 成功更新、错误字段/无权限时拒绝且不部分写入。
+- [x] 运行测试确认失败。
+- [x] 实现对象检索、详情、链接查询和事务化 Action 执行；记录变更前后值与操作者。
+- [x] 运行测试确认通过；敏感属性按角色过滤，敏感 Action 审计脱敏。
 
 ## 阶段 3：Agent 注册、授权工具、会话与事件
 
 **目标**：实现独立 Agent 服务，可在显式权限范围内发现本体对象、读取对象、执行 Action 并检查调用轨迹。
 **成功标准**：工具授权与操作者角色都在服务端校验；会话短期状态/事件进入 Redis，执行结果和审计进入 PostgreSQL；Redis 错误有明确响应。
 **测试**：`agent_service/tests/test_agent_tools.py`、`test_sessions.py`；工具调用联测本体 API 测试服务。
-**状态**：未开始
+**状态**：已完成
 
 ### Task 5：Agent API 和会话存储
 
 **文件**：新增 `backend/agent_service/app/{main.py,config.py,redis_store.py,api_client.py}`、`routers/agents.py`、`sessions.py`、`tools.py`、`backend/agent_service/pyproject.toml`、`backend/agent_service/tests/test_agent_tools.py`、`test_sessions.py`。
 
-- [ ] 写测试：无效 JWT 被拒绝；Agent 仅能运行显式授权工具；越权 Action 返回拒绝并留审计；会话创建、事件写入/读取和结束状态可观测。
-- [ ] 运行测试确认失败。
-- [ ] 实现 Agent/工具配置、Redis 活跃会话与事件、受控本体 API 客户端和健康路由。
-- [ ] 运行 Agent 服务测试与本体 API 回归。
+- [x] 写测试：无效 JWT 被拒绝；Agent 仅能运行显式授权工具；越权 Action 返回拒绝并留审计；会话事件顺序和 Redis 故障可观测。
+- [x] 运行测试确认失败。
+- [x] 实现 Agent/工具配置、Redis 活跃会话与事件、受控本体 API 客户端和健康路由。
+- [x] 运行 Agent 服务测试与本体 API 回归。
 
 ## 阶段 4：Vue 管理控制台
 

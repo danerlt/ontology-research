@@ -29,12 +29,24 @@ def apply_schema_changes(session: Session, ontology_id: UUID, changes: list[dict
             )
             if existing is not None:
                 raise HTTPException(status_code=409, detail="对象类型 API 名已存在")
+            object_type = ObjectType(
+                ontology_id=ontology_id,
+                api_name=change["api_name"],
+                display_name=change["display_name"],
+                description=change.get("description", ""),
+                primary_key_property=change.get("primary_key_property", "id"),
+            )
+            session.add(object_type)
+            session.flush()
             session.add(
-                ObjectType(
-                    ontology_id=ontology_id,
-                    api_name=change["api_name"],
-                    display_name=change["display_name"],
-                    description=change.get("description", ""),
+                PropertyDefinition(
+                    object_type_id=object_type.id,
+                    api_name=change.get("primary_key_property", "id"),
+                    display_name="唯一标识",
+                    data_type="string",
+                    required=True,
+                    editable=False,
+                    unique_value=True,
                 )
             )
             session.flush()
@@ -66,6 +78,7 @@ def apply_schema_changes(session: Session, ontology_id: UUID, changes: list[dict
                     required=change.get("required", False),
                     editable=change.get("editable", True),
                     unique_value=change.get("unique_value", False),
+                    sensitive=change.get("sensitive", False),
                     options=change.get("options", {}),
                 )
             )

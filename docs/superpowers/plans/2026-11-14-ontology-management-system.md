@@ -83,10 +83,10 @@
 
 **接口：** `GET /api/objects` 支持 type/query/page/page_size；`GET /api/objects/{id}` 返回属性和出入链接；`POST /api/actions/{api_name}/execute` 校验参数并事务写回。
 
-- [ ] 写 `test_objects_are_validated_against_type`、`test_object_search_is_paginated`、`test_object_detail_contains_links`、`test_action_updates_allowlisted_properties`、`test_action_rejects_properties_outside_allowlist`、`test_failed_action_does_not_partially_write`。
-- [ ] 运行对象/Action 测试确认失败。
-- [ ] 实现带类型过滤/搜索/分页的对象 API 和原子 Action 执行，记录变更前后值及操作者。
-- [ ] 运行对象、Action、审计测试与全量 Python 回归。
+- [x] 写对象类型/属性校验、主键唯一性、检索分页、关系方向、Action 白名单、版本冲突、原子回滚、审计与敏感属性测试。
+- [x] 运行对象/Action 测试确认接口缺失而失败；随后逐项实现并通过。
+- [x] 实现对象过滤/搜索/分页 API、关系详情、原子 Action、权限角色与敏感值脱敏。
+- [x] 运行对象/Action/审计测试、全量 Python 回归、编译检查；PostgreSQL Alembic 迁移升级并确认无差异。
 
 ## 阶段 3：Agent 服务、工具授权与会话事件
 
@@ -96,10 +96,10 @@
 
 **接口：** `GET/POST /api/agents`；`POST /api/agents/{id}/sessions`；`POST /api/sessions/{id}/tools/{tool_name}`；`GET /api/sessions/{id}/events`；`POST /api/sessions/{id}/close`。工具为 `search_objects`、`get_object`、`execute_action`。
 
-- [ ] 写 `test_agent_cannot_call_ungranted_tool`、`test_agent_action_respects_actor_role`、`test_agent_tool_calls_ontology_api`、`test_session_events_are_ordered`、`test_redis_failure_is_reported`。
-- [ ] 运行 Agent 测试确认目标服务和接口缺失。
-- [ ] 实现 Agent 权限检查、HTTP 本体 API 客户端、Redis 短期状态/事件及 PostgreSQL 执行轨迹/审计。
-- [ ] 运行 Agent 测试与本体 API 回归。
+- [x] 写 `test_agent_cannot_call_ungranted_tool`、`test_agent_action_respects_actor_role`、`test_agent_tool_calls_ontology_api`、`test_session_events_are_ordered`、`test_redis_failure_is_reported`。
+- [x] 运行 Agent 测试确认模型与路由缺失而失败。
+- [x] 实现 Agent 权限检查、HTTP 本体 API 客户端、Redis 短期状态/事件及 PostgreSQL 会话/执行轨迹。
+- [x] 运行 Agent 测试与本体 API 回归。
 
 ## 阶段 4：Vue 管理工作台
 
@@ -136,7 +136,7 @@
 | 阶段 | 状态 | 结果 |
 | --- | --- | --- |
 | 阶段 1：本体 API 骨架、身份与数据模型 | 已完成 | 登录/角色与 PostgreSQL 迁移 |
-| 阶段 2：本体建模、提案治理、对象和 Action | 进行中 | 提案版本与权限闭环已交付 |
-| 阶段 3：Agent 服务、工具授权与会话事件 | 未开始 | |
+| 阶段 2：本体建模、提案治理、对象和 Action | 已完成 | 结构提案、对象链接、Action、敏感字段与审计闭环 |
+| 阶段 3：Agent 服务、工具授权与会话事件 | 已完成 | Agent 双重授权、HTTP 工具调用、Redis 事件与 PostgreSQL 轨迹 |
 | 阶段 4：Vue 管理工作台 | 未开始 | |
 | 阶段 5：Docker Compose、演示数据和交付 | 未开始 | |

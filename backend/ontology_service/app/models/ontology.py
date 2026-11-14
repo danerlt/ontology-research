@@ -88,6 +88,7 @@ class PropertyDefinition(Base):
     required: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
     editable: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, server_default="true")
     unique_value: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
+    sensitive: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False, server_default="false")
     options: Mapped[dict] = mapped_column(json_document, nullable=False, default=dict, server_default="{}")
 
     object_type: Mapped[ObjectType] = relationship(back_populates="properties")

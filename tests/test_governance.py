@@ -194,7 +194,10 @@ class GovernanceApiTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertEqual(response.status_code, 200, response.text)
         site = next(item for item in object_types.json() if item["api_name"] == "site")
-        self.assertEqual(site["properties"][0]["api_name"], "region")
+        site_properties = {item["api_name"]: item for item in site["properties"]}
+        self.assertEqual(site_properties["region"]["data_type"], "string")
+        self.assertFalse(site_properties["id"]["editable"])
+        self.assertTrue(site_properties["id"]["unique_value"])
         self.assertEqual(links.json()[0]["api_name"], "site_assets")
 
     async def test_admin_can_reject_with_review_reason(self) -> None:
