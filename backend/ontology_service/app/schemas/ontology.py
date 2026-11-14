@@ -21,6 +21,7 @@ class PropertyResponse(BaseModel):
     required: bool
     editable: bool
     unique_value: bool
+    sensitive: bool
     options: dict
 
     model_config = ConfigDict(from_attributes=True)

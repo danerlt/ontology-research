@@ -166,6 +166,7 @@ class GovernanceApiTests(unittest.IsolatedAsyncioTestCase):
                     "display_name": "区域",
                     "data_type": "string",
                     "required": True,
+                    "sensitive": True,
                 },
                 {
                     "op": "add_link_type",
@@ -196,6 +197,7 @@ class GovernanceApiTests(unittest.IsolatedAsyncioTestCase):
         site = next(item for item in object_types.json() if item["api_name"] == "site")
         site_properties = {item["api_name"]: item for item in site["properties"]}
         self.assertEqual(site_properties["region"]["data_type"], "string")
+        self.assertTrue(site_properties["region"]["sensitive"])
         self.assertFalse(site_properties["id"]["editable"])
         self.assertTrue(site_properties["id"]["unique_value"])
         self.assertEqual(links.json()[0]["api_name"], "site_assets")
