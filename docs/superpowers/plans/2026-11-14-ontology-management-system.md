@@ -58,11 +58,11 @@
 
 **接口：** 模型包含 Ontology revision、ObjectType/PropertyDefinition/LinkType、ObjectRecord/ObjectLink、ActionDefinition、ChangeProposal 和 AuditEvent；JSON 字段测试可用 SQLite，部署目标是 PostgreSQL JSONB。
 
-- [ ] 写 `test_property_api_names_are_unique_per_type`、`test_object_record_references_type`、`test_audit_event_has_actor_and_timestamp`。
-- [ ] 运行测试确认模型约束失败。
-- [ ] 实现 SQLAlchemy 模型、session scope 和 Alembic `target_metadata`。
-- [ ] 启动 PostgreSQL，再运行 `alembic revision --autogenerate -m "初始化本体管理模型"`；执行 `alembic upgrade head`，禁止手写 revision 骨架。
-- [ ] 运行模型测试、迁移状态检查与 Python 编译。
+- [x] 写 `test_property_api_names_are_unique_per_type`、`test_object_record_references_type`、`test_audit_event_has_actor_and_timestamp`，并补上 Action 唯一性和对象版本整数测试。
+- [x] 运行测试确认模型导出缺失；随后两项新约束测试按预期失败。
+- [x] 实现 SQLAlchemy 模型、session scope 和 Alembic `target_metadata`。
+- [x] 启动 PostgreSQL，再运行 `alembic revision --autogenerate -m "初始化本体管理模型"`；执行 `alembic upgrade head`，禁止手写 revision 骨架。
+- [x] 运行模型测试、迁移状态检查与 Python 编译；PostgreSQL 验证 JSONB 与整数列类型。
 
 ## 阶段 2：本体建模、提案治理、对象和 Action
 
@@ -135,7 +135,7 @@
 
 | 阶段 | 状态 | 结果 |
 | --- | --- | --- |
-| 阶段 1：本体 API 骨架、身份与数据模型 | 未开始 | |
+| 阶段 1：本体 API 骨架、身份与数据模型 | 已完成 | 登录/角色与 PostgreSQL 迁移 |
 | 阶段 2：本体建模、提案治理、对象和 Action | 未开始 | |
 | 阶段 3：Agent 服务、工具授权与会话事件 | 未开始 | |
 | 阶段 4：Vue 管理工作台 | 未开始 | |

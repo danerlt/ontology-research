@@ -34,27 +34,27 @@
 
 **目标**：搭好 API、数据库、登录/角色和核心 SQLAlchemy 模型，建立可迁移、可测试的本地运行骨架。
 **成功标准**：健康检查、登录和角色依赖可用；本体、对象类型、属性、链接、对象、Action、提案及审计模型可在测试数据库建表；Alembic 迁移由命令生成。
-**测试**：`python -m unittest discover -s backend/tests -p "test_*.py" -v`；对 unauthenticated、viewer/editor/admin 角色执行路由访问断言。
-**状态**：进行中
+**测试**：`python -m unittest discover -s tests -p "test_*.py" -v`；已验证登录、viewer/editor/admin 角色依赖、领域约束与 PostgreSQL 迁移。
+**状态**：已完成
 
 ### Task 1：服务脚手架与认证
 
-**文件**：新增 `backend/ontology_service/app/{main.py,config.py,database.py,security.py}`、`backend/ontology_service/app/routers/auth.py`、`backend/pyproject.toml`、`backend/tests/test_auth.py`。
+**文件**：新增 `backend/ontology_service/app/{main.py,config.py,database.py,security.py}`、`backend/ontology_service/app/routers/auth.py`、`backend/requirements.txt`、`tests/test_auth.py`。
 
-- [ ] 写测试：登录成功签发 JWT、错误凭据返回 401、JWT 缺失/过期被拒绝、viewer 不能调用管理员依赖。
-- [ ] 运行测试，确认因 app/登录接口缺失失败。
-- [ ] 实现 Settings（环境变量）、SQLAlchemy session 依赖、密码哈希、JWT 和角色依赖。
-- [ ] 运行测试确认通过；`python -m compileall backend/ontology_service`。
+- [x] 写测试：登录成功签发 JWT、错误凭据返回 401、JWT 过期被拒绝、viewer 不能调用管理员依赖。
+- [x] 运行测试，确认因 app/登录接口缺失失败。
+- [x] 实现环境配置、SQLAlchemy session 依赖、密码哈希、JWT 和角色依赖。
+- [x] 运行测试确认通过；`python -m compileall backend/ontology_service`。
 
 ### Task 2：领域模型与 Alembic
 
-**文件**：新增 `backend/ontology_service/app/models/` 下的 `ontology.py`、`objects.py`、`governance.py`、`audit.py`，`backend/ontology_service/alembic.ini`、`backend/ontology_service/alembic/env.py`、`backend/tests/test_models.py`。
+**文件**：新增 `backend/ontology_service/app/models/` 下的 `ontology.py`、`objects.py`、`governance.py`、`audit.py`，`backend/ontology_service/alembic.ini`、`backend/ontology_service/alembic/env.py`、`tests/test_models.py`。
 
-- [ ] 写测试：属性 API 名唯一、对象记录关联类型、审计事件保存操作者与时间、Action/提案状态枚举受限。
-- [ ] 运行测试确认失败。
-- [ ] 实现模型、PostgreSQL JSONB（测试使用兼容 JSON 类型）和 Alembic 元数据加载。
-- [ ] 用 `alembic revision --autogenerate -m "初始化本体管理数据模型"` 生成迁移，不手写 revision 文件。
-- [ ] 在 PostgreSQL 上执行升级；运行模型测试与 Python 编译检查。
+- [x] 写测试：属性 API 名唯一、对象记录关联类型、审计事件保存操作者与时间、提案状态约束、Action API 名唯一和对象版本类型。
+- [x] 运行测试确认缺少领域模型导出及两项约束测试失败。
+- [x] 实现模型、PostgreSQL JSONB（测试使用兼容 JSON 类型）和 Alembic 元数据加载。
+- [x] 用 `alembic revision --autogenerate -m "初始化本体管理模型"` 生成迁移，不手写 revision 文件。
+- [x] 在 PostgreSQL 上执行升级；41 项完整测试、迁移差异检查与 Python 编译均通过。
 
 ## 阶段 2：本体管理、对象操作、Action 与提案治理
 
@@ -129,7 +129,7 @@
 - [ ] 实现服务镜像、持久卷、Redis、启动迁移与幂等演示数据；文档说明本地账号、地址、模块和 API。
 - [ ] 启动完整 Compose，修复启动/迁移问题，执行端到端冒烟和重启数据持久性检查。
 - [ ] 运行全部测试、前端构建、格式/编译检查；审查 `git diff` 与密钥扫描。
-- [ ] 询问 GitHub 用户名下适合的现存目标仓库；配置 SSH remote，提交中文信息并推送。
+- [ ] 配置 SSH remote `git@github.com:danerlt/ontology-research.git`，本地分支命名 `main`，提交中文信息并推送。
 
 ## 交付顺序与检查点
 
