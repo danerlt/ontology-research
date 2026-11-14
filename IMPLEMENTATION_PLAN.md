@@ -38,7 +38,7 @@
 **目标：** 建立可重复运行的脚本，从官方 sitemap 与主题页面导航发现候选文档，只提取元数据。
 **成功标准：** 可从 sitemap 和种子页收集 URL、解析页面标题/规范 URL/栏目/更新时间，按规范 URL 去重并生成 JSONL；遇到错误会记录页面与原因；不保存正文。
 **测试：** `python -m unittest discover -s tests -v`；覆盖 sitemap XML、HTML 元数据、URL 安全、重复 URL 和异常页面。
-**状态：** 未开始
+**状态：** 进行中
 
 **入口页面：**
 - `https://www.palantir.com/docs/foundry/ontology/overview`
@@ -63,12 +63,17 @@
 - `parse_doc_page(html_text: str, page_url: str) -> dict[str, object]`：返回标题、canonical URL、描述、栏目/导航链接元数据；不返回正文。`merge_candidates(candidates: list[dict[str, object]]) -> list[dict[str, object]]`：按规范 URL 去重并合并来源。
 - `crawl_catalog(seed_urls: list[str], output_path: Path, max_pages: int | None = None) -> dict[str, int]`：合并 sitemap/导航候选、低频获取页面、记录错误并写出 JSONL。
 
-- [ ] **步骤 1：编写失败测试**：新增 `test_robots_policy_denies_disallowed_path`（断言 robots 禁止的路径不可请求）；新增 `test_parse_sitemap_extracts_lastmod_and_deduplicates_urls`（断言规范 URL/lastmod 与去重）；新增 `test_parse_sitemap_rejects_malformed_xml`（断言错误可定位）；新增 `test_parse_doc_page_extracts_metadata_without_body`（断言返回标题、描述、导航链接且不含正文）；新增 `test_parse_doc_page_reports_missing_title_and_canonical_url`（断言缺失字段可诊断）；新增 `test_normalize_doc_url_rejects_external_and_non_foundry_urls`（断言拒绝外域及非 Foundry 页）。
-- [ ] **步骤 2：运行测试确认失败**：运行 `python -m unittest discover -s tests -v`；预期缺少被测函数导致失败。
-- [ ] **步骤 3：实现纯解析函数**：在 `scripts/crawl_palantir_docs.py` 中实现上述 URL、sitemap 和 HTML 解析接口。
-- [ ] **步骤 4：运行测试确认通过**：重复运行同一 unittest 命令，预期新增测试通过。
-- [ ] **步骤 5：实现低频网络抓取与 JSONL 输出**：添加官方主题入口种子、robots 检查、请求间隔、有限重试和可读错误记录。
-- [ ] **步骤 6：执行一次有页数上限的真实编目**：输出候选目录并查看失败记录，确认目录记录没有正文内容。
+- [x] **步骤 1：编写失败测试**：新增 `test_robots_policy_denies_disallowed_path`（断言 robots 禁止的路径不可请求）；新增 `test_parse_sitemap_extracts_lastmod_and_deduplicates_urls`、`test_parse_sitemap_rejects_malformed_xml`、`test_parse_doc_page_extracts_metadata_without_body`、`test_parse_doc_page_reports_missing_title_and_canonical_url`、`test_parse_doc_page_ignores_svg_accessibility_titles`、`test_normalize_doc_url_removes_tracking_and_fragment`、`test_normalize_doc_url_rejects_external_and_non_foundry_urls`、`test_merge_candidates_deduplicates_and_tracks_sources`，分别锁定 sitemap、元数据、不落正文、URL 与来源合并行为。
+- [x] **步骤 2：运行测试确认失败**：运行 `python -m unittest discover -s tests -v`；预期缺少被测函数导致失败。
+- [x] **步骤 3：实现纯解析函数**：在 `scripts/crawl_palantir_docs.py` 中实现上述 URL、sitemap 和 HTML 解析接口。
+- [x] **步骤 4：运行测试确认通过**：重复运行同一 unittest 命令，预期新增测试通过。
+- [x] **步骤 5：编写抓取管道失败测试**：新增 `test_crawl_catalog_writes_metadata_only_jsonl`（断言写入元数据且正文标记不落盘）；新增 `test_crawl_catalog_records_page_fetch_errors`（断言失败页面保留在目录并带错误状态）。
+- [x] **步骤 6：运行测试确认抓取管道测试失败**：运行 `python -m unittest discover -s tests -v`；预期新测试因 `crawl_catalog` 尚未实现而失败。
+- [x] **步骤 7：实现低频网络抓取与 JSONL 输出**：添加官方主题入口种子、robots 检查、低频请求、有限重试、gzip 响应解压和可读错误记录；失败页面保留诊断元数据。
+- [x] **步骤 8：运行完整测试确认通过**：运行 `python -m unittest discover -s tests -v`，12 项测试通过，覆盖 gzip 解压。
+- [x] **步骤 9：执行一次有页数上限的真实编目**：官方 sitemap 与主题入口共发现 619 个候选页面；限抓 4 页，成功 4 页、失败 0 页、待处理 615 页；检查目录字段仅含元数据，没有正文内容。
+
+**状态：** 已完成
 
 ## 阶段 2：完整编目、分类与英中配对
 
@@ -158,7 +163,6 @@
 - [ ] **步骤 2：标注事实与推论**：每条需求附支持它的官方来源链接，并区分官方文档直接陈述和本项目的设计判断。
 - [ ] **步骤 3：复核全部直接相关卡片覆盖**：运行 `python -m unittest discover -s tests -v` 和 `python scripts/check_research_coverage.py`；预期测试通过且未完成页数为 0。
 - [ ] **步骤 4：交接下一阶段**：基于该需求基线重新进行本体管理系统产品设计和实施规划，再选择 Vue/React、FastAPI、PostgreSQL/MySQL、Redis、Docker 和服务边界；本计划完成后删除。
-
 
 
 
