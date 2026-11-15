@@ -4,13 +4,13 @@
 # Object and link types • Object types • Overview • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/object-link-types/object-types-overview)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-link-types/object-types-overview)（配对状态：matched）
+- 官方中文来源：[https://www.palantir.com/docs/zh/foundry/object-link-types/object-types-overview](https://www.palantir.com/docs/zh/foundry/object-link-types/object-types-overview)
 - 页面语言：英文
 - 主题栏目：object-link-types
 - 相关性：direct；本体对象链接类型文档
-- 官方更新时间：未提供
-- 目录核对时间：2026-11-14T15:01:47Z
-- 产品状态：本页未标记 Beta 或弃用状态；核对日期 2026-11-14
+- 官方更新时间：页面未提供
+- 目录核对时间：2026-11-15
+- 产品状态：概览页；对象类型既可由数据源供数，也可仅由 Action 创建。
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
@@ -22,25 +22,24 @@
 
 ## 中文要点
 
-页面区分三个层次：对象类型定义一类实体/事件的结构，对象是该类型的单个实例，对象集是一组实例。对象类型可连接一个或多个支撑数据源；若对象都由动作创建，也可不配置支撑数据源。类型/对象/对象集与表模式、行、过滤结果相似，但 Ontology 对象仍与组织中的真实数据绑定。
+- 对象类型是实体/事件的模式；对象是单条实例；对象集是多个实例的集合。对象集可由条件筛选形成。
+- 对象类型像数据集 schema，对象像数据行，但 Foundry 将本体概念映射到实际数据，支持应用基于对象运行。
+- 实例可由关联的 backing datasource 提供，也可通过配置 Action 创建；没有来源数据时仍可建立仅由 Action 写入的对象类型。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| Object type | 对象类型 | 定义实体或事件的 schema、属性和数据关联 |
-| Object instance | 对象实例 | 某对象类型下的一个具体实体或事件 |
-| Object set | 对象集 | 按条件组织的多个对象实例 |
-| Backing datasource | 支撑数据源 | 为对象类型提供实例数据的来源 |
-| Primary key | 主键 | 标识一个对象实例的键值 |
+| object type | 对象类型 | 定义实体/事件实例结构的模式。 |
+| object set | 对象集 | 由多个对象实例组成，常由过滤条件限定。 |
+| backing datasource | 支撑数据源 | 为对象实例属性提供数据的数据源。 |
 
 ## 疑问与待验证项
 
-- 多个支撑数据源如何合并为唯一实例、主键冲突如何处理，需要查看对象类型创建和多数据源配置文档。
-- 对象集是查询结果的稳定快照还是动态条件，需要由 Object Set API 和查询文档核实。
+- 该概览页解释对象与数据集的类比，但不覆盖主键、属性映射和数据刷新细节，需要结合创建/编辑页核对。
+- 对象类型是定义层、对象是运行数据层；画布默认不应将海量实例全部铺开。
 
 ## 复刻启示
 
-- 数据库模型分开保存 `ObjectType`、`PropertyDefinition`、`ObjectInstance` 与 `ObjectSet` 查询定义，避免把 schema 和行数据混为一张表。
-- 支持对象类型关联多个数据源，也支持由动作创建的新对象；保存主键映射与来源映射。
-- 在管理 UI 中并列呈现类型元数据、属性、关系图、依赖、数据样例和用量。
+- 对象类型节点提供属性列表、主键、来源数据源和对象数量摘要；双击可进入对象实例浏览。
+- 在图上明确区分 schema 节点与对象实例节点；真实边必须由 link type 端点生成，不能使用装饰曲线。
