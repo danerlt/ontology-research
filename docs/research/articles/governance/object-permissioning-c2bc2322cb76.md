@@ -4,7 +4,7 @@
 # 对象权限管理 • 概述 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/object-permissioning/overview)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning)（中文路由译文以英文原文复核）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning)
 - 页面语言：中文
 - 主题栏目：object-permissioning
 - 相关性：direct；本体对象权限文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:57Z
 - 产品状态：官方中文路由的译文准确性未逐句验证；术语和规则按英文原文复核。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “We can conceptualize the Ontology's authorization structure on these two levels: ontology resources, and objects and links.”
+> “The Foundry Ontology allows for granular, robust, and flexible security controls for all ontology entities.”
 
 ## 摘录译文
 
-本体的授权结构可概括为两个层次：本体资源，以及对象和链接。
+Foundry Ontology 为所有本体实体提供细粒度、稳健且灵活的安全控制。
 
 ## 中文要点
 

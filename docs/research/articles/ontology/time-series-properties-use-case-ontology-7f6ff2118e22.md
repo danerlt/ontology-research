@@ -3,8 +3,8 @@
 
 # 时间序列 • Time series property use case • 使用 Ontology Manager 为 Object 添加时间序列属性 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/time-series/time-series-properties-use-case-ontology)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/time-series/time-series-properties-use-case-ontology)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/time-series/time-series-properties-use-case-ontology)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/time-series/time-series-properties-use-case-ontology)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：time-series
 - 相关性：direct；在普通本体对象类型上挂接时序序列

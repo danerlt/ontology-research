@@ -4,7 +4,7 @@
 # 动作类型 • 行内编辑 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/inline-edits)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/inline-edits)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:17Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：For action-backed inline edits, every parameter is optional and defaults to the existing value of the object.
-
-> 中文译文：对于由操作支持的行内编辑，每个参数都是可选的，并默认取对象的现有值。
+> “Action-backed inline edits are validated and submitted differently than standard actions.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+由 Action 支持的行内编辑，其验证和提交方式与标准 Action 不同。
 
 ## 中文要点
 

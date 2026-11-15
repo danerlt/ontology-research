@@ -4,7 +4,7 @@
 # 对象权限管理 • 多数据源Object类型（MDOs） • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/object-permissioning/multi-datasource-objects)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning/multi-datasource-objects)（目录记录为官方中文页）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning/multi-datasource-objects)
 - 页面语言：中文
 - 主题栏目：object-permissioning
 - 相关性：direct；本体对象权限文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:01Z
 - 产品状态：中文页面标注为机器翻译且准确性未验证；英文页进一步注明 MDO 只支持 Object Storage v2 的 column-wise 方案。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Foundry仅支持列式MDOs，不支持行式MDOs。”
+> “A multi-datasource object type (MDO) is backed by multiple datasources in the Ontology and is only available in Object Storage v2.”
 
 ## 摘录译文
 
-**英文对应原文：** “Foundry only supports column-wise MDOs and does not support row-wise MDOs.”
+多数据源对象类型（MDO）由 Ontology 中的多个数据源共同支持，且仅适用于 Object Storage v2。
 
 ## 中文要点
 

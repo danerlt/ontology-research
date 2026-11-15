@@ -4,7 +4,7 @@
 # 函数 • Functions on objects • API: 附件 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/attachments)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/api-attachments)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:45Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：An attachment is a file that acts like an object property.
-
-> 中文译文：附件是一种表现为对象属性的文件。
+> “TypeScript v1 functions are executed in an environment that has strict memory limits.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+TypeScript v1 函数在具有严格内存限制的环境中运行。
 
 ## 中文要点
 

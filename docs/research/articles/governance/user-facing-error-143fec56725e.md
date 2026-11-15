@@ -3,8 +3,8 @@
 
 # 函数 • Ontology edits • 抛出用户界面错误 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/user-facing-error)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/user-facing-error)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/user-facing-error)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/user-facing-error)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:48Z
 - 产品状态：TypeScript v1/v2 与 Python 函数均可抛出 UserFacingError；在 Workshop Action 或导出等宿主中，该消息会显示给用户。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “throw a UserFacingError to show users a specific message that explains what went wrong and how to fix it.”
+> “import { Function, UserFacingError } from "@foundry/functions-api";”
 
 ## 摘录译文
 
-抛出 `UserFacingError`，向用户显示具体说明错误原因及修复方式的消息。
+从 "@foundry/functions-api" 导入 Function 和 UserFacingError。
 
 ## 中文要点
 

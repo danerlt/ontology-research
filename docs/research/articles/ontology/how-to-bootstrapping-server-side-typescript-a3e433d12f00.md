@@ -3,8 +3,8 @@
 
 # OSDK • 使用服务用户启动新的 Ontology SDK TypeScript 应用程序 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/developer-console/how-to-bootstrapping-server-side-typescript)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-bootstrapping-server-side-typescript)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/how-to-bootstrapping-server-side-typescript)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-bootstrapping-server-side-typescript)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk
 - 相关性：direct；服务用户、confidential OAuth client 与 OSDK

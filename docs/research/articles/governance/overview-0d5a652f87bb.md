@@ -4,7 +4,7 @@
 # 动作类型 • 概述 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/overview)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/overview)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:19Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：An action is a single transaction that changes the properties of one or more objects, based on a user-defined logic.
-
-> 中文译文：Action 是一个基于用户定义逻辑、用于更改一个或多个对象属性的单一事务。
+> “In the Ontology, users can make changes to objects, properties, and links by applying actions.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+在 Ontology 中，用户可通过应用 Action 来修改对象、属性和链接。
 
 ## 中文要点
 

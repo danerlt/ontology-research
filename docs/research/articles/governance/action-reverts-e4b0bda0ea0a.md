@@ -4,7 +4,7 @@
 # 动作类型 • 撤销或取消操作 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/action-reverts)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/action-reverts)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/action-reverts)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:13Z
 - 产品状态：官方中文页面明确提示为未经验证的 AIP 机器翻译；以英文现行页校对功能边界。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “目前，操作只能由应用操作的用户撤销。”
-
-**对应英文：** “Currently, actions can only be reverted by the user who applied the action.”
+> “Action reverts in Ontology Manager allow an action to be reverted (that is, undone) immediately after the action has been applied.”
 
 ## 摘录译文
 
-当前只有提交该操作的用户可以撤销。文档同时指出撤销仅支持 OSv2，并通过成功提示提供撤销入口。
+Ontology Manager 中的操作撤销功能，可在操作应用后立即撤回（即撤销）该操作。
 
 ## 中文要点
 

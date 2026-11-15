@@ -4,7 +4,7 @@
 # 函数 • Functions on objects • 入门 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/foo-getting-started)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/foo-getting-started)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:18Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：One of the core features of functions is they can easily access data that has been integrated into the Foundry Ontology.
-
-> 中文译文：函数的核心特性之一，是能够便捷访问已集成到 Foundry 本体中的数据。
+> “One of the core features of functions is they can easily access data that has been integrated into the Foundry Ontology.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+Functions 的核心能力之一是轻松访问已集成到 Foundry Ontology 的数据。
 
 ## 中文要点
 

@@ -3,8 +3,8 @@
 
 # 函数 • 将资源导入代码库 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/resource-imports-sidebar)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/resource-imports-sidebar)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/resource-imports-sidebar)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/resource-imports-sidebar)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:40Z
 - 产品状态：该中文路由介绍 TypeScript v1 仓库的 Resource Imports 侧栏；它可管理本体类型、语言模型、部署和外部 source，但所有仓库导入资源须归属于同一 Ontology。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “The following documentation is specific to TypeScript v1 functions.”
 
 ## 摘录译文
 
-以下文档专门介绍 TypeScript v1 Functions。
+以下文档专门介绍 TypeScript v1 函数。
 
 ## 中文要点
 

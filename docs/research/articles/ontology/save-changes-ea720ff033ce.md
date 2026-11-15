@@ -4,7 +4,7 @@
 # 本体管理器 • Change management • 保存对Ontology的更改 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-manager/save-changes)
-- 官方中文来源：[https://www.palantir.com/docs/zh/foundry/ontology-manager/save-changes](https://www.palantir.com/docs/zh/foundry/ontology-manager/save-changes)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-manager/save-changes)
 - 页面语言：中文
 - 主题栏目：ontology-manager
 - 相关性：direct；本体管理器文档

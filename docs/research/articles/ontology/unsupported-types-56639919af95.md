@@ -3,8 +3,8 @@
 
 # OSDK • Ontology SDK 不支持的类型 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/ontology-sdk/unsupported-types)
-- 官方中文来源：[官方中文页（该卡收录路由，机翻状态需核实）](https://www.palantir.com/docs/zh/foundry/ontology-sdk/unsupported-types)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk/unsupported-types)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/unsupported-types)
 - 页面语言：中文（译文准确性需与现行英文页核对）
 - 主题栏目：ontology-sdk
 - 相关性：direct；OSDK 生成时的属性、Action 与 Function 类型约束

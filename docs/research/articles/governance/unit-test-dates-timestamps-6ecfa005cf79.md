@@ -3,8 +3,8 @@
 
 # 函数 • Unit testing • 模拟日期、时间戳和UUID • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-dates-timestamps)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/unit-test-dates-timestamps)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-dates-timestamps)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/unit-test-dates-timestamps)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:40Z
 - 产品状态：该单元测试指南演示通过 Jest mock 固定 UUID、当前时间戳与当前日期；示例针对 TSv1，TSv2 对 UUID 的模拟需直接针对标准库。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “You can specify the output of non-deterministic functions by utilizing jest.spyOn() to inject a mock to run the test.”
 
 ## 摘录译文
 
-可以使用 `jest.spyOn()` 注入模拟实现，确定非确定性函数在测试中的输出。
+可使用 jest.spyOn() 注入 mock，为非确定性函数指定输出并运行测试。
 
 ## 中文要点
 

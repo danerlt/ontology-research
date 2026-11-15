@@ -3,8 +3,8 @@
 
 # 函数 • Models and graphs • 创建模型函数 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/model-integration/functions-on-models)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/model-functions)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/model-integration/functions-on-models)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/model-functions)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：模型可发布为函数供 Workshop、Slate、Actions 等应用调用，也可被其他函数组合；2026 年 2 月起新建模型函数关联 Ontology，TSv2/Python 仅支持关联 Ontology 的模型函数。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Model functions can also be used in other functions to write custom business logic involving the model in code.”
+> “You can deploy models as functions to enable live usage of models in end-user applications like Workshop, Slate, Actions, and more.”
 
 ## 摘录译文
 
-模型函数也可以在其他函数中调用，以便在代码里编写涉及模型的自定义业务逻辑。
+你可以将模型部署为函数，让 Workshop、Slate、Actions 等终端用户应用实时调用模型。
 
 ## 中文要点
 

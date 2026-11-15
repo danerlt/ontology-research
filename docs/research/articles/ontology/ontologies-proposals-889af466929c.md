@@ -4,7 +4,7 @@
 # 本体 • Ontology 提案 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontologies/ontology-branches-legacy)
-- 官方中文来源：[中文页面](https://www.palantir.com/docs/zh/foundry/ontologies/ontologies-proposals)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies/ontologies-proposals)
 - 页面语言：中文
 - 主题栏目：ontologies
 - 相关性：direct；本体管理与治理文档

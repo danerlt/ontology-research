@@ -3,8 +3,8 @@
 
 # 函数 • Semantic search • 使用自定义模型创建语义搜索工作流 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/ontology/using-custom-models-to-create-a-semantic-search-workflow)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/using-custom-models-to-create-a-semantic-search-workflow)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology/using-custom-models-to-create-a-semantic-search-workflow)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/using-custom-models-to-create-a-semantic-search-workflow)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:48Z
 - 产品状态：旧中文路由已迁移到当前 Ontology 语义搜索指南；英文页将“自定义 embedding 模型”标为不再推荐的旧路线，介绍 Modeling Objective、数据流水线、Vector 属性与查询函数的历史端到端组合。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “This tutorial is for those using an embedding model not supplied by Palantir, which is no longer a recommended workflow.”
 
 ## 摘录译文
 
-本教程面向使用 Palantir 未提供的嵌入模型的场景，但这已不是推荐工作流。
+本教程面向使用非 Palantir 提供的 embedding model 的用户；这种工作流已不再推荐。
 
 ## 中文要点
 

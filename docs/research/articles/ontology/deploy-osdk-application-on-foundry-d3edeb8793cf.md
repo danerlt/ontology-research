@@ -3,8 +3,8 @@
 
 # OSDK • 在 Foundry 上部署一个 Ontology SDK 应用 • Palantir
 
-- 英文原文：[迁移后的英文页面](https://www.palantir.com/docs/foundry/developer-console/deploy-custom-application-on-foundry)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/ontology-sdk/deploy-osdk-application-on-foundry)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/deploy-custom-application-on-foundry)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/deploy-osdk-application-on-foundry)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk
 - 相关性：direct；OSDK 前端应用的静态网站托管与发布流程
@@ -14,11 +14,11 @@
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Web hosting only supports serving static assets and does not support running a server.”
+> “The web hosting feature only supports hosting static assets and does not support running a server, similar to GitHub Pages.”
 
 ## 摘录译文
 
-网页托管只支持提供静态资源，不支持运行服务器。
+网站托管功能仅支持托管静态资源，不支持运行服务器，类似 GitHub Pages。
 
 ## 中文要点
 
@@ -42,6 +42,8 @@
 - Foundry stack 域名不以 `.palantirfoundry.com` 结尾时，文档称需联系支持协调配置；自托管和私有部署情况需另查。
 - 域名请求审批和分享权限可由不同管理员角色处理，具体授权由当前 enrollment 决定。
 - CSP 页面警告自定义策略未验证，需在部署前按具体外部 API/图像资源做安全审查。
+
+- OSDK 应用托管指南已归入 Developer Console；链接指向当前部署自定义应用文档。
 
 ## 复刻启示
 

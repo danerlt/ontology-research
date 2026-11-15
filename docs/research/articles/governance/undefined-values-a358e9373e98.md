@@ -3,8 +3,8 @@
 
 # 函数 • TypeScript basics • 处理未定义值 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/undefined-values)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/undefined-values)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/undefined-values)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/undefined-values)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:40Z
 - 产品状态：该页面专门介绍 TypeScript v1 中处理对象属性或链接访问返回的 undefined；文档推荐显式检查而非滥用非空断言。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Below are two useful patterns for handling undefined values which may be returned from accessing properties or links.”
+> “The following documentation is specific to TypeScript v1 functions.”
 
 ## 摘录译文
 
-下面介绍两种处理属性或链接访问可能返回的 undefined 值的实用方式。
+以下文档专门介绍 TypeScript v1 函数。
 
 ## 中文要点
 

@@ -4,7 +4,7 @@
 # 对象链接类型 • Object types • 概览 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/object-link-types/object-types-overview)
-- 官方中文来源：[https://www.palantir.com/docs/zh/foundry/object-link-types/object-types-overview](https://www.palantir.com/docs/zh/foundry/object-link-types/object-types-overview)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-link-types/object-types-overview)
 - 页面语言：中文
 - 主题栏目：object-link-types
 - 相关性：direct；本体对象链接类型文档

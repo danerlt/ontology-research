@@ -4,7 +4,7 @@
 # 函数 • Ontology edits • 为新Objects生成唯一ID • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/edits-generate-id)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/edits-generate-id)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:08Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：When writing an Ontology edit function that creates objects, you may want to generate a unique ID for the newly created object.
-
-> 中文译文：编写会创建对象的本体编辑函数时，可能需要为新对象生成唯一 ID。
+> “When writing an Ontology edit function that creates objects, you may want to generate a unique ID for the newly created object.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+编写用于创建对象的 Ontology 编辑函数时，可能需要为新对象生成唯一 ID。
 
 ## 中文要点
 

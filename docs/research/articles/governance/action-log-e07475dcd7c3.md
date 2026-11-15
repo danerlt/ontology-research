@@ -4,7 +4,7 @@
 # 动作类型 • 操作日志 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/action-log)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/action-log)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/action-log)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:13Z
 - 产品状态：官方中文页面明确提示为未经验证的 AIP 机器翻译；以英文现行页校对功能边界。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “操作日志对象类型与操作类型一一对应。提交一个操作会生成一个对应操作日志对象类型的新对象。”
-
-**对应英文：** “Action log object types map one-to-one with action types. Submitting an action generates a single new object of the corresponding action log object type.”
+> “The action log models successful action submissions as object types to be analyzed and displayed in object-aware Foundry tooling.”
 
 ## 摘录译文
 
-操作日志类型与操作类型一一映射；每次提交生成一条日志对象，并关联该次操作编辑的对象。
+操作日志会将成功提交的操作建模为对象类型，供支持对象感知的 Foundry 工具分析和展示。
 
 ## 中文要点
 

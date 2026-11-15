@@ -3,8 +3,8 @@
 
 # 函数 • Functions on objects • Object标识符 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/object-identifiers)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/object-identifiers)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/object-identifiers)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/object-identifiers)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：本页描述 TypeScript v1 对象标识；RID 对尚未持久化的新建对象可能为空，TSv1 应用对象类型 ID 与主键共同识别对象。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “A primary key is a unique propertyId and value pair.”
+> “This page covers TSv1, which identifies objects with typeId and primaryKey.”
 
 ## 摘录译文
 
-主键是唯一的属性 ID 与属性值组合。
+本页介绍 TSv1；该版本通过 typeId 和 primaryKey 标识对象。
 
 ## 中文要点
 

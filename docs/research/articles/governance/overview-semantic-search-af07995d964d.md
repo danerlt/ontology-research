@@ -3,8 +3,8 @@
 
 # 函数 • Semantic search • 概述 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/ontology/overview-semantic-search)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/overview-semantic-search)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology/overview-semantic-search)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/overview-semantic-search)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：目录中的 Functions 旧中文路由已迁移至 Ontology 下的语义搜索概览；页面讲述 embedding、向量相似度和关联 Ontology 对象的检索工作流。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Semantic search is a way to search for text based on the inherent meaning or context, rather than relying solely on keywords.”
+> “Semantic search is accomplished using AI models to transform the text into vectors, which are arrays of numbers, and are called "embeddings".”
 
 ## 摘录译文
 
-语义搜索依据文本内在含义或上下文检索，而不只依赖关键词。
+语义搜索会借助 AI 模型将文本转换为向量（数字数组），这些向量称为“嵌入”。
 
 ## 中文要点
 

@@ -14,6 +14,17 @@ CARD_STATUS_MARKER = "<!-- 研读状态："
 CARD_URL_PATTERN = re.compile(r"<!-- 页面 URL：\s*(.*?)\s*-->")
 CARD_STATUS_PATTERN = re.compile(r"<!-- 研读状态：\s*(.*?)\s*-->")
 ENGLISH_WORD_PATTERN = re.compile(r"[A-Za-z]+(?:[-'][A-Za-z]+)*|\d+")
+ENGLISH_SOURCE_PATTERN = re.compile(
+    r"(?m)^- 英文来源：\[[^\]]+\]\(https://www\.palantir\.com/docs/foundry/[^)]+\)\s*$"
+)
+CARD_SECTIONS = (
+    ("摘录译文", "中文要点", "摘录译文"),
+    ("中文要点", "术语对照", "中文要点"),
+    ("术语对照", "疑问与待验证项", "术语对照"),
+    ("疑问与待验证项", "复刻启示", "疑问与待验证项"),
+    ("复刻启示", None, "复刻启示"),
+)
+PLACEHOLDER_PATTERN = re.compile(r"【待|【用自己的话|【记录文档|【写出|\[TODO\]", re.I)
 
 
 def _read_catalog(catalog_path: Path) -> list[dict[str, object]]:
@@ -201,9 +212,69 @@ def english_excerpt_word_count(card_content: str) -> int:
 
 
 def validate_card_content(card_content: str) -> None:
-    word_count = english_excerpt_word_count(card_content)
-    if word_count > 25:
-        raise ValueError(f"英文短摘录有 {word_count} 词，超过每个来源 25 词的限制")
+    issues = card_content_issues(card_content)
+    if issues:
+        raise ValueError("；".join(issues))
+
+
+def _section_body(card_content: str, heading: str, next_heading: str | None) -> str:
+    if heading == "英文原文短摘录":
+        match = re.search(r"(?m)^## 英文原文短摘录[^\n]*\n", card_content)
+        if match is None:
+            return ""
+        body = card_content[match.end():]
+    else:
+        marker = f"## {heading}"
+        if marker not in card_content:
+            return ""
+        body = card_content.split(marker, 1)[1]
+    if next_heading:
+        marker = f"## {next_heading}"
+        if marker in body:
+            body = body.split(marker, 1)[0]
+    else:
+        body = re.split(r"\n## ", body, maxsplit=1)[0]
+    return body.strip()
+
+
+def card_content_issues(card_content: str) -> list[str]:
+    """检查研读卡是否具备可复核的来源、英文短摘录和中文研读字段。"""
+    issues: list[str] = []
+    if ENGLISH_SOURCE_PATTERN.search(card_content) is None:
+        issues.append("缺少 Palantir 官方英文原文链接")
+
+    excerpt_body = _section_body(card_content, "英文原文短摘录", None)
+    quote_lines = [
+        line.lstrip()[1:].strip()
+        for line in excerpt_body.splitlines()
+        if line.lstrip().startswith(">")
+    ]
+    quote = " ".join(quote_lines).strip()
+    words = ENGLISH_WORD_PATTERN.findall(quote)
+    if len(words) > 25:
+        issues.append(f"英文短摘录有 {len(words)} 词，超过每个来源 25 词的限制")
+    if len(words) < 2 or len(re.findall(r"[A-Za-z]", quote)) <= len(re.findall(r"[\u4e00-\u9fff]", quote)):
+        issues.append("缺少英文原文短摘录")
+
+    for heading, next_heading, label in CARD_SECTIONS:
+        body = _section_body(card_content, heading, next_heading)
+        if not body or PLACEHOLDER_PATTERN.search(body):
+            issues.append(f"{label}为空或仍有模板占位内容")
+            continue
+        if label == "摘录译文" and re.search(r"[\u4e00-\u9fff]", body) is None:
+            issues.append("摘录译文缺少中文内容")
+        elif label == "术语对照":
+            rows = [
+                line.strip().strip("|").split("|")
+                for line in body.splitlines()
+                if line.strip().startswith("|")
+                and not re.match(r"^\s*\|?\s*:?-{3,}", line)
+            ]
+            data_rows = [row for row in rows if len(row) >= 3 and row[0].strip() and row[1].strip()]
+            if not data_rows:
+                issues.append("术语对照缺少术语行")
+
+    return issues
 
 
 def check_research_coverage(
@@ -230,16 +301,14 @@ def check_research_coverage(
         cards_by_url[url_match.group(1).strip()] = (path, status, content)
 
     missing_urls = sorted(direct_urls - cards_by_url.keys())
-    incomplete_urls = sorted(
-        url
-        for url in direct_urls & cards_by_url.keys()
-        if cards_by_url[url][1] != "已完成"
-    )
+    incomplete_urls = []
     over_limit_urls = []
     for url in sorted(direct_urls & cards_by_url.keys()):
-        try:
-            validate_card_content(cards_by_url[url][2])
-        except ValueError:
+        _, status, content = cards_by_url[url]
+        issues = card_content_issues(content)
+        if status != "已完成" or issues:
+            incomplete_urls.append(url)
+        if any("超过每个来源 25 词" in issue for issue in issues):
             over_limit_urls.append(url)
 
     return {

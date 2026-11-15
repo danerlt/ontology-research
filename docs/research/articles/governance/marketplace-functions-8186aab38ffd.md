@@ -4,7 +4,7 @@
 # 函数 • 将函数添加到 Marketplace 产品 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/marketplace-functions)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/marketplace-functions)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：You can use Foundry DevOps to include your functions in Marketplace products for other users to install and reuse.
-
-> 中文译文：可通过 Foundry DevOps 将函数加入 Marketplace 产品，供其他用户安装和复用。
+> “You can use Foundry DevOps to include your functions in Marketplace products for other users to install and reuse.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+你可以通过 Foundry DevOps 将函数纳入 Marketplace 产品，供其他用户安装和复用。
 
 ## 中文要点
 

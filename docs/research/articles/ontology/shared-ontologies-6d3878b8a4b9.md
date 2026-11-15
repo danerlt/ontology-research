@@ -4,7 +4,7 @@
 # 本体 • 共享Ontology • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontologies/shared-ontologies)
-- 官方中文来源：[https://www.palantir.com/docs/zh/foundry/ontologies/shared-ontologies](https://www.palantir.com/docs/zh/foundry/ontologies/shared-ontologies)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies/shared-ontologies)
 - 页面语言：中文
 - 主题栏目：ontologies
 - 相关性：direct；本体管理与治理文档

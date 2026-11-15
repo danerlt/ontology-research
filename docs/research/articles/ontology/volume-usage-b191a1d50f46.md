@@ -3,8 +3,8 @@
 
 # 本体 • Usage • Ontology 占用量 • Palantir
 
-- 英文来源：[当前英文原文](https://www.palantir.com/docs/foundry/ontologies/volume-usage)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/ontologies/volume-usage)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontologies/volume-usage)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies/volume-usage)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontologies
 - 相关性：direct；本体管理与治理文档
@@ -17,9 +17,13 @@
 
 > “Ontology volume is a measure of the total size of the indexed object sets and their links with each other.”
 
+## 英文原文短摘录（每个来源不超过 25 词）
+
+> “a fast-access storage layer that allows you to bind object definitions”
+
 ## 摘录译文
 
-Ontology 占用量衡量已索引对象集及其相互链接的总大小。
+一种快速访问的存储层，可将对象定义绑定到数据
 
 ## 中文要点
 

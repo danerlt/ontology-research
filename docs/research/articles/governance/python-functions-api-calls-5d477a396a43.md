@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • 从Python函数进行API调用 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/api-calls)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-functions-api-calls)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/api-calls)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-functions-api-calls)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:32Z
 - 产品状态：该中文旧路由已迁移到通用 Functions API calls 页面；TSv1、TSv2 和 Python 可调用外部来源，但必须经 Data Connection 配置、导入并声明依赖。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “By default, functions are not allowed to call external APIs.”
+> “This configuration and external source usage are detailed below.”
 
 ## 摘录译文
 
-默认情况下，函数不允许调用外部 API。
+下面将详细介绍此配置和外部来源的使用方式。
 
 ## 中文要点
 

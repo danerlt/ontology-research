@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • 起始步骤 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/python-getting-started)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-getting-started)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/python-getting-started)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-getting-started)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:38Z
 - 产品状态：Python 函数仓库的入门路径为创建模板仓库、编写类型完整的 `@function`、Live Preview、提交变更、打 tag 并发布。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “The function must be decorated with @function from the functions.api package to be recognized as a Python function.”
+> “The following documentation will guide you through the initial steps to prepare Python functions for use in the Palantir platform.”
 
 ## 摘录译文
 
-Python 函数必须使用 `functions.api` 包中的 `@function` 装饰器，才能被平台识别。
+以下文档将指导你完成在 Palantir 平台使用 Python 函数前的准备步骤。
 
 ## 中文要点
 

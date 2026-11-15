@@ -3,8 +3,8 @@
 
 # OSDK • 引导启动一个新的 Ontology SDK (OSDK) Java 应用程序 • Palantir
 
-- 英文原文：[英文对应页](https://www.palantir.com/docs/foundry/developer-console/how-to-bootstrapping-java)
-- 官方中文来源：[中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-bootstrapping-java)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk/java-osdk)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-bootstrapping-java)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk
 - 相关性：direct；Java OSDK 启动指南的中文路由
@@ -14,11 +14,11 @@
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Do not check this token into source control, as this can create a security vulnerability.”
+> “generic documentation for the Java OSDK”
 
 ## 摘录译文
 
-不要将该 token 提交到源代码管理中，否则可能造成安全漏洞。
+Java OSDK 的通用文档
 
 ## 中文要点
 
@@ -41,6 +41,8 @@
 - 中文路由虽有英文迁移对应，但目录登记为配对状态 not_applicable；应用到新页面的链接关系仍需后续核实。
 - Java 版本要求可能随 SDK 版本更新变化；新项目应以 Java OSDK 官方当前页面为准。
 - 个人 token 是否适合所有 CI/生产场景，指南只用于本地启动示例，生产授权需另行设计。
+
+- 原 Java 启动指南的英文路由目前返回 404；此处链接到当前 Java OSDK 参考页，旧版逐步配置说明和版本要求需重新核验。
 
 ## 复刻启示
 

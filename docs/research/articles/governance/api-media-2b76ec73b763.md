@@ -4,7 +4,7 @@
 # 函数 • Functions on objects • API：媒体 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/media)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/api-media)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:48Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：Functions enable you to access and modify media in TypeScript v2, Python, and TypeScript v1.
-
-> 中文译文：函数支持通过 TypeScript v2、Python 和 TypeScript v1 访问及修改媒体。
+> “Functions enable you to access and modify media in TypeScript v2, Python, and TypeScript v1.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+Functions 支持使用 TypeScript v2、Python 和 TypeScript v1 访问及修改媒体。
 
 ## 中文要点
 

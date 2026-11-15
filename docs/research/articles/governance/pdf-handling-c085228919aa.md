@@ -3,8 +3,8 @@
 
 # 函数 • Semantic search • PDF处理 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/ontology/document-processing)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/pdf-handling)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology/document-processing)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/pdf-handling)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:30Z
 - 产品状态：目录中的 PDF 处理中文路径已迁移到 Ontology 文档处理页面；现行内容覆盖 PDF/图像文本抽取、分块、语义检索及在 Workshop 中展示原文件。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “This page offers a basic guide for using Pipeline Builder to parse PDFs for semantic search.”
+> “extracting data from a PDF document or image”
 
 ## 摘录译文
 
-本页介绍如何使用 Pipeline Builder 解析 PDF，以支持语义搜索。
+从 PDF 文档或图像中提取数据
 
 ## 中文要点
 

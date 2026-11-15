@@ -4,7 +4,7 @@
 # FoundryTS • API Reference • foundryts.search.ontology • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/foundryts/search-ontology)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/foundryts/search-ontology)
 - 页面语言：中文
 - 主题栏目：foundryts
 - 相关性：direct；Ontology 查询 SDK 文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:42Z
 - 产品状态：待核对 Beta、预览、弃用或更名信息
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “创建用于搜索的Ontology属性引用。”
+> “Creates an Ontology property reference for search.”
 
 ## 摘录译文
 
-创建供搜索使用的 Ontology 属性引用。
+为搜索创建 Ontology 属性引用。
 
 ## 中文要点
 

@@ -3,8 +3,8 @@
 
 # OSDK • 导航 • Palantir
 
-- 英文来源：[现行相关概述（旧导航页无一对一英文路由）](https://www.palantir.com/docs/foundry/developer-console)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/ontology-sdk/navigation)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/navigation)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk
 - 相关性：direct；Developer Console 导航和应用管理入口
@@ -16,9 +16,13 @@
 
 > “Use Developer Console to build and manage Custom Applications and their associated authorization clients and SDKs.”
 
+## 英文原文短摘录（每个来源不超过 25 词）
+
+> “Use Developer Console to build and manage Custom Applications and their associated authorization clients and SDKs.”
+
 ## 摘录译文
 
-使用 Developer Console 构建和管理自定义应用及其关联的授权客户端与 SDK。
+使用 Developer Console 构建和管理自定义应用，以及相关授权客户端和 SDK。
 
 ## 中文要点
 

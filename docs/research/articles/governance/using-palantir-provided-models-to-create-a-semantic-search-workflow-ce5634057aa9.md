@@ -3,8 +3,8 @@
 
 # 函数 • Semantic search • 使用Palantir提供的模型创建语义搜索工作流 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/ontology/using-palantir-provided-models-to-create-a-semantic-search-workflow)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/using-palantir-provided-models-to-create-a-semantic-search-workflow)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology/using-palantir-provided-models-to-create-a-semantic-search-workflow)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/using-palantir-provided-models-to-create-a-semantic-search-workflow)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:49Z
 - 产品状态：旧中文路由已迁移到 Ontology 语义搜索工作流；使用 Palantir 提供的 embedding 模型生成对象 Vector 属性，再以 KNN 检索；AIP enrollment 与开发权限是前提。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “The KNN object set cannot be sorted by relevance.”
+> “To use Palantir-provided language models, AIP must first be enabled on your enrollment.”
 
 ## 摘录译文
 
-KNN 对象集不能按相关性排序。
+使用 Palantir 提供的语言模型前，必须先在 enrollment 中启用 AIP。
 
 ## 中文要点
 

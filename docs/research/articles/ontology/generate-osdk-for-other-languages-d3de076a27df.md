@@ -4,7 +4,7 @@
 # OSDK • 为其他语言生成 OSDK • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk/generate-osdk-for-other-languages)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/generate-osdk-for-other-languages)（同路由对照；页面提示 AIP 机器翻译未经验证）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/generate-osdk-for-other-languages)
 - 页面语言：中文
 - 主题栏目：ontology-sdk
 - 相关性：direct；Ontology SDK 文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:44Z
 - 产品状态：待核对 Beta、预览、弃用或更名信息
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “您可以使用开源代码生成器基于下载的 OpenAPI 规范生成几乎任何语言的客户端。”
+> “The Developer Console has built-in Java, Python, and TypeScript support for code generation using both pip and Conda but is not limited to these languages.”
 
 ## 摘录译文
 
-可基于 OpenAPI 规范使用开源生成器为几乎任何语言创建客户端。
+Developer Console 内置支持通过 pip 和 Conda 为 Java、Python 与 TypeScript 生成代码，但也支持其他语言。
 
 ## 中文要点
 

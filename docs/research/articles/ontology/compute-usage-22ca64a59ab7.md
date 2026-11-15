@@ -3,8 +3,8 @@
 
 # 本体 • Usage • 计算使用：Ontology 索引 • Palantir
 
-- 英文原文：[英文对应页](https://www.palantir.com/docs/foundry/ontologies/compute-usage)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/ontologies/compute-usage)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontologies/compute-usage)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies/compute-usage)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontologies
 - 相关性：direct；Ontology 索引作业成本说明的中文路由
@@ -14,11 +14,11 @@
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Indexing jobs can be optimized to reduce compute usage.”
+> “Ontology stores objects in an Ontology index, a storage format optimized for rapid access.”
 
 ## 摘录译文
 
-可以优化索引作业以降低计算用量。
+Ontology 会将对象存储在 Ontology index 中，这种存储格式针对快速访问进行了优化。
 
 ## 中文要点
 

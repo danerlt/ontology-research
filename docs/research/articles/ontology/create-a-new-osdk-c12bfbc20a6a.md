@@ -3,8 +3,8 @@
 
 # OSDK • 创建一个新的 Developer Console 应用程序 • Palantir
 
-- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/create-application)（同主题但路由不同）
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/create-a-new-osdk)（与英文页人工确认对应）
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/create-application)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/create-a-new-osdk)
 - 页面语言：中文
 - 主题栏目：ontology-sdk
 - 相关性：direct；Ontology SDK 文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:43Z
 - 产品状态：待核对 Beta、预览、弃用或更名信息
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “默认情况下，通过 OAuth 2.0 流程获得的词元范围限定为所选实体集合。”
+> “On this page, we will walk through the following processes of creating a new Developer Console application:”
 
 ## 摘录译文
 
-默认 OAuth 2.0 令牌只覆盖所选的 Ontology 资源。
+本页将逐步介绍创建新的 Developer Console 应用程序涉及的流程：
 
 ## 中文要点
 
@@ -40,6 +40,8 @@
 
 - 更换 Ontology 需要新建或迁移应用，当前页面没有提供原位替换 SDK 本体的流程。
 - 中文页面与英文页面存在内容新旧差异；安全默认值应以英文当期文档复核，且扩大到 Unrestricted 应作为显式治理决策。
+
+- OSDK 创建应用指南已归入 Developer Console；链接指向当前 Create an application 文档。
 
 ## 复刻启示
 

@@ -4,7 +4,7 @@
 # 动作类型 • 操作指标 [测试版] • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/action-metrics)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/action-metrics)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/action-metrics)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作运行监控文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:13Z
 - 产品状态：中文页明确标为 Beta，并说明失败分类仍在积极开发；与英文现行页面状态不同。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “操作指标功能处于测试版阶段；操作类型失败的分类仍在积极开发中。”
-
-**对应英文现行页：** 未发现这句 Beta 声明；英文页描述近实时指标和观测窗口。
+> “Action metrics display the near real-time usage of an action type over the last 30 days.”
 
 ## 摘录译文
 
-中文页将操作指标及失败分类标记为测试版，表示指标能力与分类仍可能变化。
+操作指标显示某操作类型在过去 30 天内的近实时使用情况。
 
 ## 中文要点
 

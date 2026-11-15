@@ -4,7 +4,7 @@
 # 时间序列 • Derived series • 手动保存派生序列至Ontology • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/time-series/manual-ontology-saving)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/time-series/manual-ontology-saving)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/time-series/manual-ontology-saving)
 - 页面语言：中文
 - 主题栏目：time-series
 - 相关性：direct；Ontology 时间序列数据文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T15:01:29Z
 - 产品状态：文档提供自动与手动保存入口；权限和当前支持方式需查派生序列配置页核实。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “一旦添加到Ontology，派生序列将像原始时间序列一样运行，并且可以在Palantir应用中使用。”
-
-**对应英文：** “Once added to the Ontology, the derived series will behave just like a raw time series and can be used across Palantir applications.”
+> “The derived series creation documentation describes the process of preparing the logic resource used to manage the derived series.”
 
 ## 摘录译文
 
-把派生序列绑定到本体后，Foundry 应用可像消费原始时间序列一样消费它。
+派生序列创建文档介绍了准备逻辑资源以管理派生序列的流程。
 
 ## 中文要点
 

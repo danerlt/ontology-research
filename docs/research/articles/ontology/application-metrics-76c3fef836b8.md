@@ -3,8 +3,8 @@
 
 # OSDK • 应用指标 • Palantir
 
-- 英文来源：[当前英文对应页](https://www.palantir.com/docs/foundry/developer-console/application-metrics)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/ontology-sdk/application-metrics)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/application-metrics)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/application-metrics)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk
 - 相关性：direct；OSDK 应用调用指标的中文路由

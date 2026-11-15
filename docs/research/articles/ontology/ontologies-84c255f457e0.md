@@ -4,7 +4,7 @@
 # 本体 • 概述 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontologies)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies)
 - 页面语言：中文
 - 主题栏目：ontologies
 - 相关性：direct；本体管理与治理文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:03Z
 - 产品状态：中文页为未经验证的 AIP 机器翻译；英文现行页另说明组织共享和项目角色边界。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “一个Ontology与一个空间是 1:1 映射的。”
-
-**对应英文：** “An ontology is mapped 1:1 with a space.”
+> “An ontology is an artifact which stores ontological resources or entities, including the following:”
 
 ## 摘录译文
 
-每个 Ontology 对应一个 Space；创建 Space 时会同步创建同名 Ontology，并继承组织标记。
+Ontology 是用于存储本体资源或实体的 artifact，其中包括以下内容：
 
 ## 中文要点
 

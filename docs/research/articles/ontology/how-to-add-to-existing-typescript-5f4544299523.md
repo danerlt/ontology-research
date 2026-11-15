@@ -3,8 +3,8 @@
 
 # OSDK • 将 Ontology SDK 包添加到现有应用程序中 • Palantir
 
-- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/how-to-add-to-existing-typescript)（同主题不同栏目路由）
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-add-to-existing-typescript)（页面注明机器翻译未经验证）
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/how-to-add-to-existing-typescript)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-add-to-existing-typescript)
 - 页面语言：中文
 - 主题栏目：ontology-sdk
 - 相关性：direct；Ontology SDK 文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:45Z
 - 产品状态：待核对 Beta、预览、弃用或更名信息
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “TypeScript SDK 需要 Node 18 或更高版本才能工作。”
+> “This page will walk you through the process of adding an OSDK package to an existing application.”
 
 ## 摘录译文
 
-将 OSDK 接入现有 TypeScript 应用需要 Node.js 18 或更高版本。
+本页将逐步介绍如何为现有应用添加 OSDK 软件包。
 
 ## 中文要点
 
@@ -38,6 +38,8 @@
 
 - 机器翻译中的示例注释和类型提示应与实际 SDK 版本核对；本页未覆盖服务身份后端的凭据托管。
 - React 组件包是可选项，不应成为 REST 服务或其他前端框架的依赖要求。
+
+- OSDK 添加到现有 TypeScript 应用的指南现位于 Developer Console 栏目。
 
 ## 复刻启示
 

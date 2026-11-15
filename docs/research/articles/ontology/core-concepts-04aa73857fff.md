@@ -4,7 +4,7 @@
 # 核心概念 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology/core-concepts)
-- 官方中文来源：[https://www.palantir.com/docs/zh/foundry/ontology/core-concepts](https://www.palantir.com/docs/zh/foundry/ontology/core-concepts)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology/core-concepts)
 - 页面语言：中文
 - 主题栏目：ontology
 - 相关性：direct；本体模型与治理文档

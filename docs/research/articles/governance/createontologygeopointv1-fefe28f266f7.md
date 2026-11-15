@@ -4,7 +4,7 @@
 # PB函数表达式 • 转换为 Ontology GeoPoint • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/pb-functions-expression/createOntologyGeopointV1)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/pb-functions-expression/createOntologyGeopointV1)（中文路由译文以英文原文复核）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/pb-functions-expression/createOntologyGeopointV1)
 - 页面语言：中文
 - 主题栏目：pb-functions-expression
 - 相关性：direct；标题或简介提及本体、对象、动作、权限或 Agent 主题
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:01:08Z
 - 产品状态：官方中文路由的译文准确性未逐句验证；术语和规则按英文原文复核。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “Convert a GeoPoint into a string that the Ontology will accept for a geo-indexed column (a geohash type column).”
 
 ## 摘录译文
 
-将 GeoPoint 转为本体可用于地理索引列（geohash 类型列）的字符串。
+将 GeoPoint 转换为 Ontology 可接受的字符串，用于地理索引列（geohash 类型列）。
 
 ## 中文要点
 

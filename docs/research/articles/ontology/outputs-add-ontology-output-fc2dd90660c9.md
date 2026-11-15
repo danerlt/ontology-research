@@ -3,8 +3,8 @@
 
 # 管道构建器 • Pipeline outputs • 添加Ontology输出 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/pipeline-builder/outputs-add-ontology-output)
-- 官方中文来源：[官方中文页面（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/pipeline-builder/outputs-add-ontology-output)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/pipeline-builder/outputs-add-ontology-output)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/pipeline-builder/outputs-add-ontology-output)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：pipeline-builder
 - 相关性：direct；将流水线输出绑定为对象类型和链接类型

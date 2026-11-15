@@ -3,8 +3,8 @@
 
 # 函数 • Unit testing • 模拟用户和组 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-users-groups)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/unit-test-users-groups)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-users-groups)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/unit-test-users-groups)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:47Z
 - 产品状态：TSv1 测试库提供 `createUser` 与 `createGroup` 构造部分 Principal mock；用户必需 ID 和 username，组必需 ID。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “You are able to create a partial mock of a user using createUser, where all properties besides id and username are optional.”
 
 ## 摘录译文
 
-可以使用 `createUser` 创建部分 mock 用户；除 ID 和用户名外，其他属性可选。
+可用 createUser 创建用户的部分 mock；除 id 和 username 外，其他属性都是可选的。
 
 ## 中文要点
 

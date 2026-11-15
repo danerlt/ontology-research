@@ -3,8 +3,8 @@
 
 # 问答 • Ontology SDK • Palantir
 
-- 英文来源：[现行英文问答](https://www.palantir.com/docs/foundry/questions-answers/ontology-sdk)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/questions-answers/ontology-sdk)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/questions-answers/ontology-sdk)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/questions-answers/ontology-sdk)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：questions-answers
 - 相关性：direct；SDK 授权、运行时兼容及类型映射

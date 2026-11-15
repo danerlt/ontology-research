@@ -3,8 +3,8 @@
 
 # 函数 • Functions on objects • 导入Object和链接类型 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/ontology-imports)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/ontology-imports)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/ontology-imports)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/ontology-imports)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：函数仓库通过 Project 级资源导入获得对象/接口/链接类型，并按语言模板生成或刷新代码绑定；当前单个 Project 导入多个 Ontology 不受支持。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “Any object, interface, or link types you want to use in your function must be imported into the Project that contains your repository.”
 
 ## 摘录译文
 
-函数要使用的对象、接口或链接类型，必须导入包含该代码仓库的 Project。
+要在函数中使用对象、接口或链接类型，必须将其导入包含代码库的 Project。
 
 ## 中文要点
 

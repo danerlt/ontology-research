@@ -3,8 +3,8 @@
 
 # 函数 • Unit testing • 创建存根对象 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-stub-objects)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/unit-test-stub-objects)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-stub-objects)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/unit-test-stub-objects)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:47Z
 - 产品状态：TSv1 测试可通过 `Objects.create()` 构造带主键和属性的 mock Ontology 对象，再像普通对象一样传给被测函数。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “You can create and define your mock objects using Objects.create().”
+> “You can create and define your mock objects using Objects.create(), which can be used the same way as if it was a regular function.”
 
 ## 摘录译文
 
-可以使用 `Objects.create()` 创建并定义 mock 对象。
+可用 Objects.create() 创建和定义 mock 对象，并像普通对象一样在函数中使用它们。
 
 ## 中文要点
 

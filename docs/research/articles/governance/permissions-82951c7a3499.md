@@ -3,8 +3,8 @@
 
 # OSDK • 权限 • Palantir
 
-- 英文来源：[旧版英文路由（现为 404）](https://www.palantir.com/docs/foundry/ontology-sdk/permissions)；[现行 Developer Console 权限文档](https://www.palantir.com/docs/foundry/developer-console/permissions)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/permissions)（中文路由译文以英文原文复核）
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/permissions)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/permissions)
 - 页面语言：中文
 - 主题栏目：ontology-sdk
 - 相关性：direct；Ontology SDK 文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T15:01:03Z
 - 产品状态：官方中文页面声明 AIP 机器翻译准确性未经验证；英文旧路由返回 404，当前英文规范已迁至 Developer Console。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “资源访问范围确保用户只能访问通过给定 OAuth 令牌批准的资源。”
-
-本页中文摘录来自官方 AIP 机器翻译；英文旧路由已失效。
+> “This section explains the different permissions required to use the Developer Console and the OSDK.”
 
 ## 摘录译文
 
-该摘录来自官方中文页面的 AIP 机器翻译；旧英文路由现返回 404，无法逐句核对。当前英文权限文档已迁至 Developer Console，并描述 Compass 管理的新权限模型。
+本节说明使用 Developer Console 和 OSDK 所需的不同权限。
 
 ## 中文要点
 
@@ -43,6 +41,8 @@
 
 - 官方中文页明确声明 AIP 机器翻译准确性未经验证；英文旧路由已失效，当前 Developer Console 文档的 Compass 用户权限属于 Beta，角色继承规则与本页旧版表述不同。
 - 具体部署是否启用了 Compass 管理权限、资源依赖如何同步，以及服务用户的身份映射，需按 enrollment 和应用类型核实。
+
+- 旧 OSDK 权限专题路由目前返回 404；当前权限说明已归入 Developer Console 的 Permissions 文档。
 
 ## 复刻启示
 

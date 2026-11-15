@@ -3,8 +3,8 @@
 
 # 函数 • Performance and limits • 优化性能 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/optimize-performance)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/optimize-performance)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/optimize-performance)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/optimize-performance)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：文档以函数性能页、瀑布图和 Ontology 查询成本为中心；页面列出的固定执行开销和资源计量属于可能变化的服务参数。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Use object sets when possible for maximum efficiency and scalability.”
+> “This page describes best practices for optimizing function performance and resource usage.”
 
 ## 摘录译文
 
-在满足需求时优先使用对象集，以获得更好的效率和扩展性。
+本页介绍优化函数性能和资源使用的最佳实践。
 
 ## 中文要点
 

@@ -4,7 +4,7 @@
 # OSDK • Java Ontology SDK (OSDK) • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk/java-osdk)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/java-osdk)（配对状态：matched；页面声明 AIP 机器翻译且准确性未验证）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/java-osdk)
 - 页面语言：中文
 - 主题栏目：ontology-sdk
 - 相关性：direct；Ontology SDK 文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:52Z
 - 产品状态：此机器翻译参考页未将 Java OSDK 整体标为 Beta；读取限制与属性投影能力以英文页为准
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “本页面基于一个示例餐馆对象及其相关操作和查询，提供Java OSDK的通用文档。”
+> “based on an example Restaurant object and its associated Actions and Queries.”
 
 ## 摘录译文
 
-本页面基于示例餐馆对象及相关操作和查询，提供 Java OSDK 通用文档。
+基于示例 Restaurant 对象及其相关 Actions 和 Queries。
 
 ## 中文要点
 

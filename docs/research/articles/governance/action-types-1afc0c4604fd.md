@@ -3,8 +3,8 @@
 
 # 动作类型 • 概述 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/action-types)
-- 官方中文来源：[官方中文页（页面翻译准确性未验证）](https://www.palantir.com/docs/zh/foundry/action-types)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types)
 - 页面语言：中文（官方中文内容需与英文原文交叉核对）
 - 主题栏目：action-types
 - 相关性：direct；本体 Action 定义、验证和多应用写入一致性

@@ -3,8 +3,8 @@
 
 # 时间序列 • Sensor object types use case • 使用Ontology Manager创建传感器Object类型 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/time-series/sensor-object-end-to-end-ontology)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/time-series/sensor-object-end-to-end-ontology)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/time-series/sensor-object-end-to-end-ontology)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/time-series/sensor-object-end-to-end-ontology)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：time-series
 - 相关性：direct；传感器对象、根对象链接和时序能力配置

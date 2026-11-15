@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • Ontology 更改 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/python-ontology-edits)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-ontology-edits)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/python-ontology-edits)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-ontology-edits)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:39Z
 - 产品状态：Python 本体编辑函数通过 OSDK 编辑容器收集创建/更新/链接更改，并需配置为 function-backed Action 才会提交；staged writes 提供读后写语义。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “For the edits created in a function to actually be applied, Ontology edit functions must be configured as a function-backed Action.”
+> “This page documents the object edit APIs available to you in functions.”
 
 ## 摘录译文
 
-函数中创建的编辑若要真正应用，Ontology 编辑函数必须配置成由函数支持的 Action。
+本页介绍可在函数中使用的对象编辑 API。
 
 ## 中文要点
 

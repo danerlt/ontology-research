@@ -4,7 +4,7 @@
 # 函数 • Semantic search • 分块 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology/document-processing)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/chunking)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:53Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：Chunking, in this context, means breaking up larger pieces of text into smaller pieces of text.
-
-> 中文译文：此处的分块，是将较大的文本拆成较小文本片段。
+> “This page will discuss a few useful considerations for extracting data from a PDF document or image.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+本页将讨论从 PDF 文档或图像中提取数据时的一些实用注意事项。
 
 ## 中文要点
 

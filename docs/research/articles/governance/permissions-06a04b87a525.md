@@ -4,7 +4,7 @@
 # 动作类型 • 权限 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/permissions)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/permissions)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/permissions)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；动作权限文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:25Z
 - 产品状态：中文页提示权限模型正从旧版权限迁移到 Ontology 角色；以英文现行页复核配置细节。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “默认情况下，新的object类型仅允许通过操作进行编辑。”
-
-**对应英文：** “By default, new object types only allow edits via actions.”
+> “Permissions apply to action types in the following ways:”
 
 ## 摘录译文
 
-新建对象类型默认锁定编辑入口，使修改经由动作类型执行。
+权限对操作类型的作用方式如下：
 
 ## 中文要点
 

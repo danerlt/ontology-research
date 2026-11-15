@@ -4,7 +4,7 @@
 # 函数 • Functions on objects • 创建自定义聚合 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/create-custom-aggregation)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/create-custom-aggregation)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:08Z
 - 产品状态：待核对 Beta、预览、弃用或更名信息
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “函数可以被用于在Ontology中计算自定义聚合”
+> “Functions can be used to compute custom aggregations based on data in the ontology, which can then be surfaced in a chart widget in Workshop.”
 
 ## 摘录译文
 
-Functions 可基于 Ontology 数据执行自定义聚合。
+函数可根据 Ontology 中的数据计算自定义聚合结果，并将结果呈现在 Workshop 图表组件中。
 
 ## 中文要点
 

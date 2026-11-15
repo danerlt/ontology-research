@@ -4,7 +4,7 @@
 # 动态调度 • Ontology 原语和数据模型配置 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/dynamic-scheduling/scheduling-ontology-primitives)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/dynamic-scheduling/scheduling-ontology-primitives)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/dynamic-scheduling/scheduling-ontology-primitives)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：dynamic-scheduling
 - 相关性：direct；Ontology 数据模型配置文档
@@ -17,9 +17,13 @@
 
 > “The Ontology primitives for dynamic scheduling are comprised of one Schedule object and one or more Resource objects.”
 
+## 英文原文短摘录（每个来源不超过 25 词）
+
+> “The Ontology primitives for dynamic scheduling are comprised of one Schedule object and one or more Resource objects.”
+
 ## 摘录译文
 
-动态调度的本体原语由一个 Schedule 对象和一个或多个 Resource 对象组成。
+动态调度所需的 Ontology 基元由一个 Schedule 对象和一个或多个 Resource 对象组成。
 
 ## 中文要点
 

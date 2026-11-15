@@ -4,7 +4,7 @@
 # 本体管理器 • Change management • 审查和恢复更改 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-manager/restore-changes)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-manager/restore-changes)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-manager/restore-changes)
 - 页面语言：中文
 - 主题栏目：ontology-manager
 - 相关性：direct；本体管理器变更治理文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:34Z
 - 产品状态：官方中文页为 AIP 机器翻译；英文现行页 UI 路径和恢复说明更简洁。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “这些更改将被添加到您的工作状态中，您需要保存更改到Ontology，以便您的恢复生效。”
-
-**对应英文：** “The changes will be added to your working state and you will need to save your changes to the Ontology for your restore to take effect.”
+> “Review unsaved changes made to the Ontology globally:”
 
 ## 摘录译文
 
-恢复先改写当前工作状态；只有保存到 Ontology 后，历史恢复才真正生效。
+查看对 Ontology 全局所做的未保存更改：
 
 ## 中文要点
 

@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • 类型参考 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/types-reference)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-function-types)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/types-reference)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-function-types)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:31Z
 - 产品状态：中文旧路由已重定向至统一 Functions 类型参考；该表比较 TSv1、TSv2 与 Python 的注册类型映射，且部分类型仅由特定语言支持。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “a TypeScript function must have explicit type annotations on all input parameters and specify an explicit return type.”
+> “their corresponding language types”
 
 ## 摘录译文
 
-TypeScript 函数的所有输入参数都必须显式标注类型，并显式声明返回类型。
+它们对应的语言类型
 
 ## 中文要点
 

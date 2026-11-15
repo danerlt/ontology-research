@@ -4,7 +4,7 @@
 # 对象权限管理 • 配置受限视图支持的对象类型 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/object-permissioning/configuring-rv-access-controls)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning/configuring-rv-access-controls)（中文路由译文以英文原文复核）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning/configuring-rv-access-controls)
 - 页面语言：中文
 - 主题栏目：object-permissioning
 - 相关性：direct；本体对象权限文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:57Z
 - 产品状态：官方中文路由的译文准确性未逐句验证；术语和规则按英文原文复核。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “Restricted views (RVs) enable row-level access controls for ontology data.”
 
 ## 摘录译文
 
-受限视图（RV）为本体数据提供行级访问控制。
+Restricted View（RV）可为本体数据提供行级访问控制。
 
 ## 中文要点
 

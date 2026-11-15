@@ -4,7 +4,7 @@
 # 函数 • 模型上的函数 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/functions-on-models)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/functions-on-models)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:18Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：Model functions are automatically generated wrappers around live model deployments that can be imported into a functions repository and called from your code.
-
-> 中文译文：模型函数是围绕在线模型部署自动生成的包装函数，可以导入函数仓库并在代码中调用。
+> “You can deploy models in the context of the Ontology by using functions that invoke models during their runtime.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+你可以在 Ontology 上下文中部署模型，让函数在运行时调用模型。
 
 ## 中文要点
 

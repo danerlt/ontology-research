@@ -4,7 +4,7 @@
 # 函数 • Performance and limits • 强制限制 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/manage-functions)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/enforced-limits)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:12Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：Several limits are in place to prevent functions from consuming too many resources when they are executed.
-
-> 中文译文：平台设置了多项限制，以避免函数运行时消耗过多资源。
+> “Once published, all types of functions can be viewed and managed using the Ontology Manager.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+函数发布后，可以通过 Ontology Manager 查看和管理所有类型的函数。
 
 ## 中文要点
 

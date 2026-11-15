@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • 对象上的函数 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/python-functions-on-objects)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-functions-on-objects)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/python-functions-on-objects)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-functions-on-objects)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:33Z
 - 产品状态：Python Ontology 函数通过为仓库导入对象/链接并生成、安装 Python OSDK 来访问本体；对象和对象集由生成的类型绑定提供。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “You can write functions that interact with the Ontology using the Python Ontology SDK.”
 
 ## 摘录译文
 
-可以使用 Python Ontology SDK 编写与 Ontology 交互的函数。
+你可以使用 Python Ontology SDK 编写与 Ontology 交互的函数。
 
 ## 中文要点
 

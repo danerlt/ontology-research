@@ -3,8 +3,8 @@
 
 # OSDK • 启动一个新的Ontology SDK Python应用程序 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/developer-console/how-to-bootstrapping-python)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-bootstrapping-python)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/developer-console/how-to-bootstrapping-python)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/how-to-bootstrapping-python)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk
 - 相关性：direct；Python OSDK 应用启动与身份验证

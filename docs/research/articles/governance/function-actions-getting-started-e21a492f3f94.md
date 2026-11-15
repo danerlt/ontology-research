@@ -4,7 +4,7 @@
 # 动作类型 • Function-backed actions • 入门 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/function-actions-getting-started)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/function-actions-getting-started)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:13Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：This tutorial explains how to create an action type that is backed by an Ontology Edit function.
-
-> 中文译文：本教程介绍如何创建由 Ontology Edit 函数支持的操作类型。
+> “This tutorial explains how to create an action type that is backed by an Ontology Edit function.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+本教程说明如何创建由 Ontology Edit 函数支持的操作类型。
 
 ## 中文要点
 

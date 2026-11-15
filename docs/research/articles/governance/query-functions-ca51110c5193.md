@@ -3,8 +3,8 @@
 
 # 函数 • Functions called through the API gateway • 查询 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/query-functions)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/query-functions)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/query-functions)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/query-functions)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:39Z
 - 产品状态：Query 可发布为外部可调用的只读 API，适合封装受控的本体查询；具有写入副作用的操作应通过 Action 提供。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Queries are the read-only subsets of functions that may be optionally exposed through the API gateway.”
+> “may be optionally exposed through the API gateway”
 
 ## 摘录译文
 
-Query 是函数的只读子集，可选择通过 API Gateway 暴露。
+可以选择通过 API 网关公开
 
 ## 中文要点
 

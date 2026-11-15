@@ -4,7 +4,7 @@
 # 动作类型 • 规则 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/rules)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/rules)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:25Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：Rules define the logic of the action type that transforms the parameters into Ontology edits or other effects.
-
-> 中文译文：规则定义操作类型的逻辑，将参数转换为本体编辑或其他效果。
+> “Rules define the logic of the action type that transforms the parameters into Ontology edits or other effects.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+规则定义操作类型逻辑，将参数转换为 Ontology 编辑或其他效果。
 
 ## 中文要点
 

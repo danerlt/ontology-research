@@ -4,7 +4,7 @@
 # OSDK • Ontology SDK • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk/overview)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/overview)
 - 页面语言：中文
 - 主题栏目：ontology-sdk
 - 相关性：direct；Ontology SDK 文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:01:03Z
 - 产品状态：待核对 Beta、预览、弃用或更名信息
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Ontology软件开发工具包（SDK）允许您直接从开发环境访问Ontology的全部功能。”
+> “The Ontology Software Development Kit (OSDK) allows you to access the full power of the Ontology directly from your development environment.”
 
 ## 摘录译文
 
-Ontology SDK 可让开发者从开发环境直接访问 Ontology 的能力。
+Ontology Software Development Kit（OSDK）使你能在开发环境中直接使用 Ontology 的全部能力。
 
 ## 中文要点
 

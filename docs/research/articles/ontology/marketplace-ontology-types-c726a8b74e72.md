@@ -3,8 +3,8 @@
 
 # 对象链接类型 • 将Object和链接类型添加到Marketplace产品 • Palantir
 
-- 英文来源：[当前英文原文](https://www.palantir.com/docs/foundry/object-link-types/marketplace-ontology-types)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/object-link-types/marketplace-ontology-types)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/object-link-types/marketplace-ontology-types)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-link-types/marketplace-ontology-types)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：object-link-types
 - 相关性：direct；本体对象链接类型文档
@@ -17,9 +17,13 @@
 
 > “Objects themselves cannot be packaged with Marketplace.”
 
+## 英文原文短摘录（每个来源不超过 25 词）
+
+> “Use Foundry DevOps to include your object and link types in Marketplace products for other users to install and reuse.”
+
 ## 摘录译文
 
-Marketplace 产品不能打包对象实例本身。
+可使用 Foundry DevOps 将对象类型和链接类型纳入 Marketplace 产品，供其他用户安装和复用。
 
 ## 中文要点
 

@@ -4,7 +4,7 @@
 # 代码库 • Administer repositories • Ontology 导入 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/code-repositories/ontology-imports)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/code-repositories/ontology-imports)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/code-repositories/ontology-imports)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：code-repositories
 - 相关性：direct；标题或简介提及本体、对象、动作、权限或 Agent 主题
@@ -17,9 +17,13 @@
 
 > “The Ontology tab in Code Repositories is used to import object and link types for use in Functions on Objects.”
 
+## 英文原文短摘录（每个来源不超过 25 词）
+
+> “The Ontology tab in Code Repositories is used to import object and link types for use in Functions on Objects.”
+
 ## 摘录译文
 
-代码库中的 Ontology 标签页用于导入对象类型和链接类型，供 Objects 函数使用。
+Code Repositories 中的 Ontology 选项卡用于导入对象类型和链接类型，供对象函数使用。
 
 ## 中文要点
 

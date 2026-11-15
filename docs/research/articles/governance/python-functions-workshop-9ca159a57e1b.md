@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • 在Workshop中使用Python函数 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/python-functions-workshop)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-functions-workshop)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/python-functions-workshop)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-functions-workshop)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:34Z
 - 产品状态：Workshop 可调用 serverless 或 deployed Python 函数；对象表的函数计算列使用对象集参数和按对象映射的返回字典。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Both serverless and deployed functions will appear here.”
+> “This guide assumes you have already authored and published a Python function.”
 
 ## 摘录译文
 
-无服务器函数和已部署函数都会显示在这里。
+本指南假定你已经编写并发布了 Python 函数。
 
 ## 中文要点
 

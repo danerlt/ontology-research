@@ -3,8 +3,8 @@
 
 # 本体SDK React应用 • 故障排除 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/ontology-sdk-react-applications/troubleshooting)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/ontology-sdk-react-applications/troubleshooting)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk-react-applications/troubleshooting)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk-react-applications/troubleshooting)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk-react-applications
 - 相关性：direct；OSDK React 开发环境和依赖故障

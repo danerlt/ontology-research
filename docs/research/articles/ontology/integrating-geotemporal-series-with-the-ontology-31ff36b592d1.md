@@ -3,8 +3,8 @@
 
 # 地理时间序列 • 将地理时间序列与Ontology集成 • Palantir
 
-- 英文来源：目录登记的旧英文路由目前返回 404，尚未确认当前对应页
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/geotemporal-series/integrating-geotemporal-series-with-the-ontology)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/geospatial/integrate-geotemporal-series-with-the-ontology)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/geotemporal-series/integrating-geotemporal-series-with-the-ontology)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：geotemporal-series
 - 相关性：direct；Ontology 地理时间序列文档
@@ -13,9 +13,13 @@
 - 产品状态：旧英文路由当前返回 404；中文页面仅为集成入口摘要
 
 <!-- 研读状态：已完成 -->
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “该类型引用地理时间序列同步中的单个序列”
+> “The object type also includes live and static information, such as a vessel's current position and call sign.”
+
+## 摘录译文
+
+该对象类型还包含实时和静态信息，例如船舶当前位置和呼号。
 
 ## 摘录说明
 
@@ -40,6 +44,8 @@
 
 - 旧英文 URL 当前返回 404；新页面地址、序列标识、采样和时间范围语义仍需核验。
 - Reference 的官方类型定义需查英文类型参考，不应依赖未验证的机器翻译。
+
+- 原英文路由已迁移；当前对应指南位于 Geospatial and geotemporal 栏目，介绍通过 Pipeline Builder、对象类型与 Geotemporal Series Reference 建立集成。
 
 ## 复刻启示
 

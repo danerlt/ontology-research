@@ -4,7 +4,7 @@
 # 动作类型 • 入门 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/getting-started)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/getting-started)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:16Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：The priority is `P0`, `P1`, or `P2`.
-
-> 中文译文：优先级为 `P0`、`P1` 或 `P2`。
+> “In this guide, we will create a simple action type for changing the priority on a ticket.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+本指南将创建一个简单的操作类型，用来更改工单优先级。
 
 ## 中文要点
 

@@ -3,8 +3,8 @@
 
 # 管理模型 • Modeling deployment FAQ • Ontology中的模型 • Palantir
 
-- 英文来源：尚未确认英文对应页面；[当前官方中文页面](https://www.palantir.com/docs/zh/foundry/manage-models/models-in-the-ontology)标注为机器翻译，准确性未经验证
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/manage-models/models-in-the-ontology)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/manage-models/models-in-the-ontology)
 - 页面语言：中文
 - 主题栏目：manage-models
 - 相关性：direct；标题或简介提及本体、对象、动作、权限或 Agent 主题
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:53Z
 - 产品状态：待核对 Beta、预览、弃用或更名信息
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “将模型推理运行在Ontology Object的上下文中”
+> “For instance, you may want to define a model-backed Action or connect UI elements in Workshop directly to model output.”
 
 ## 摘录译文
 
-在本体对象上下文中运行模型推理。
+例如，你可能希望定义由模型支持的 Action，或将 Workshop UI 元素直接连接到模型输出。
 
 ## 中文要点
 

@@ -4,7 +4,7 @@
 # 函数 • Functions on objects • API：对象集 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/api-object-sets)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/api-object-sets)（同路由中文版本；页面注明机器翻译未经准确性验证）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/api-object-sets)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:48Z
 - 产品状态：中文对照页覆盖 TypeScript v1（TSv1）；TSv2 与 Python 改用 Ontology SDK。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “对象集表示单一类型对象的无序集合。”
+> “This page covers TypeScript v1 (TSv1).”
 
 ## 摘录译文
 
-对象集是一种针对同类对象的无序集合表达。
+本页介绍 TypeScript v1（TSv1）。
 
 ## 中文要点
 

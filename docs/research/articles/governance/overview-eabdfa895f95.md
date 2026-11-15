@@ -3,8 +3,8 @@
 
 # 函数 • 概述 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/overview)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/overview)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/overview)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/overview)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：Functions 是运行于隔离服务端环境的逻辑层，并原生支持读取 Ontology 属性、遍历链接及执行 Ontology 编辑；现有文档支持 TypeScript 与 Python。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Functions enable code authors to write logic that can be executed quickly in operational contexts.”
+> “Functions enable code authors to write logic that can be executed quickly in operational contexts, such as dashboards and applications designed to empower decision-making processes.”
 
 ## 摘录译文
 
-Functions 让代码作者能够编写可在运营场景中快速执行的逻辑。
+Functions 允许开发者编写可在仪表板、应用等运营场景中快速执行的逻辑，以支持决策流程。
 
 ## 中文要点
 

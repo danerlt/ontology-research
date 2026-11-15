@@ -3,8 +3,8 @@
 
 # 本体SDK React应用 • 概述 • Palantir
 
-- 英文来源：[当前英文对应页](https://www.palantir.com/docs/foundry/ontology-sdk-react-applications/overview)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/ontology-sdk-react-applications)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk-react-applications/overview)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk-react-applications)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology-sdk-react-applications
 - 相关性：direct；Ontology SDK 应用开发文档
@@ -17,9 +17,13 @@
 
 > “Developer Console enables application builders to build completely customizable user interfaces using React and powered by the Ontology Software Development Kit (OSDK).”
 
+## 英文原文短摘录（每个来源不超过 25 词）
+
+> “Developer Console enables application builders to build completely customizable user interfaces”
+
 ## 摘录译文
 
-Developer Console 使应用构建者能够用 React 创建由 Ontology SDK（OSDK）驱动的可定制界面。
+Developer Console 让应用构建者能够创建完全可定制的用户界面
 
 ## 中文要点
 

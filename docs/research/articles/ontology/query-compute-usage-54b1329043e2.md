@@ -3,8 +3,8 @@
 
 # 本体 • Usage • 使用Ontology查询计算使用情况 • Palantir
 
-- 英文来源：[当前英文原文](https://www.palantir.com/docs/foundry/ontologies/query-compute-usage)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/ontologies/query-compute-usage)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontologies/query-compute-usage)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies/query-compute-usage)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontologies
 - 相关性：direct；本体管理与治理文档
@@ -17,9 +17,13 @@
 
 > “Ontology Query Compute is driven by Ontology use by users and agents.”
 
+## 英文原文短摘录（每个来源不超过 25 词）
+
+> “The Ontology stores data in multi-modal storage backends that each have their own purposes and can be flexibly queried in a single request.”
+
 ## 摘录译文
 
-本体查询计算量由用户和 Agent 对 Ontology 的使用驱动。
+Ontology 使用多模态存储后端保存数据；各后端用途不同，并可在单个请求中灵活查询。
 
 ## 中文要点
 

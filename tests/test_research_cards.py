@@ -87,6 +87,87 @@ class ResearchCardTests(unittest.TestCase):
 
         self.assertEqual(result["missing_count"], 1)
 
+    def test_coverage_checker_flags_completed_card_with_unfilled_review_fields(self):
+        check_coverage = cards.check_research_coverage
+        with TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            catalog = root / "catalog.jsonl"
+            cards_dir = root / "articles"
+            cards_dir.mkdir()
+            record = self.sample_record()
+            catalog.write_text(
+                json.dumps(record, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+            card = cards.build_card(record).replace(
+                "<!-- 研读状态：未开始 -->",
+                "<!-- 研读状态：已完成 -->",
+            )
+            (cards_dir / "card.md").write_text(card, encoding="utf-8")
+
+            result = check_coverage(catalog, cards_dir)
+
+        self.assertEqual(result["card_count"], 1)
+        self.assertEqual(result["incomplete_count"], 1)
+
+    def test_card_validation_accepts_chinese_prose_key_points(self):
+        content = """<!-- 页面 URL：https://www.palantir.com/docs/foundry/ontology/overview -->
+<!-- 研读状态：已完成 -->
+
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology/overview)
+
+## 英文原文短摘录（每个来源不超过 25 词）
+> Ontology objects connect data, logic, and action.
+
+## 摘录译文
+本体对象连接数据、逻辑与动作。
+
+## 中文要点
+对象类型将数据组织成业务实体，并为关系和操作提供统一语义。
+
+## 术语对照
+| 英文术语 | 中文译法 | 本页语境 |
+|---|---|---|
+| Ontology object | 本体对象 | 具有属性、链接和行为的业务实体。 |
+
+## 疑问与待验证项
+- 同一对象类型需要拆分到多细，才能兼顾复用和语义清晰？
+
+## 复刻启示
+- 将对象模型、关系和动作统一纳入可审阅的本体定义。
+"""
+
+        self.assertEqual(cards.card_content_issues(content), [])
+
+    def test_card_validation_accepts_descriptive_english_source_link_label(self):
+        card = """<!-- 页面 URL：https://www.palantir.com/docs/foundry/developer-console/oauth-clients -->
+<!-- 研读状态：已完成 -->
+
+- 英文来源：[现行英文原文（Legacy）](https://www.palantir.com/docs/foundry/developer-console/oauth-clients)
+
+## 英文原文短摘录（每个来源不超过 25 词）
+> Standalone OAuth clients are now legacy.
+
+## 摘录译文
+独立 OAuth 客户端现已进入旧式状态。
+
+## 中文要点
+当前页面描述旧客户端的迁移规则。
+
+## 术语对照
+| 英文术语 | 中文译法 | 本页语境 |
+|---|---|---|
+| OAuth client | OAuth 客户端 | 客户端资源 |
+
+## 疑问与待验证项
+- 迁移后哪些凭据继续有效？
+
+## 复刻启示
+- 对旧客户端提供可审计迁移路径。
+"""
+
+        self.assertEqual(cards.card_content_issues(card), [])
+
     def test_coverage_cli_runs_as_a_direct_script(self):
         with TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)

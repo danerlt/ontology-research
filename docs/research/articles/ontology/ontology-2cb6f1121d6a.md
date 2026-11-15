@@ -3,8 +3,8 @@
 
 # Ontology搭建 • Palantir
 
-- 英文来源：[当前英文原文](https://www.palantir.com/docs/foundry/ontology)
-- 官方中文来源：[中文原文](https://www.palantir.com/docs/zh/foundry/ontology)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：ontology
 - 相关性：direct；本体模型与治理文档
@@ -14,6 +14,10 @@
 
 <!-- 研读状态：已完成 -->
 # 英文原文短摘录（每个来源不超过 25 词）
+
+> “The Palantir Ontology is an operational layer for the organization.”
+
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “The Palantir Ontology is an operational layer for the organization.”
 

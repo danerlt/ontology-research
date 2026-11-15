@@ -4,7 +4,7 @@
 # 本体 • 概述 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontologies/ontologies-overview)
-- 官方中文来源：[https://www.palantir.com/docs/zh/foundry/ontologies/ontologies-overview](https://www.palantir.com/docs/zh/foundry/ontologies/ontologies-overview)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontologies/ontologies-overview)
 - 页面语言：中文
 - 主题栏目：ontologies
 - 相关性：direct；本体管理与治理文档

@@ -3,8 +3,8 @@
 
 # 函数 • 权限 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/permissions)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/permissions)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/permissions)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/permissions)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:30Z
 - 产品状态：函数权限覆盖仓库作者权限、本体/数据源导入、已发布函数读取权限、调用者对象权限以及扩展执行白名单；对象行权限在执行读取时按最终用户身份生效。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Repository permissions must be explicitly granted, and are not the same as the permissions granted to your user account.”
+> “Authoring and executing functions in the platform is subject to many kinds of permission checks.”
 
 ## 摘录译文
 
-仓库权限必须显式授予，并且不同于授予用户账号本人的权限。
+在平台中编写和执行函数会经过多种权限检查。
 
 ## 中文要点
 

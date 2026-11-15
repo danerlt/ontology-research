@@ -3,8 +3,8 @@
 
 # 函数 • Unit testing • 存根对象搜索和聚合 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-object-searches)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/unit-test-object-searches)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-object-searches)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/unit-test-object-searches)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:45Z
 - 产品状态：TSv1 函数测试可用 `whenObjectSet` 为特定对象集查询、过滤、搜索或聚合配置固定响应，验证业务代码对本体查询结果的处理。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Use stubs to dictate the responses to object set searches or object aggregations.”
+> “You need to import { whenObjectSet } from "@foundry/functions-testing-lib" to use stubs.”
 
 ## 摘录译文
 
-使用 stub 为对象集搜索或对象聚合指定返回结果。
+要使用 stub，需从 "@foundry/functions-testing-lib" 导入 whenObjectSet。
 
 ## 中文要点
 

@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • 在Pipeline Builder中使用Python函数 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/python-functions-builder)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-functions-builder)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/python-functions-builder)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-functions-builder)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:33Z
 - 产品状态：Python 函数可作为 Pipeline Builder 的 UDF 边车容器运行；它逐行处理映射列并为输出表生成新列，不要求单独部署。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Pipeline Builder invokes the function for every row, passing that row's cell values as the parameter arguments.”
+> “Pipeline Builder supports both Java and Python user-defined functions (UDF).”
 
 ## 摘录译文
 
-Pipeline Builder 会为每一行调用函数，并把该行的单元格值作为参数传入。
+Pipeline Builder 同时支持 Java 和 Python 用户定义函数（UDF）。
 
 ## 中文要点
 

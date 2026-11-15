@@ -4,7 +4,7 @@
 # 辅助 • Power AIP Assist with custom content sources • 部署自定义源支持的AIP Assist代理 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/assist/agents-in-aip-assist)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/assist/agents-in-aip-assist)（页面声明机器翻译未经验证）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/assist/agents-in-aip-assist)
 - 页面语言：中文
 - 主题栏目：assist
 - 相关性：direct；AIP Assist Agent 文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:34Z
 - 产品状态：官方中文页面声明机器翻译准确性未经验证；以英文现行文档核对术语和规则。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “确保将您的内容组织成标题和子部分。”
+> “Serving custom content sources with AIP Assist dramatically expands the application assistance available to users.”
 
 ## 摘录译文
 
-英文对应原文：“Make sure to organize your content into headings and subsections.”
+通过 AIP Assist 提供自定义内容源，可显著扩展用户获得的应用辅助能力。
 
 ## 中文要点
 

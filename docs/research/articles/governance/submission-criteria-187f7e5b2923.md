@@ -4,7 +4,7 @@
 # 动作类型 • 提交标准 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/submission-criteria)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/submission-criteria)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/submission-criteria)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；动作提交治理文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:29Z
 - 产品状态：中文页面是 AIP 机器翻译且未验证；其条件模板说明比英文页少。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “只有当所有提交标准都满足时，操作才能提交。”
-
-**对应英文：** “Actions can only be submitted if all the submission criteria are met.”
+> “Submission criteria (formerly known as validations) are the conditions that determine whether an action can be submitted.”
 
 ## 摘录译文
 
-配置的全部提交标准都必须通过，动作才能提交。
+提交条件（旧称验证）用于判断 Action 是否可以提交。
 
 ## 中文要点
 

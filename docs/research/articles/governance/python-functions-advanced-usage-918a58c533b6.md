@@ -3,8 +3,8 @@
 
 # 函数 • Python functions • 高级用法 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/query-functions)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/python-functions-advanced-usage)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/query-functions)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/python-functions-advanced-usage)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:31Z
 - 产品状态：中文旧路由“Python 函数高级用法”已重定向至现行 Query 文档；Query 可经 API Gateway 暴露，但不能修改 Ontology 或外部系统。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Queries are the read-only subsets of functions that may be optionally exposed through the API gateway.”
+> “Queries are the read-only subsets of functions”
 
 ## 摘录译文
 
-Query 是函数的只读子集，可选择通过 API Gateway 暴露。
+查询是函数的只读子集
 
 ## 中文要点
 

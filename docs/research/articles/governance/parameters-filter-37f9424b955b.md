@@ -4,7 +4,7 @@
 # 动作类型 • Parameters • 筛选参数下拉菜单的结果 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/parameters-filter)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/parameters-filter)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:21Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：will determine the allowed values that are selectable in the parameter's dropdown menu.
-
-> 中文译文：将决定参数下拉菜单中允许选择的值。
+> “Adding filters to non-object reference multiple choice or single object reference parameters will determine the allowed values that are selectable in the parameter's dropdown menu.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+为非对象引用的多选参数或单个对象引用参数添加筛选条件，可以限定下拉菜单中可选择的值。
 
 ## 中文要点
 

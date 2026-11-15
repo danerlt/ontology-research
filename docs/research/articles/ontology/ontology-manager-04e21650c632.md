@@ -4,7 +4,7 @@
 # 本体管理器 • 概述 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-manager/overview)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-manager)（已直接核验；页面声明未经验证的机器翻译）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-manager)
 - 页面语言：中文
 - 主题栏目：ontology-manager
 - 相关性：direct；本体管理器文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:13Z
 - 产品状态：中文页面为 AIP 机器翻译；英文现行页展示资源视图与可观测性入口。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Ontology Manager使您能够搭建和维护组织的Ontology。”
-
-**对应英文：** “Ontology Manager enables you to build and maintain your organization’s Ontology.”
+> “Ontology Manager (sometimes called the Ontology Management Application, or OMA)”
 
 ## 摘录译文
 
-Ontology Manager 是用于搭建和维护组织本体的管理应用。
+Ontology Manager（有时称为本体管理应用程序，简称 OMA）
 
 ## 中文要点
 

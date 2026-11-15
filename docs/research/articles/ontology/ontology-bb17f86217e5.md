@@ -3,8 +3,8 @@
 
 # 问答 • Ontology • Palantir
 
-- 英文来源：[现行英文问答](https://www.palantir.com/docs/foundry/questions-answers/ontology)
-- 官方中文来源：[官方中文页（AIP 机器翻译）](https://www.palantir.com/docs/zh/foundry/questions-answers/ontology)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/questions-answers/ontology)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/questions-answers/ontology)
 - 页面语言：中文（官方机器翻译，准确性未验证）
 - 主题栏目：questions-answers
 - 相关性：direct；本体安全、属性标识、编辑冲突与附件关系

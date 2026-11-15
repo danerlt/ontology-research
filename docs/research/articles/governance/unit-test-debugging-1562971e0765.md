@@ -3,8 +3,8 @@
 
 # 函数 • Unit testing • 调试 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-debugging)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/unit-test-debugging)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-debugging)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/unit-test-debugging)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:41Z
 - 产品状态：该页介绍在 Code Repositories 调试器中暂停运行中的函数单元测试，设置断点并检查变量；页面属于 TSv1 单元测试文档体系。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “Use the debugger tool in Code Repositories to examine the behavior of your unit test while it runs.”
 
 ## 摘录译文
 
-使用 Code Repositories 中的调试器，可在单元测试运行时检查其行为。
+使用 Code Repositories 中的调试器，检查单元测试运行期间的行为。
 
 ## 中文要点
 

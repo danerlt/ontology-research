@@ -4,7 +4,7 @@
 # 动作类型 • Side effects • 通知 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/action-types/notifications)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/action-types/notifications)
 - 页面语言：中文
 - 主题栏目：action-types
 - 相关性：direct；本体动作文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:58:19Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：Configuring a notification requires specification of recipients and content.
-
-> 中文译文：配置通知需要指定接收人和通知内容。
+> “Notifications can be added to an action through the Add new rule dropdown menu.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+可通过“添加新规则”下拉菜单向 Action 添加通知。
 
 ## 中文要点
 

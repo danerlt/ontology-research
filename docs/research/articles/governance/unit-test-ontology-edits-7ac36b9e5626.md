@@ -3,8 +3,8 @@
 
 # 函数 • Unit testing • 验证Ontology编辑 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-ontology-edits)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/unit-test-ontology-edits)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/unit-test-ontology-edits)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/unit-test-ontology-edits)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:45Z
 - 产品状态：TSv1 函数测试使用 `verifyOntologyEditFunction()` 检查函数计划创建、修改、删除对象及添加/移除链接的编辑结果。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
 > “You can use the verifyOntologyEditFunction() API to verify edits performed by your function.”
 
 ## 摘录译文
 
-可以使用 `verifyOntologyEditFunction()` API 验证函数生成的编辑。
+可以使用 verifyOntologyEditFunction() API 验证函数所执行的编辑。
 
 ## 中文要点
 

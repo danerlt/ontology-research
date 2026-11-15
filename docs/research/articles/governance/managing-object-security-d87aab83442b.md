@@ -4,7 +4,7 @@
 # 对象权限管理 • 管理Object类型和Object实例安全性 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/object-permissioning/managing-object-security)
-- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning/managing-object-security)（目录记录为官方中文页）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/object-permissioning/managing-object-security)
 - 页面语言：中文
 - 主题栏目：object-permissioning
 - 相关性：direct；本体对象权限文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T15:00:01Z
 - 产品状态：中文页标注为未经验证的机器翻译，重点仍是数据源、RVs 和 MDOs；英文现行文档还推荐对象/属性安全策略用于多数本体内访问控制。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Foundry受限视图（RVs）提供行级访问控制，MDOs则为列或属性级别访问控制提供解决方案。”
+> “Ontology data can be secured using object and property policies or data source policies.”
 
 ## 摘录译文
 
-**英文对应原文：** “Both approaches support cell-level security, which is a combination of row and column level security.”
+可使用对象策略、属性策略或数据源策略保护本体数据。
 
 ## 中文要点
 

@@ -3,8 +3,8 @@
 
 # 函数 • 在平台中使用函数 • Palantir
 
-- 英文来源：[现行英文原文](https://www.palantir.com/docs/foundry/functions/use-functions)
-- 官方中文来源：[官方中文页（AIP 机器翻译，准确性未独立验证）](https://www.palantir.com/docs/zh/foundry/functions/use-functions)
+- 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/use-functions)
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/use-functions)
 - 页面语言：中文（官方 AIP 机器翻译，需与英文原文交叉核对）
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,13 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:47Z
 - 产品状态：Foundry Functions 可在 Workshop、Actions、Slate、Quiver 和 Automate 中复用，分别用于变量/函数列/聚合、受控写入、分析及自动化任务。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> “Function-backed variables cache results for identical inputs instead of recomputing them.”
+> “This section documents various ways that you can use functions throughout the Foundry platform.”
 
 ## 摘录译文
 
-由函数支持的变量会缓存相同输入的结果，不必重复计算。
+本节介绍在 Foundry 平台中使用函数的多种方式。
 
 ## 中文要点
 

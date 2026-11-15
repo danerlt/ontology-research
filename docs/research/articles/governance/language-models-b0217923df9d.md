@@ -4,7 +4,7 @@
 # 函数 • 函数中的语言模型 • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/functions/language-models)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/functions/language-models)
 - 页面语言：中文
 - 主题栏目：functions
 - 相关性：direct；本体函数文档
@@ -12,15 +12,13 @@
 - 目录核对时间：2026-11-14T14:59:26Z
 - 产品状态：官方中文页标注为未经验证的 AIP 机器翻译；英文原文为核对依据。
 
-## 原文短摘录与翻译
+## 英文原文短摘录（每个来源不超过 25 词）
 
-> 英文原文：To use Palantir-provided language models, ensure that AIP is enabled on your enrollment.
-
-> 中文译文：要使用 Palantir 提供的语言模型，需确认 enrollment 已启用 AIP。
+> “This page documents TypeScript v1 functions.”
 
 ## 摘录译文
 
-以上为英文短摘录及中文译文。官方中文页面为 AIP 机器翻译，准确性未经验证。
+本页介绍 TypeScript v1 函数。
 
 ## 中文要点
 
