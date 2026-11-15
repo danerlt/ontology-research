@@ -3,14 +3,16 @@ from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, selectinload
 
 from backend.ontology_service.app.database import get_db
-from backend.ontology_service.app.models import ChangeProposal, Ontology
+from backend.ontology_service.app.models import ChangeProposal, Ontology, OntologyBranch, ProposalResourceReview
 from backend.ontology_service.app.schemas.proposals import (
     ProposalCreate,
     ProposalMergeResponse,
     ProposalReject,
+    ProposalResourceReviewRequest,
+    ProposalResourceReviewResponse,
     ProposalResponse,
 )
 from backend.ontology_service.app.security import Actor, require_role
@@ -27,7 +29,11 @@ def list_proposals(
     ontology_id: UUID | None = None,
     proposal_status: str | None = None,
 ) -> list[ChangeProposal]:
-    statement = select(ChangeProposal).order_by(ChangeProposal.created_at.desc())
+    statement = (
+        select(ChangeProposal)
+        .options(selectinload(ChangeProposal.resource_reviews))
+        .order_by(ChangeProposal.created_at.desc())
+    )
     if ontology_id is not None:
         statement = statement.where(ChangeProposal.ontology_id == ontology_id)
     if proposal_status is not None:
@@ -66,6 +72,46 @@ def create_proposal(
     session.commit()
     session.refresh(proposal)
     return proposal
+
+
+@router.post(
+    "/{proposal_id}/resources/{resource_key}/review",
+    response_model=ProposalResourceReviewResponse,
+)
+def review_proposal_resource(
+    proposal_id: UUID,
+    resource_key: str,
+    body: ProposalResourceReviewRequest,
+    actor: Annotated[Actor, Depends(require_role("admin"))],
+    session: Annotated[Session, Depends(get_db)],
+) -> ProposalResourceReview:
+    proposal = session.get(ChangeProposal, proposal_id)
+    if proposal is None:
+        raise HTTPException(status_code=404, detail="提案不存在")
+    if proposal.status != "submitted":
+        raise HTTPException(status_code=409, detail="只有待审提案可以评审")
+    review = session.scalar(
+        select(ProposalResourceReview).where(
+            ProposalResourceReview.proposal_id == proposal_id,
+            ProposalResourceReview.resource_key == resource_key,
+        )
+    )
+    if review is None:
+        raise HTTPException(status_code=404, detail="提案中不存在该变更资源")
+    review.status = body.status
+    review.reviewer_id = UUID(actor.id)
+    review.comment = body.comment
+    record_audit(
+        session,
+        actor_id=actor.id,
+        event_type="schema.proposal.resource_reviewed",
+        resource_type="proposal_resource",
+        resource_id=review.id,
+        details={"proposal_id": str(proposal.id), "resource_key": resource_key, "status": body.status},
+    )
+    session.commit()
+    session.refresh(review)
+    return review
 
 
 @router.post("/{proposal_id}/submit", response_model=ProposalResponse)
@@ -118,6 +164,10 @@ def reject_submitted_proposal(
     proposal.status = "rejected"
     proposal.reviewer_id = UUID(actor.id)
     proposal.review_comment = body.reason
+    if proposal.branch_id is not None:
+        branch = session.get(OntologyBranch, proposal.branch_id)
+        if branch is not None:
+            branch.status = "active"
     record_audit(
         session,
         actor_id=actor.id,

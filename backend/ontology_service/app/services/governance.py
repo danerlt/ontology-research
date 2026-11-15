@@ -11,7 +11,9 @@ from backend.ontology_service.app.models import (
     LinkType,
     ObjectType,
     Ontology,
+    OntologyBranch,
     PropertyDefinition,
+    ProposalResourceReview,
 )
 from backend.ontology_service.app.security import Actor
 from backend.ontology_service.app.services.audit import record_audit
@@ -130,6 +132,16 @@ def merge_proposal(session: Session, proposal_id: UUID, actor: Actor) -> tuple[C
         raise HTTPException(status_code=404, detail="提案不存在")
     if proposal.status != "submitted":
         raise HTTPException(status_code=409, detail="只有已提交的提案可以合并")
+    branch = None
+    if proposal.branch_id is not None:
+        branch = session.get(OntologyBranch, proposal.branch_id)
+        reviews = session.scalars(
+            select(ProposalResourceReview).where(ProposalResourceReview.proposal_id == proposal.id)
+        ).all()
+        if branch is None or branch.status != "proposed":
+            raise HTTPException(status_code=409, detail="本体分支不处于待合并状态")
+        if not reviews or any(review.status != "approved" for review in reviews):
+            raise HTTPException(status_code=409, detail="所有变更资源都必须通过评审后才能合并")
     ontology = session.scalar(
         select(Ontology).where(Ontology.id == proposal.ontology_id).with_for_update()
     )
@@ -144,6 +156,8 @@ def merge_proposal(session: Session, proposal_id: UUID, actor: Actor) -> tuple[C
             ontology.revision += 1
             proposal.status = "merged"
             proposal.reviewer_id = UUID(actor.id)
+            if branch is not None:
+                branch.status = "merged"
             record_audit(
                 session,
                 actor_id=actor.id,

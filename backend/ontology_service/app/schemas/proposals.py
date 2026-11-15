@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from datetime import datetime
 from typing import Annotated, Literal
 from uuid import UUID
@@ -58,6 +60,7 @@ class ProposalResponse(BaseModel):
     id: UUID
     ontology_id: UUID
     author_id: UUID
+    branch_id: UUID | None = None
     reviewer_id: UUID | None
     title: str
     description: str
@@ -65,10 +68,28 @@ class ProposalResponse(BaseModel):
     changes: list[dict]
     status: str
     review_comment: str
+    resource_reviews: list["ProposalResourceReviewResponse"] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class ProposalResourceReviewResponse(BaseModel):
+    id: UUID
+    proposal_id: UUID
+    resource_key: str
+    status: str
+    reviewer_id: UUID | None
+    comment: str
+    updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class ProposalResourceReviewRequest(BaseModel):
+    status: Literal["approved", "rejected"]
+    comment: str = Field(default="", max_length=2000)
 
 
 class ProposalReject(BaseModel):

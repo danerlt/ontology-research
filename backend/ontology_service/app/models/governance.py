@@ -63,6 +63,9 @@ class ChangeProposal(Base):
     author_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("users.id", ondelete="RESTRICT"), nullable=False, index=True
     )
+    branch_id: Mapped[UUID | None] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("ontology_branches.id", ondelete="SET NULL"), nullable=True, index=True
+    )
     reviewer_id: Mapped[UUID | None] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
     )
@@ -80,5 +83,9 @@ class ChangeProposal(Base):
     )
 
     ontology: Mapped["Ontology"] = relationship()
+    branch: Mapped["OntologyBranch | None"] = relationship(back_populates="proposals")
     author: Mapped["User"] = relationship(foreign_keys=[author_id])
     reviewer: Mapped["User | None"] = relationship(foreign_keys=[reviewer_id])
+    resource_reviews: Mapped[list["ProposalResourceReview"]] = relationship(
+        back_populates="proposal", cascade="all, delete-orphan", order_by="ProposalResourceReview.resource_key"
+    )

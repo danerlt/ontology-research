@@ -38,11 +38,11 @@
 
 ### 任务 1.1：分支快照、变更与合并 API
 
-- [ ] 先为创建分支、应用资源变更、schema 校验、proposal 审批/合并写失败测试；确认失败原因是接口/行为缺失。
-- [ ] 覆盖 `test_branch_changes_do_not_mutate_main_schema`、`test_branch_validation_reports_duplicate_api_name`、`test_merge_rejects_stale_branch_without_partial_writes` 和 `test_resource_review_required_before_merge`，置于 `tests/test_branches.py`。
-- [ ] 用 `alembic revision -m "新增本体分支与资源评审"` 生成迁移骨架，再实现 Branch、BranchChange、resource-level Review 字段。
-- [ ] 实现 create/list/get/validate/propose/review/rebase/merge API；合并采用 base revision 检查和数据库事务。
-- [ ] 运行新增测试与全部后端测试。
+- [x] 先为创建分支、应用资源变更、schema 校验、proposal 审批/合并写失败测试；确认失败原因是接口/行为缺失。
+- [x] 覆盖 `test_branch_changes_do_not_mutate_main_schema`、`test_branch_validation_reports_duplicate_api_name`、`test_merge_rejects_stale_branch_without_partial_writes`、`test_resource_review_required_before_merge`、`test_rebase_preserves_branch_changes_and_updates_base_revision` 和 `test_rebase_reports_resource_conflict_without_changing_branch`，置于 `tests/test_branches.py`。
+- [x] 用 `alembic revision -m "新增本体分支与资源级评审"` 生成迁移骨架，再实现 `OntologyBranch` 快照/变更字段和 `ProposalResourceReview` 字段。
+- [x] 实现 create/list/get/validate/propose/review/rebase/merge API；合并采用 base revision 检查和数据库事务。
+- [x] 新增分支用例 6/6、后端全量 87/87 通过；PostgreSQL 18.7 上完成全部迁移升级、回滚一个 revision、再升级。
 
 ### 任务 1.2：资源定义、数据源与 Action 规则
 
@@ -137,7 +137,7 @@
 
 | 阶段 | 状态 | 证据 |
 |---|---|---|
-| 1 本体领域模型、分支和 API 基础 | 进行中 | 基线：pytest 81/81；Vitest 7/7；`npm run build` 成功。 |
+| 1 本体领域模型、分支和 API 基础 | 进行中 | Task 1.1：分支/评审 API 6/6、后端 87/87；PostgreSQL 18.7 迁移升级/回滚/再升级通过。 |
 | 2 Ontology Manager 产品工作流 | 未开始 | — |
 | 3 Agent Builder、发布版本和 Agent Manager | 未开始 | — |
 | 4 端到端治理、文档和交付 | 未开始 | — |
