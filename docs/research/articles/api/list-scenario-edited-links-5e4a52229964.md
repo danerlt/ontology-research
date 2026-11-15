@@ -1,5 +1,5 @@
 <!-- 页面 URL：https://www.palantir.com/docs/foundry/api/v2/ontologies-v2-resources/ontology-scenarios/list-scenario-edited-links -->
-<!-- 研读状态：未开始 -->
+<!-- 研读状态：已完成 -->
 
 # List Scenario Edited Links • API Reference • Palantir
 
@@ -10,30 +10,36 @@
 - 相关性：direct；Ontology REST API v2 参考
 - 官方更新时间：2026-11-12T17:46:46.922Z
 - 目录核对时间：2026-11-14T14:57:32Z
-- 产品状态：待核对 Beta、预览、弃用或更名信息
+- 产品状态：预览（Preview；请求需显式启用 `preview=true`）
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> 【待研读：摘录并翻译短句】
+> “Returns the list of edited links within a given scenario for a specific object type and link type, grouped by source object.”
 
 ## 摘录译文
 
-【待填写】
+按源对象分组返回情景中指定对象类型与链接类型下的已编辑链接。
 
 ## 中文要点
 
-【用自己的话概括本页解决的问题、对象和关键操作。】
+- 端点仅适用于多对多链接；返回按 source object 分组的链接对象关系变更。
+- 只有当前用户同时有权查看关系两端对象时，链接才会返回；分页量可能小于请求值。
+- 端点为 Preview，需要 `preview=true`，并需 `api:ontologies-read`。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| 【待填写】 | 【待填写】 | 【待填写】 |
+| Edited link | 已编辑链接 | 情景中创建或移除的关系边 |
+| Source object | 源对象 | 作为关系分组键的起点对象 |
+| Both-object visibility | 双端可见权限 | 关系两端均可读才出现在结果中 |
 
 ## 疑问与待验证项
 
-- 【记录文档未说明之处、与其他页面的差异，以及需要验证的假设。】
+- 此接口是否区分新增边与删除边，返回的 `LinksFromObject` 数据结构需进一步核验。
+- 一对多关系不由此接口返回，需联合对象编辑追踪外键字段变化。
 
 ## 复刻启示
 
-- 【写出对本体管理系统的数据模型、治理流程、权限或 Agent 接入的具体启示。】
+- 变更画布要把新增、删除、未授权隐藏和未加载状态分开表示；缺少边不等于关系已删除。
+- 多对多边按源对象分组读取，并检查两端对象可读权限；对一对多关系再从外键字段推导边差异。
