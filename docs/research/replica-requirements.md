@@ -38,9 +38,9 @@
 
 ## 当前实现的范围与边界
 
-当前首版已覆盖对象类型/属性/链接、对象浏览、受治理的结构提案、Action、角色权限、敏感字段处理、审计、Agent 工具授权和会话事件。通过 Docker Compose 可启动 Vue、两个 FastAPI 服务、PostgreSQL 和 Redis。
+当前实现增加了隔离本体分支、按资源逐项评审、分支重基与合并、对象类型和属性/链接/Action 定义更新、Action 参数与提交条件、CSV/JSON 本地映射导入、Agent 草稿与不可变发布版本、会话过滤/固定版本/消息、模型工具调用轨迹，以及可选的 OpenAI Chat Completions 兼容运行时。通过 Docker Compose 可启动 Vue、Ontology FastAPI、Agent FastAPI、PostgreSQL 和 Redis。
 
-首版没有实现数据源同步/流水线、分支与发布、派生属性、函数、情景模拟、完整对象安全策略、SDK 生成、MCP 协议服务，也没有调用大模型。Agent 工具执行是确定性的本地流程。上述能力应根据逐篇文档研读结果另行排序，不能从“本体/Agent”标签直接推断细节。
+当前仍未实现真实 Foundry/AIP 连接、Foundry OAuth、Ontology MCP/PMCP、外部 Foundry 数据连接器与流水线、资源/对象/行列/格细粒度安全、函数/派生属性、函数型 Action、历史状态重放和完整上下文快照。对象类型、属性、链接与 Action 的结构变更覆盖度也低于官方 Ontology Manager；详细差距见[公开功能对照矩阵](palantir-public-parity-matrix.md)。不要把工作流接近称为产品本身完全等同。
 
 ## 研读未完成项
 
