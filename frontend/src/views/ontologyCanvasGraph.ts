@@ -104,6 +104,64 @@ export function mapCanvasToFlow(
   return { nodes, edges };
 }
 
+export function mergeCanvasNodeUpdates(
+  current: OntologyCanvasNode[],
+  updates: Node[],
+): OntologyCanvasNode[] {
+  const updatesById = new Map(updates.map((node) => [node.id, node]));
+  let changed = false;
+  const merged = current.map((node) => {
+    const update = updatesById.get(node.id);
+    if (!update) return node;
+
+    const samePosition = node.position.x === update.position.x && node.position.y === update.position.y;
+    const unchanged = samePosition
+      && Boolean(node.selected) === Boolean(update.selected)
+      && Boolean(node.dragging) === Boolean(update.dragging)
+      && Boolean(node.hidden) === Boolean(update.hidden)
+      && node.width === update.width
+      && node.height === update.height
+      && node.parentId === update.parentId
+      && node.zIndex === update.zIndex;
+    if (unchanged) return node;
+
+    changed = true;
+    return {
+      ...node,
+      ...update,
+      data: node.data,
+      position: samePosition ? node.position : update.position,
+    } as OntologyCanvasNode;
+  });
+  return changed ? merged : current;
+}
+
+export function mergeCanvasEdgeUpdates(
+  current: OntologyCanvasEdge[],
+  updates: Edge[],
+): OntologyCanvasEdge[] {
+  const updatesById = new Map(updates.map((edge) => [edge.id, edge]));
+  let changed = false;
+  const merged = current.map((edge) => {
+    const update = updatesById.get(edge.id);
+    if (!update) return edge;
+
+    const unchanged = edge.source === update.source
+      && edge.target === update.target
+      && Boolean(edge.selected) === Boolean(update.selected)
+      && Boolean(edge.hidden) === Boolean(update.hidden)
+      && edge.animated === update.animated
+      && edge.label === update.label
+      && edge.sourceHandle === update.sourceHandle
+      && edge.targetHandle === update.targetHandle;
+    if (unchanged) return edge;
+
+    changed = true;
+    return { ...edge, ...update, data: edge.data } as OntologyCanvasEdge;
+  });
+  return changed ? merged : current;
+}
+
 export function canvasLayoutKey(projectId: string, ontologyId: string, branchId: string): string {
   return `ontology-canvas:${projectId}:${ontologyId}:${branchId || "main"}`;
 }

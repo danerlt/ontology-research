@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
+import { computed, markRaw, onMounted, ref, watch } from "vue";
 import { Background, Controls, MarkerType, MiniMap, VueFlow } from "@xyflow/vue";
 import type { Edge, Node, NodeTypesObject, VueFlowInstance, Viewport } from "@xyflow/vue";
 import { api, readableError } from "../api/client";
@@ -8,12 +8,12 @@ import CanvasObjectNode from "../components/ontology/CanvasObjectNode.vue";
 import CanvasSystemNode from "../components/ontology/CanvasSystemNode.vue";
 import { useAuthStore } from "../stores/auth";
 import type { DerivedPropertyDefinition, DerivedPropertyPreview, ObjectRecord, Ontology, OntologyBranch, OntologyCanvasResponse } from "../types";
-import { canvasLayoutKey, mapCanvasToFlow } from "./ontologyCanvasGraph";
+import { canvasLayoutKey, mapCanvasToFlow, mergeCanvasEdgeUpdates, mergeCanvasNodeUpdates } from "./ontologyCanvasGraph";
 import type { CanvasLayout, OntologyCanvasEdge, OntologyCanvasNode } from "./ontologyCanvasGraph";
 import "@xyflow/vue/dist/style.css";
 
 const auth = useAuthStore();
-const nodeTypes = { objectType: CanvasObjectNode, sourceSystem: CanvasSystemNode, action: CanvasActionNode } as unknown as NodeTypesObject<OntologyCanvasNode>;
+const nodeTypes = markRaw({ objectType: CanvasObjectNode, sourceSystem: CanvasSystemNode, action: CanvasActionNode }) as unknown as NodeTypesObject<OntologyCanvasNode>;
 const ontologies = ref<Ontology[]>([]);
 const branches = ref<OntologyBranch[]>([]);
 const selectedOntologyId = ref("");
@@ -63,8 +63,7 @@ const visibleFlowNodes = computed<OntologyCanvasNode[]>({
       .map((node) => node.type === "objectType" ? { ...node, data: { ...node.data, showDerived: showDerived.value } } : node);
   },
   set(nodes: Node[]) {
-    const updates = new Map(nodes.map((node) => [node.id, node]));
-    graphNodes.value = graphNodes.value.map((node) => updates.has(node.id) ? { ...node, ...updates.get(node.id)! } as OntologyCanvasNode : node);
+    graphNodes.value = mergeCanvasNodeUpdates(graphNodes.value, nodes);
   },
 });
 const visibleFlowEdges = computed<OntologyCanvasEdge[]>({
@@ -75,8 +74,7 @@ const visibleFlowEdges = computed<OntologyCanvasEdge[]>({
     );
   },
   set(edges: Edge[]) {
-    const updates = new Map(edges.map((edge) => [edge.id, edge]));
-    graphEdges.value = graphEdges.value.map((edge) => updates.has(edge.id) ? { ...edge, ...updates.get(edge.id)! } as OntologyCanvasEdge : edge);
+    graphEdges.value = mergeCanvasEdgeUpdates(graphEdges.value, edges);
   },
 });
 const searchableResources = computed(() => (canvas.value?.nodes ?? []).filter((node) => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { canvasLayoutKey, mapCanvasToFlow } from "./ontologyCanvasGraph";
+import { canvasLayoutKey, mapCanvasToFlow, mergeCanvasEdgeUpdates, mergeCanvasNodeUpdates } from "./ontologyCanvasGraph";
 import type { OntologyCanvasResponse } from "../types";
 
 const canvas: OntologyCanvasResponse = {
@@ -38,5 +38,33 @@ describe("本体画布资源映射", () => {
 
     expect(graph.edges[0]?.data?.highlighted).toBe(true);
     expect(graph.edges[1]?.data?.highlighted).toBe(false);
+  });
+
+  it("忽略 Vue Flow 回写的未变化节点快照", () => {
+    const nodes = mapCanvasToFlow(canvas).nodes;
+    const echoedNodes = nodes.map((node) => ({
+      ...node,
+      selected: false,
+      dragging: false,
+      data: { ...node.data, showDerived: true },
+    }));
+
+    expect(mergeCanvasNodeUpdates(nodes, echoedNodes)).toBe(nodes);
+  });
+
+  it("保存移动后的节点坐标并保留未变化节点", () => {
+    const nodes = mapCanvasToFlow(canvas).nodes;
+    const movedNodes = nodes.map((node, index) => index === 0 ? { ...node, position: { x: 210, y: 50 } } : node);
+    const updatedNodes = mergeCanvasNodeUpdates(nodes, movedNodes);
+
+    expect(updatedNodes[0]?.position).toEqual({ x: 210, y: 50 });
+    expect(updatedNodes[1]).toBe(nodes[1]);
+  });
+
+  it("忽略 Vue Flow 回写的未变化边快照", () => {
+    const edges = mapCanvasToFlow(canvas).edges;
+    const echoedEdges = edges.map((edge) => ({ ...edge, selected: false }));
+
+    expect(mergeCanvasEdgeUpdates(edges, echoedEdges)).toBe(edges);
   });
 });
