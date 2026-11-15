@@ -19,12 +19,39 @@ class AgentDefinition(Base):
     description: Mapped[str] = mapped_column(String(2000), default="", nullable=False)
     allowed_tools: Mapped[list[str]] = mapped_column(json_document, nullable=False, default=list)
     allowed_actions: Mapped[list[str]] = mapped_column(json_document, nullable=False, default=list)
+    draft_config: Mapped[dict] = mapped_column(json_document, nullable=False, default=dict)
     enabled: Mapped[bool] = mapped_column(default=True, nullable=False, server_default="true")
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()
     )
 
     sessions: Mapped[list["AgentSession"]] = relationship(back_populates="agent")
+    versions: Mapped[list["AgentVersion"]] = relationship(
+        back_populates="agent", order_by="AgentVersion.version_number"
+    )
+
+
+class AgentVersion(Base):
+    __tablename__ = "agent_versions"
+    __table_args__ = (
+        UniqueConstraint("agent_id", "version_number", name="uq_agent_versions_agent_number"),
+    )
+
+    id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
+    agent_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("agent_definitions.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
+    version_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    config: Mapped[dict] = mapped_column(json_document, nullable=False)
+    created_by: Mapped[UUID | None] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True
+    )
+    published_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+
+    agent: Mapped[AgentDefinition] = relationship(back_populates="versions")
+    sessions: Mapped[list["AgentSession"]] = relationship(back_populates="version")
 
 
 class AgentSession(Base):
@@ -34,8 +61,15 @@ class AgentSession(Base):
     agent_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("agent_definitions.id", ondelete="RESTRICT"), nullable=False, index=True
     )
+    agent_version_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("agent_versions.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
     actor_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("users.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
+    input_values: Mapped[dict] = mapped_column(json_document, nullable=False, default=dict)
+    origin_resource: Mapped[str] = mapped_column(
+        String(255), nullable=False, default="local-workbench", server_default="local-workbench"
     )
     status: Mapped[str] = mapped_column(String(16), nullable=False, default="active", server_default="active")
     created_at: Mapped[datetime] = mapped_column(
@@ -44,6 +78,7 @@ class AgentSession(Base):
     closed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     agent: Mapped[AgentDefinition] = relationship(back_populates="sessions")
+    version: Mapped[AgentVersion] = relationship(back_populates="sessions")
     events: Mapped[list["AgentEvent"]] = relationship(
         back_populates="session", cascade="all, delete-orphan", order_by="AgentEvent.sequence"
     )

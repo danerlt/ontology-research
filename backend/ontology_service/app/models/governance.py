@@ -39,6 +39,7 @@ class ActionDefinition(Base):
     description: Mapped[str] = mapped_column(String(2000), default="", nullable=False)
     allowed_properties: Mapped[list] = mapped_column(json_document, nullable=False, default=list)
     parameters_schema: Mapped[dict] = mapped_column(json_document, nullable=False, default=dict)
+    submission_criteria: Mapped[dict] = mapped_column(json_document, nullable=False, default=dict, server_default="{}")
     enabled: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True, server_default="true")
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), nullable=False, server_default=func.now()

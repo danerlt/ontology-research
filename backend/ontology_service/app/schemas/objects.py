@@ -55,6 +55,14 @@ class ActionExecuteRequest(BaseModel):
     parameters: dict[str, Any] = Field(default_factory=dict)
 
 
+class ActionPreviewResponse(BaseModel):
+    action_api_name: str
+    object_id: UUID
+    current_version: int
+    next_version: int
+    property_changes: list[dict[str, Any]]
+
+
 class ActionDefinitionResponse(BaseModel):
     id: UUID
     api_name: str
@@ -63,6 +71,7 @@ class ActionDefinitionResponse(BaseModel):
     object_type_api_name: str
     allowed_properties: list[str]
     parameters_schema: dict[str, Any]
+    submission_criteria: dict[str, Any]
     enabled: bool
 
     model_config = ConfigDict(from_attributes=True)

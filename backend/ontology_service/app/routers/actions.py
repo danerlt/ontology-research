@@ -8,12 +8,13 @@ from sqlalchemy.orm import Session, selectinload
 from backend.ontology_service.app.database import get_db
 from backend.ontology_service.app.models import ActionDefinition, ObjectRecord
 from backend.ontology_service.app.schemas.objects import (
+    ActionPreviewResponse,
     ActionDefinitionResponse,
     ActionExecuteRequest,
     ObjectRecordResponse,
 )
 from backend.ontology_service.app.security import Actor, get_current_user, require_role
-from backend.ontology_service.app.services.action_engine import execute_action
+from backend.ontology_service.app.services.action_engine import execute_action, preview_action
 from backend.ontology_service.app.routers.objects import _record_response
 
 router = APIRouter(prefix="/api/actions", tags=["Action 操作"])
@@ -43,10 +44,47 @@ def list_actions(
             object_type_api_name=action.object_type.api_name,
             allowed_properties=action.allowed_properties,
             parameters_schema=action.parameters_schema,
+            submission_criteria=action.submission_criteria,
             enabled=action.enabled,
         )
         for action in actions
     ]
+
+
+@router.post("/{action_api_name}/preview", response_model=ActionPreviewResponse)
+def preview_action_execution(
+    action_api_name: str,
+    body: ActionExecuteRequest,
+    actor: Annotated[Actor, Depends(require_role("admin", "editor"))],
+    session: Annotated[Session, Depends(get_db)],
+) -> ActionPreviewResponse:
+    record = session.scalar(
+        select(ObjectRecord)
+        .where(ObjectRecord.id == body.object_id)
+        .options(selectinload(ObjectRecord.object_type))
+    )
+    if record is None:
+        raise HTTPException(status_code=404, detail="对象不存在")
+    action = session.scalar(
+        select(ActionDefinition)
+        .where(
+            ActionDefinition.api_name == action_api_name,
+            ActionDefinition.object_type_id == record.object_type_id,
+        )
+        .options(selectinload(ActionDefinition.object_type))
+    )
+    if action is None:
+        raise HTTPException(status_code=404, detail="Action 不存在或不适用于此对象")
+    return ActionPreviewResponse(
+        **preview_action(
+            session,
+            action,
+            record,
+            body.parameters,
+            expected_version=body.expected_version,
+            actor=actor,
+        )
+    )
 
 
 @router.post("/{action_api_name}/execute", response_model=ObjectRecordResponse)

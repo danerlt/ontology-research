@@ -126,7 +126,13 @@ class AgentToolsApiTests(unittest.TestCase):
             },
         )
         self.assertEqual(response.status_code, 201, response.text)
-        return UUID(response.json()["id"])
+        agent_id = UUID(response.json()["id"])
+        publish_response = self.client.post(
+            f"/api/agents/{agent_id}/publish",
+            headers=self.headers_for(self.admin),
+        )
+        self.assertEqual(publish_response.status_code, 201, publish_response.text)
+        return agent_id
 
     def create_session(self, agent_id: UUID, user: User) -> UUID:
         response = self.client.post(

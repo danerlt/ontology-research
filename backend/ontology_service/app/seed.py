@@ -7,6 +7,7 @@ from backend.ontology_service.app.database import SessionLocal
 from backend.ontology_service.app.models import (
     ActionDefinition,
     AgentDefinition,
+    AgentVersion,
     LinkType,
     ObjectLink,
     ObjectRecord,
@@ -117,16 +118,46 @@ def seed_demo_data() -> None:
                     target_object_id=order.id,
                 )
             )
-        if session.scalar(
-            select(AgentDefinition.id).where(AgentDefinition.api_name == "operations_assistant")
-        ) is None:
+        agent = session.scalar(
+            select(AgentDefinition).where(AgentDefinition.api_name == "operations_assistant")
+        )
+        if agent is None:
+            draft_config = {
+                "model_provider": "local",
+                "model_name": "确定性本地预览",
+                "system_prompt": "你是运营助理。请基于运营知识图谱提供可追溯的客户与订单信息。",
+                "initial_user_message": "请协助运营人员检查客户 {{customer_id}}。",
+                "inputs": [
+                    {
+                        "name": "customer_id",
+                        "display_name": "客户编号",
+                        "type": "string",
+                        "required": False,
+                        "sensitive": False,
+                    }
+                ],
+                "precomputed_variables": [],
+                "allowed_tools": ["search_objects", "get_object", "execute_action"],
+                "allowed_actions": ["set_customer_tier"],
+                "session_completion": {"mode": "stays_open", "output_schema": {}},
+            }
+            agent = AgentDefinition(
+                api_name="operations_assistant",
+                display_name="运营助理",
+                description="可查找和读取本体对象，并在授权下调整客户等级。",
+                allowed_tools=draft_config["allowed_tools"],
+                allowed_actions=draft_config["allowed_actions"],
+                draft_config=draft_config,
+            )
+            session.add(agent)
+            session.flush()
+            admin_user = session.scalar(select(User).where(User.role == "admin").order_by(User.created_at))
             session.add(
-                AgentDefinition(
-                    api_name="operations_assistant",
-                    display_name="运营助理",
-                    description="可查找和读取本体对象，并在授权下调整客户等级。",
-                    allowed_tools=["search_objects", "get_object", "execute_action"],
-                    allowed_actions=["set_customer_tier"],
+                AgentVersion(
+                    agent_id=agent.id,
+                    version_number=1,
+                    config=draft_config,
+                    created_by=admin_user.id if admin_user else None,
                 )
             )
         session.commit()
@@ -148,10 +179,20 @@ def _get_or_create_type(session, ontology_id, api_name: str, display_name: str) 
             ontology_id=ontology_id,
             api_name=api_name,
             display_name=display_name,
+            plural_display_name=display_name,
             primary_key_property="id",
+            title_key_property="name" if api_name == "customer" else "id",
+            aliases=["客户档案", "客商"] if api_name == "customer" else [],
+            groups=["客户与交易"] if api_name in {"customer", "order"} else [],
+            icon="business" if api_name == "customer" else "receipt" if api_name == "order" else "object",
+            icon_color="#2E6658" if api_name == "customer" else "#B8793B" if api_name == "order" else "#4F8067",
         )
         session.add(object_type)
         session.flush()
+    elif not object_type.plural_display_name:
+        object_type.plural_display_name = display_name
+        if api_name == "customer" and object_type.title_key_property == "id":
+            object_type.title_key_property = "name"
     return object_type
 
 

@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from backend.ontology_service.app.models import (
     ChangeProposal,
+    ActionDefinition,
     LinkType,
     ObjectType,
     Ontology,
@@ -35,8 +36,14 @@ def apply_schema_changes(session: Session, ontology_id: UUID, changes: list[dict
                 ontology_id=ontology_id,
                 api_name=change["api_name"],
                 display_name=change["display_name"],
+                plural_display_name=change.get("plural_display_name") or change["display_name"],
                 description=change.get("description", ""),
                 primary_key_property=change.get("primary_key_property", "id"),
+                title_key_property=change.get("title_key_property") or change.get("primary_key_property", "id"),
+                aliases=change.get("aliases", []),
+                groups=change.get("groups", []),
+                icon=change.get("icon", "object"),
+                icon_color=change.get("icon_color", "#4F8067"),
             )
             session.add(object_type)
             session.flush()
@@ -87,6 +94,61 @@ def apply_schema_changes(session: Session, ontology_id: UUID, changes: list[dict
             session.flush()
             continue
 
+        if operation == "update_object_type":
+            object_type = session.scalar(
+                select(ObjectType).where(
+                    ObjectType.ontology_id == ontology_id,
+                    ObjectType.api_name == change["api_name"],
+                )
+            )
+            if object_type is None:
+                raise HTTPException(status_code=422, detail="待修改的对象类型不存在")
+            for field in (
+                "display_name",
+                "plural_display_name",
+                "description",
+                "title_key_property",
+                "aliases",
+                "groups",
+                "icon",
+                "icon_color",
+            ):
+                if field in change:
+                    setattr(object_type, field, change[field])
+            session.flush()
+            continue
+
+        if operation == "update_property":
+            object_type = session.scalar(
+                select(ObjectType).where(
+                    ObjectType.ontology_id == ontology_id,
+                    ObjectType.api_name == change["object_type_api_name"],
+                )
+            )
+            if object_type is None:
+                raise HTTPException(status_code=422, detail="待修改属性所属的对象类型不存在")
+            prop = session.scalar(
+                select(PropertyDefinition).where(
+                    PropertyDefinition.object_type_id == object_type.id,
+                    PropertyDefinition.api_name == change["api_name"],
+                )
+            )
+            if prop is None:
+                raise HTTPException(status_code=422, detail="待修改的属性不存在")
+            for field in (
+                "display_name",
+                "data_type",
+                "required",
+                "editable",
+                "unique_value",
+                "sensitive",
+                "options",
+            ):
+                if field in change:
+                    setattr(prop, field, change[field])
+            session.flush()
+            continue
+
         if operation == "add_link_type":
             source_type = session.scalar(
                 select(ObjectType).where(
@@ -120,6 +182,76 @@ def apply_schema_changes(session: Session, ontology_id: UUID, changes: list[dict
                     target_type_id=target_type.id,
                 )
             )
+            session.flush()
+            continue
+
+        if operation == "update_link_type":
+            link = session.scalar(
+                select(LinkType).where(
+                    LinkType.ontology_id == ontology_id,
+                    LinkType.api_name == change["api_name"],
+                )
+            )
+            if link is None:
+                raise HTTPException(status_code=422, detail="待修改的链接类型不存在")
+            for field in ("display_name", "description"):
+                if field in change:
+                    setattr(link, field, change[field])
+            session.flush()
+            continue
+
+        if operation == "add_action":
+            object_type = session.scalar(
+                select(ObjectType).where(
+                    ObjectType.ontology_id == ontology_id,
+                    ObjectType.api_name == change["object_type_api_name"],
+                )
+            )
+            if object_type is None:
+                raise HTTPException(status_code=422, detail="Action 目标对象类型不存在")
+            existing = session.scalar(
+                select(ActionDefinition).where(
+                    ActionDefinition.ontology_id == ontology_id,
+                    ActionDefinition.api_name == change["api_name"],
+                )
+            )
+            if existing is not None:
+                raise HTTPException(status_code=409, detail="Action API 名已存在")
+            session.add(
+                ActionDefinition(
+                    ontology_id=ontology_id,
+                    object_type_id=object_type.id,
+                    api_name=change["api_name"],
+                    display_name=change["display_name"],
+                    description=change.get("description", ""),
+                    allowed_properties=change["allowed_properties"],
+                    parameters_schema=change.get("parameters_schema", {}),
+                    submission_criteria=change.get("submission_criteria", {}),
+                    enabled=change.get("enabled", True),
+                )
+            )
+            session.flush()
+            continue
+
+        if operation == "update_action":
+            action = session.scalar(
+                select(ActionDefinition).where(
+                    ActionDefinition.ontology_id == ontology_id,
+                    ActionDefinition.api_name == change["api_name"],
+                )
+            )
+            if action is None:
+                raise HTTPException(status_code=422, detail="待修改的 Action 不存在")
+            for field in (
+                "display_name",
+                "description",
+                "allowed_properties",
+                "parameters_schema",
+                "submission_criteria",
+                "enabled",
+            ):
+                if field in change:
+                    setattr(action, field, change[field])
             session.flush()
             continue
 

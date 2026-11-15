@@ -32,8 +32,14 @@ class ObjectTypeResponse(BaseModel):
     ontology_id: UUID
     api_name: str
     display_name: str
+    plural_display_name: str
     description: str
     primary_key_property: str
+    title_key_property: str
+    aliases: list[str]
+    groups: list[str]
+    icon: str
+    icon_color: str
     properties: list[PropertyResponse]
 
     model_config = ConfigDict(from_attributes=True)

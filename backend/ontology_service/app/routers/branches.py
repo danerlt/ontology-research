@@ -97,7 +97,7 @@ def add_branch_changes(
     session: Annotated[Session, Depends(get_db)],
 ) -> OntologyBranch:
     branch = require_branch(session, branch_id, active=True)
-    changes = [change.model_dump(mode="json") for change in body.changes]
+    changes = [change.model_dump(mode="json", exclude_unset=True) for change in body.changes]
     branch.changes = [*branch.changes, *changes]
     branch.snapshot, branch.validation = apply_schema_changes(branch.base_snapshot, branch.changes)
     record_audit(

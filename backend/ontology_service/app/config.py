@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -11,6 +12,10 @@ class Settings(BaseSettings):
     jwt_access_token_minutes: int = 60
     admin_email: str = "admin@example.com"
     admin_password: str = "change-this-local-password"
+    agent_model_base_url: str = ""
+    agent_model_api_key: SecretStr = SecretStr("")
+    agent_model_default_name: str = ""
+    agent_model_timeout_seconds: int = 60
 
     model_config = SettingsConfigDict(
         env_file=".env",

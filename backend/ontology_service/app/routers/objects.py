@@ -1,4 +1,4 @@
-from typing import Annotated
+from typing import Annotated, Literal
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
@@ -37,6 +37,8 @@ def list_objects(
     query: str | None = None,
     page: int = Query(default=1, ge=1),
     page_size: int = Query(default=25, ge=1, le=100),
+    sort_by: Literal["created_at", "primary_key", "version"] = Query(default="created_at"),
+    sort_order: Literal["asc", "desc"] = Query(default="desc"),
 ) -> ObjectListResponse:
     statement = select(ObjectRecord).join(ObjectType).options(selectinload(ObjectRecord.object_type))
     count_statement = select(func.count()).select_from(ObjectRecord).join(ObjectType)
@@ -64,8 +66,14 @@ def list_objects(
         statement = statement.where(condition)
         count_statement = count_statement.where(condition)
     total = session.scalar(count_statement) or 0
+    sort_column = {
+        "created_at": ObjectRecord.created_at,
+        "primary_key": ObjectRecord.primary_key_value,
+        "version": ObjectRecord.version,
+    }[sort_by]
+    ordering = sort_column.asc() if sort_order == "asc" else sort_column.desc()
     records = session.scalars(
-        statement.order_by(ObjectRecord.created_at.desc()).offset((page - 1) * page_size).limit(page_size)
+        statement.order_by(ordering, ObjectRecord.id.asc()).offset((page - 1) * page_size).limit(page_size)
     ).all()
     return ObjectListResponse(
         items=[_record_response(record, actor_role=actor.role) for record in records],

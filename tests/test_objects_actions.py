@@ -234,6 +234,41 @@ class ObjectsAndActionsApiTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.json()["total"], 2)
         self.assertEqual(len(response.json()["items"]), 1)
 
+    async def test_object_list_sorts_by_allowlisted_server_fields(self) -> None:
+        for key, name in (("C-200", "北辰分部"), ("C-300", "南辰公司")):
+            created = await self.client.post(
+                "/api/objects",
+                headers=self.headers_for(self.editor),
+                json={
+                    "ontology_id": str(self.ontology.id),
+                    "object_type_api_name": "customer",
+                    "primary_key_value": key,
+                    "properties": {"name": name},
+                },
+            )
+            self.assertEqual(created.status_code, 201, created.text)
+
+        response = await self.client.get(
+            "/api/objects",
+            headers=self.headers_for(self.viewer),
+            params={"object_type_api_name": "customer", "sort_by": "primary_key", "sort_order": "asc"},
+        )
+        descending = await self.client.get(
+            "/api/objects",
+            headers=self.headers_for(self.viewer),
+            params={"object_type_api_name": "customer", "sort_by": "primary_key", "sort_order": "desc"},
+        )
+        invalid_sort = await self.client.get(
+            "/api/objects",
+            headers=self.headers_for(self.viewer),
+            params={"object_type_api_name": "customer", "sort_by": "properties"},
+        )
+
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual([item["primary_key_value"] for item in response.json()["items"]], ["C-100", "C-200", "C-300"])
+        self.assertEqual([item["primary_key_value"] for item in descending.json()["items"]], ["C-300", "C-200", "C-100"])
+        self.assertEqual(invalid_sort.status_code, 422)
+
     async def test_object_detail_contains_links(self) -> None:
         response = await self.client.get(
             f"/api/objects/{self.customer.id}",
@@ -434,6 +469,119 @@ class ObjectsAndActionsApiTests(unittest.IsolatedAsyncioTestCase):
         )
 
         self.assertEqual(response.status_code, 422)
+
+    async def test_action_parameters_must_match_declared_schema(self) -> None:
+        with self.session_factory() as session:
+            action = session.get(ActionDefinition, self.action.id)
+            action.parameters_schema = {
+                "tier": {"required": True, "type": "string", "enum": ["standard"]}
+            }
+            session.commit()
+
+        response = await self.client.post(
+            f"/api/actions/{self.action.api_name}/execute",
+            headers=self.headers_for(self.editor),
+            json={
+                "object_id": str(self.customer.id),
+                "expected_version": 1,
+                "parameters": {"tier": "preferred"},
+            },
+        )
+
+        self.assertEqual(response.status_code, 422)
+        with self.session_factory() as session:
+            record = session.get(ObjectRecord, self.customer.id)
+        self.assertEqual(record.properties["tier"], "standard")
+        self.assertEqual(record.version, 1)
+
+    async def test_action_preview_does_not_write_record_or_audit(self) -> None:
+        response = await self.client.post(
+            f"/api/actions/{self.action.api_name}/preview",
+            headers=self.headers_for(self.editor),
+            json={
+                "object_id": str(self.customer.id),
+                "expected_version": 1,
+                "parameters": {"tier": "preferred"},
+            },
+        )
+
+        self.assertEqual(response.status_code, 200, response.text)
+        self.assertEqual(response.json()["property_changes"][0]["after"], "preferred")
+        with self.session_factory() as session:
+            record = session.get(ObjectRecord, self.customer.id)
+            audit = session.scalar(select(AuditEvent).where(AuditEvent.event_type == "action.executed"))
+        self.assertEqual(record.properties["tier"], "standard")
+        self.assertEqual(record.version, 1)
+        self.assertIsNone(audit)
+
+    async def test_submission_criteria_blocks_invalid_object_state(self) -> None:
+        with self.session_factory() as session:
+            action = session.get(ActionDefinition, self.action.id)
+            action.submission_criteria = {
+                "all": [{"property": "tier", "operator": "equals", "value": "preferred"}]
+            }
+            session.commit()
+
+        response = await self.client.post(
+            f"/api/actions/{self.action.api_name}/execute",
+            headers=self.headers_for(self.editor),
+            json={
+                "object_id": str(self.customer.id),
+                "expected_version": 1,
+                "parameters": {"tier": "preferred"},
+            },
+        )
+
+        self.assertEqual(response.status_code, 409)
+        with self.session_factory() as session:
+            record = session.get(ObjectRecord, self.customer.id)
+        self.assertEqual(record.properties["tier"], "standard")
+        self.assertEqual(record.version, 1)
+
+    async def test_action_rejects_submission_criteria_with_unknown_property(self) -> None:
+        with self.session_factory() as session:
+            action = session.get(ActionDefinition, self.action.id)
+            action.submission_criteria = {
+                "property": "missing_property",
+                "operator": "equals",
+                "value": None,
+            }
+            session.commit()
+
+        response = await self.client.post(
+            f"/api/actions/{self.action.api_name}/preview",
+            headers=self.headers_for(self.editor),
+            json={
+                "object_id": str(self.customer.id),
+                "expected_version": 1,
+                "parameters": {"tier": "preferred"},
+            },
+        )
+
+        self.assertEqual(response.status_code, 422)
+        self.assertIn("未定义", response.json()["detail"])
+
+    async def test_action_rejects_excessively_nested_submission_criteria(self) -> None:
+        criteria: dict = {"property": "tier", "operator": "equals", "value": "standard"}
+        for _ in range(24):
+            criteria = {"not": criteria}
+        with self.session_factory() as session:
+            action = session.get(ActionDefinition, self.action.id)
+            action.submission_criteria = criteria
+            session.commit()
+
+        response = await self.client.post(
+            f"/api/actions/{self.action.api_name}/preview",
+            headers=self.headers_for(self.editor),
+            json={
+                "object_id": str(self.customer.id),
+                "expected_version": 1,
+                "parameters": {"tier": "preferred"},
+            },
+        )
+
+        self.assertEqual(response.status_code, 422)
+        self.assertIn("嵌套", response.json()["detail"])
 
     async def test_action_rejects_stale_object_version(self) -> None:
         response = await self.client.post(
