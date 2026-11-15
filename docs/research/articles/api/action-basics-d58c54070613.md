@@ -1,5 +1,5 @@
 <!-- 页面 URL：https://www.palantir.com/docs/foundry/api/v2/ontologies-v2-resources/actions/action-basics -->
-<!-- 研读状态：未开始 -->
+<!-- 研读状态：已完成 -->
 
 # Action basics (v2, latest) • API Reference • Palantir
 
@@ -10,30 +10,36 @@
 - 相关性：direct；Ontology REST API v2 参考
 - 官方更新时间：2026-11-12T17:46:46.921Z
 - 目录核对时间：2026-11-14T14:56:15Z
-- 产品状态：待核对 Beta、预览、弃用或更名信息
+- 产品状态：常规 v2 概念页；本页未标注预览状态。
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> 【待研读：摘录并翻译短句】
+> “An Action represents one application of an action type.”
 
 ## 摘录译文
 
-【待填写】
+Action 表示一次 Action Type 的应用。
 
 ## 中文要点
 
-【用自己的话概括本页解决的问题、对象和关键操作。】
+- Action 是一次实际应用动作类型的执行；Action Type 是被重复使用的定义，二者分别代表定义和运行时实例。
+- API 的 Action 端点用于提交变更。概念页没有进一步给出参数、校验结果、持久化记录或执行状态模型。
+- 读取此页时应与 Action Type basics 和 Apply Action 配套，不能将某一次 Action 当作新的动作定义。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| 【待填写】 | 【待填写】 | 【待填写】 |
+| Action | 动作执行 | Action Type 的一次实际应用。 |
+| Action Type | 动作类型 | 描述可重复执行的变更与逻辑。 |
+| Ontology edit | 本体编辑 | 动作可能产生的对象或链接变化。 |
 
 ## 疑问与待验证项
 
-- 【记录文档未说明之处、与其他页面的差异，以及需要验证的假设。】
+- 概念页没有说明所有执行是否都会形成可长期查询的运行记录。
+- 幂等、重试、去重与并发冲突语义应从 Apply Action 及事务文档继续核验。
 
 ## 复刻启示
 
-- 【写出对本体管理系统的数据模型、治理流程、权限或 Agent 接入的具体启示。】
+- 数据模型分离 `ActionType` 定义与 `ActionRun` 执行记录；运行记录保留操作者、参数、校验、影响对象与结果。
+- 画布展示 Action Type 与对象读写边，运行详情展示具体一次 Action 的状态和审计时间线。

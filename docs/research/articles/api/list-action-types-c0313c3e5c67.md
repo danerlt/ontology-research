@@ -1,5 +1,5 @@
 <!-- 页面 URL：https://www.palantir.com/docs/foundry/api/v2/ontologies-v2-resources/action-types/list-action-types -->
-<!-- 研读状态：未开始 -->
+<!-- 研读状态：已完成 -->
 
 # List Action Types (v2, latest) • API Reference • Palantir
 
@@ -10,30 +10,36 @@
 - 相关性：direct；本体动作文档
 - 官方更新时间：2026-11-12T17:46:46.921Z
 - 目录核对时间：2026-11-14T14:56:15Z
-- 产品状态：待核对 Beta、预览、弃用或更名信息
+- 产品状态：常规 v2 列表接口；可选 branch 参数属于实验性功能。
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> 【待研读：摘录并翻译短句】
+> “Lists the action types for the given Ontology.”
 
 ## 摘录译文
 
-【待填写】
+列出给定 Ontology 中的 Action Type。
 
 ## 中文要点
 
-【用自己的话概括本页解决的问题、对象和关键操作。】
+- GET `/api/v2/ontologies/{ontology}/actionTypes` 列出本体内动作定义，OAuth 应用需要 `api:ontologies-read`。
+- `pageSize` 默认 500，并使用分页令牌继续读取；实际返回页可能小于请求大小，但有更多结果时保证至少返回一项。
+- 可选 branch 用于列出分支上的定义；分支功能当前为实验性。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| 【待填写】 | 【待填写】 | 【待填写】 |
+| pageSize | 页大小 | 希望返回的页面条数，默认值为 500。 |
+| nextPageToken | 下一页令牌 | 继续读取分页结果的游标。 |
+| ActionTypeV2 | Action Type v2 结构 | 列表结果中的动作定义。 |
 
 ## 疑问与待验证项
 
-- 【记录文档未说明之处、与其他页面的差异，以及需要验证的假设。】
+- 若目录快照期间定义发生变化，分页读取是否能提供一致快照，本页没有说明。
+- 页面强调返回页可小于 pageSize，实现时不能用短页推断遍历结束，应检查分页令牌。
 
 ## 复刻启示
 
-- 【写出对本体管理系统的数据模型、治理流程、权限或 Agent 接入的具体启示。】
+- 管理台目录采用游标分页并以 `apiName`、显示名、发布状态和 Agent 工具说明支持搜索筛选。
+- 对列表缓存标记本体与分支维度；消费方必须按照 nextPageToken 完成遍历。
