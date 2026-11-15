@@ -1,10 +1,10 @@
 <!-- 页面 URL：https://www.palantir.com/docs/zh/foundry/ontology-sdk/generate-osdk-for-other-languages -->
-<!-- 研读状态：未开始 -->
+<!-- 研读状态：已完成 -->
 
 # OSDK • 为其他语言生成 OSDK • Palantir
 
 - 英文来源：[英文原文](https://www.palantir.com/docs/foundry/ontology-sdk/generate-osdk-for-other-languages)
-- 官方中文来源：尚未确认（配对状态：not_applicable）
+- 官方中文来源：[官方中文页面](https://www.palantir.com/docs/zh/foundry/ontology-sdk/generate-osdk-for-other-languages)（同路由对照；页面提示 AIP 机器翻译未经验证）
 - 页面语言：中文
 - 主题栏目：ontology-sdk
 - 相关性：direct；Ontology SDK 文档
@@ -14,26 +14,32 @@
 
 ## 原文短摘录与翻译
 
-> 【待研读：摘录中文原文】
+> “您可以使用开源代码生成器基于下载的 OpenAPI 规范生成几乎任何语言的客户端。”
 
 ## 摘录译文
 
-【待填写】
+可基于 OpenAPI 规范使用开源生成器为几乎任何语言创建客户端。
 
 ## 中文要点
 
-【用自己的话概括本页解决的问题、对象和关键操作。】
+- 中文页说明：在 Developer Console 应用的 Application API 页面进入 SDK 生成，选择 Other languages 并导出 OpenAPI；之后用开源工具生成对应语言客户端和服务端。
+- 导出的 OpenAPI 文件包含所选资源的名称和描述；应先清理敏感元数据，再分享或纳入代码仓库。
+- 页面声明由 AIP 从英文机器翻译且准确性未验证。英文原文进一步明确此路线补足内置 SDK 语言之外的客户端生成，但没有承诺与官方 SDK 能力等价。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| 【待填写】 | 【待填写】 | 【待填写】 |
+| OpenAPI 规范 | OpenAPI specification | 用于生成 API 客户端和服务端的接口描述文件。 |
+| SDK 生成 | SDK generation | Developer Console 中导出本体应用客户端契约的流程。 |
+| 敏感元数据 | sensitive metadata | 出现在 OpenAPI 资源名称和说明中的组织内部信息。 |
 
 ## 疑问与待验证项
 
-- 【记录文档未说明之处、与其他页面的差异，以及需要验证的假设。】
+- 中文机器翻译对内置 SDK 的语言描述易产生歧义；语言覆盖范围和生成器能力应核对英文版本及具体工具。
+- 开源生成的客户端如何适配 OAuth、分页和本体资源授权，需要在目标语言里单独验证。
 
 ## 复刻启示
 
-- 【写出对本体管理系统的数据模型、治理流程、权限或 Agent 接入的具体启示。】
+- 为多语言微服务生成客户端时，以版本化 OpenAPI schema 为边界，固定 ontology RID、资源白名单、认证配置和分页约定。
+- 发布流水线扫描 API schema 中的命名与描述；Agent 工具生成不得绕过最小权限资源清单。
