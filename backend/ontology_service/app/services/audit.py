@@ -16,6 +16,7 @@ def record_audit(
     details: dict[str, Any],
 ) -> AuditEvent:
     event = AuditEvent(
+        project_id=session.info.get("project_id"),
         actor_id=UUID(str(actor_id)) if actor_id is not None else None,
         event_type=event_type,
         resource_type=resource_type,

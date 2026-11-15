@@ -23,9 +23,13 @@ json_document = JSON().with_variant(JSONB(), "postgresql")
 
 class Ontology(Base):
     __tablename__ = "ontologies"
+    __table_args__ = (UniqueConstraint("project_id", "api_name", name="uq_ontologies_project_api_name"),)
 
     id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
-    api_name: Mapped[str] = mapped_column(String(80), unique=True, index=True)
+    project_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    api_name: Mapped[str] = mapped_column(String(80), index=True)
     display_name: Mapped[str] = mapped_column(String(160), nullable=False)
     description: Mapped[str] = mapped_column(String(2000), default="", nullable=False)
     revision: Mapped[int] = mapped_column(Integer, nullable=False, default=1, server_default="1")
@@ -36,6 +40,7 @@ class Ontology(Base):
         DateTime(timezone=True), nullable=False, server_default=func.now(), onupdate=func.now()
     )
 
+    project: Mapped["Project"] = relationship(back_populates="ontologies")
     object_types: Mapped[list["ObjectType"]] = relationship(
         back_populates="ontology", cascade="all, delete-orphan"
     )
@@ -104,6 +109,8 @@ class LinkType(Base):
     __tablename__ = "link_types"
     __table_args__ = (
         UniqueConstraint("ontology_id", "api_name", name="uq_link_types_ontology_api_name"),
+        CheckConstraint("source_cardinality IN ('one', 'many')", name="ck_links_source_cardinality"),
+        CheckConstraint("target_cardinality IN ('one', 'many')", name="ck_links_target_cardinality"),
     )
 
     id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
@@ -119,6 +126,8 @@ class LinkType(Base):
     target_type_id: Mapped[UUID] = mapped_column(
         Uuid(as_uuid=True), ForeignKey("object_types.id", ondelete="CASCADE"), nullable=False, index=True
     )
+    source_cardinality: Mapped[str] = mapped_column(String(8), nullable=False, default="many", server_default="many")
+    target_cardinality: Mapped[str] = mapped_column(String(8), nullable=False, default="many", server_default="many")
     ontology: Mapped[Ontology] = relationship(back_populates="link_types")
     source_type: Mapped[ObjectType] = relationship(foreign_keys=[source_type_id])
     target_type: Mapped[ObjectType] = relationship(foreign_keys=[target_type_id])

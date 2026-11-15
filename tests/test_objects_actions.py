@@ -18,6 +18,8 @@ from backend.ontology_service.app.models import (
     ObjectType,
     Ontology,
     PropertyDefinition,
+    Project,
+    ProjectMembership,
     User,
 )
 from backend.ontology_service.app.security import Actor, create_access_token, hash_password
@@ -43,9 +45,17 @@ class ObjectsAndActionsApiTests(unittest.IsolatedAsyncioTestCase):
         self.admin = User(email="admin@example.com", password_hash=hash_password("admin-pass"), role="admin")
         self.editor = User(email="editor@example.com", password_hash=hash_password("editor-pass"), role="editor")
         self.viewer = User(email="viewer@example.com", password_hash=hash_password("viewer-pass"), role="viewer")
-        self.ontology = Ontology(api_name="operations", display_name="运营本体", revision=1)
+        self.project = Project(api_name="test_project", display_name="测试项目")
         with self.session_factory() as session:
-            session.add_all([self.admin, self.editor, self.viewer, self.ontology])
+            session.add_all([self.admin, self.editor, self.viewer, self.project])
+            session.flush()
+            self.ontology = Ontology(project_id=self.project.id, api_name="operations", display_name="运营本体", revision=1)
+            session.add_all([
+                self.ontology,
+                ProjectMembership(project_id=self.project.id, user_id=self.admin.id, role="admin"),
+                ProjectMembership(project_id=self.project.id, user_id=self.editor.id, role="editor"),
+                ProjectMembership(project_id=self.project.id, user_id=self.viewer.id, role="viewer"),
+            ])
             session.flush()
             self.customer_type = ObjectType(
                 ontology_id=self.ontology.id,

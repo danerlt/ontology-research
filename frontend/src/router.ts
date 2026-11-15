@@ -8,6 +8,7 @@ export function createAppRouter(pinia?: Pinia) {
     routes: [
       { path: "/login", name: "login", component: () => import("./views/Login.vue") },
       { path: "/", name: "overview", component: () => import("./views/Overview.vue"), meta: { requiresAuth: true } },
+      { path: "/ontology/canvas", name: "ontology-canvas", component: () => import("./views/OntologyCanvas.vue"), meta: { requiresAuth: true } },
       { path: "/ontology", name: "ontology", component: () => import("./views/Ontology.vue"), meta: { requiresAuth: true } },
       { path: "/objects", name: "objects", component: () => import("./views/Objects.vue"), meta: { requiresAuth: true } },
       { path: "/proposals", name: "proposals", component: () => import("./views/Proposals.vue"), meta: { requiresAuth: true } },

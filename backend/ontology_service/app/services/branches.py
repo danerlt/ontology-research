@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session, selectinload
 
 from backend.ontology_service.app.models import ActionDefinition, LinkType, ObjectType, Ontology, OntologyBranch
 from backend.ontology_service.app.services.action_engine import validate_submission_criteria
+from backend.ontology_service.app.services.derived_properties import validate_definition
 
 
 def create_schema_snapshot(session: Session, ontology: Ontology) -> dict[str, Any]:
@@ -64,6 +65,8 @@ def create_schema_snapshot(session: Session, ontology: Ontology) -> dict[str, An
                 "description": item.description,
                 "source_type_api_name": type_names.get(item.source_type_id),
                 "target_type_api_name": type_names.get(item.target_type_id),
+                "source_cardinality": item.source_cardinality,
+                "target_cardinality": item.target_cardinality,
             }
             for item in links
         ],
@@ -214,6 +217,8 @@ def apply_schema_changes(snapshot: dict[str, Any], changes: list[dict[str, Any]]
                     "description": change.get("description", ""),
                     "source_type_api_name": source_name,
                     "target_type_api_name": target_name,
+                    "source_cardinality": change.get("source_cardinality", "many"),
+                    "target_cardinality": change.get("target_cardinality", "many"),
                 }
             )
             continue
@@ -230,11 +235,60 @@ def apply_schema_changes(snapshot: dict[str, Any], changes: list[dict[str, Any]]
             if source_name not in known_types or target_name not in known_types:
                 errors.append({"path": path, "message": "链接两端必须引用已定义对象类型"})
                 continue
-            for field in ("display_name", "description"):
+            for field in ("display_name", "description", "source_cardinality", "target_cardinality"):
                 if field in change:
                     link[field] = change[field]
             link["source_type_api_name"] = source_name
             link["target_type_api_name"] = target_name
+            continue
+
+        if operation == "set_derived_property":
+            object_type_name = change["object_type_api_name"]
+            path = f"derived_property:{object_type_name}:{api_name}"
+            object_type = next((item for item in object_types if item["api_name"] == object_type_name), None)
+            if object_type is None:
+                errors.append({"path": path, "message": "派生属性所属对象类型不存在"})
+                continue
+            existing = next((item for item in object_type["properties"] if item["api_name"] == api_name), None)
+            if existing is not None and not existing.get("options", {}).get("derived_property"):
+                errors.append({"path": path, "message": "该 API 名已被原生属性占用"})
+                continue
+            definition = {key: value for key, value in change.items() if key != "op"}
+            errors.extend(validate_definition(result, definition))
+            target = next(
+                (item for item in result["object_types"] if item["api_name"] == _path_target_type(result, definition)),
+                None,
+            )
+            terminal = next(
+                (item for item in (target or {}).get("properties", []) if item["api_name"] == definition["terminal_property_api_name"]),
+                None,
+            )
+            derived_property = {
+                "api_name": api_name,
+                "display_name": change["display_name"],
+                "data_type": change["data_type"],
+                "required": False,
+                "editable": False,
+                "unique_value": False,
+                "sensitive": bool((terminal or {}).get("sensitive", False)),
+                "options": {"derived_property": definition},
+            }
+            if existing is None:
+                object_type["properties"].append(derived_property)
+            else:
+                object_type["properties"] = [
+                    derived_property if item["api_name"] == api_name else item for item in object_type["properties"]
+                ]
+            continue
+
+        if operation == "remove_derived_property":
+            object_type = next((item for item in object_types if item["api_name"] == change["object_type_api_name"]), None)
+            prop = next((item for item in (object_type or {}).get("properties", []) if item["api_name"] == api_name), None)
+            path = f"derived_property:{change['object_type_api_name']}:{api_name}"
+            if prop is None or not prop.get("options", {}).get("derived_property"):
+                errors.append({"path": path, "message": "待删除的派生属性不存在"})
+                continue
+            object_type["properties"] = [item for item in object_type["properties"] if item["api_name"] != api_name]
             continue
 
         if operation == "add_action":
@@ -357,7 +411,20 @@ def resource_key_for_change(change: dict[str, Any]) -> str:
         return f"action:{change['api_name']}"
     if operation == "update_action":
         return f"action:{change['api_name']}"
+    if operation in {"set_derived_property", "remove_derived_property"}:
+        return f"derived_property:{change['object_type_api_name']}:{change['api_name']}"
     return f"resource:{change.get('api_name', 'unknown')}"
+
+
+def _path_target_type(snapshot: dict[str, Any], definition: dict[str, Any]) -> str | None:
+    links = {item["api_name"]: item for item in snapshot.get("link_types", [])}
+    current = definition.get("object_type_api_name")
+    for step in definition.get("path", []):
+        link = links.get(step.get("link_api_name"))
+        if link is None:
+            return None
+        current = link.get("target_type_api_name") if step.get("direction") == "outgoing" else link.get("source_type_api_name")
+    return current
 
 
 def require_branch(session: Session, branch_id: UUID, *, active: bool = False) -> OntologyBranch:

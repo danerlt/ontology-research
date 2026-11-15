@@ -8,7 +8,7 @@ from sqlalchemy.pool import StaticPool
 
 from backend.ontology_service.app.config import Settings
 from backend.ontology_service.app.database import Base, get_db
-from backend.ontology_service.app.models import AgentDefinition, AgentEvent, AgentSession, User
+from backend.ontology_service.app.models import AgentDefinition, AgentEvent, AgentSession, Project, ProjectMembership, User
 from backend.ontology_service.app.security import Actor, create_access_token, hash_password
 from backend.agent_service.app.main import create_app
 from backend.agent_service.app.dependencies import get_ontology_client, get_redis
@@ -53,16 +53,20 @@ class FakeRedis:
 class FakeOntologyClient:
     def __init__(self) -> None:
         self.calls: list[tuple[str, str, dict]] = []
+        self.project_ids: list[str | None] = []
 
-    def search_objects(self, token: str, arguments: dict) -> dict:
+    def search_objects(self, token: str, project_id: str | None, arguments: dict) -> dict:
+        self.project_ids.append(project_id)
         self.calls.append((token, "search_objects", arguments))
         return {"items": [], "total": 0}
 
-    def get_object(self, token: str, object_id: str) -> dict:
+    def get_object(self, token: str, project_id: str | None, object_id: str) -> dict:
+        self.project_ids.append(project_id)
         self.calls.append((token, "get_object", {"object_id": object_id}))
         return {"id": object_id}
 
-    def execute_action(self, token: str, action_api_name: str, arguments: dict) -> dict:
+    def execute_action(self, token: str, project_id: str | None, action_api_name: str, arguments: dict) -> dict:
+        self.project_ids.append(project_id)
         self.calls.append((token, "execute_action", {"action_api_name": action_api_name, **arguments}))
         return {"version": arguments["expected_version"] + 1}
 
@@ -87,8 +91,15 @@ class AgentToolsApiTests(unittest.TestCase):
         self.admin = User(email="admin@example.com", password_hash=hash_password("admin-pass"), role="admin")
         self.editor = User(email="editor@example.com", password_hash=hash_password("editor-pass"), role="editor")
         self.viewer = User(email="viewer@example.com", password_hash=hash_password("viewer-pass"), role="viewer")
+        self.project = Project(api_name="test_project", display_name="测试项目")
         with self.session_factory() as session:
-            session.add_all([self.admin, self.editor, self.viewer])
+            session.add_all([self.admin, self.editor, self.viewer, self.project])
+            session.flush()
+            session.add_all([
+                ProjectMembership(project_id=self.project.id, user_id=self.admin.id, role="admin"),
+                ProjectMembership(project_id=self.project.id, user_id=self.editor.id, role="editor"),
+                ProjectMembership(project_id=self.project.id, user_id=self.viewer.id, role="viewer"),
+            ])
             session.commit()
 
         self.redis = FakeRedis()
@@ -233,6 +244,7 @@ class AgentToolsApiTests(unittest.TestCase):
 
         self.assertEqual(response.status_code, 200, response.text)
         self.assertEqual(self.ontology_client.calls[0][1], "search_objects")
+        self.assertEqual(self.ontology_client.project_ids, [str(self.project.id)])
         self.assertEqual(self.ontology_client.calls[0][2]["query"], "北辰")
         with self.session_factory() as session:
             event_row = session.scalar(select(AgentEvent).where(AgentEvent.session_id == session_id))

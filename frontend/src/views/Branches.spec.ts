@@ -180,7 +180,7 @@ describe("本体分支工作区", () => {
     await flushPromises();
 
     expect(apiMock.post).toHaveBeenCalledWith("/api/branches/branch-1/changes", {
-      changes: [{ op: "update_link_type", api_name: "customer_site", display_name: "客户服务站点", description: "原说明" }],
+      changes: [{ op: "update_link_type", api_name: "customer_site", display_name: "客户服务站点", description: "原说明", source_cardinality: "many", target_cardinality: "many" }],
     });
     const actionCall = apiMock.post.mock.calls.find((call) => call[1]?.changes?.[0]?.op === "update_action");
     expect(actionCall?.[1].changes[0]).toMatchObject({
@@ -213,6 +213,36 @@ describe("本体分支工作区", () => {
         parameters_schema: { name: { type: "string", required: true } },
         submission_criteria: { property: "name", operator: "not_empty" },
         enabled: true,
+      }],
+    });
+  });
+
+  it("在分支中创建带聚合器的派生属性定义", async () => {
+    const wrapper = mount(Branches);
+    await flushPromises();
+    const derivedTab = wrapper.findAll(".resource-kind-tabs button").find((button) => button.text() === "派生属性");
+    expect(derivedTab).toBeDefined();
+    await derivedTab!.trigger("click");
+    await wrapper.get('[aria-label="派生属性起始对象"]').setValue("customer");
+    await wrapper.get('[aria-label="派生属性 API 名称"]').setValue("linked_customer_count");
+    await wrapper.get('[aria-label="派生属性显示名称"]').setValue("关联客户数");
+    await wrapper.get('[aria-label="推理路径第 1 步"]').setValue("customer_site|outgoing");
+    await wrapper.get('[aria-label="派生属性终点属性"]').setValue("name");
+    await wrapper.get('[aria-label="派生属性聚合方式"]').setValue("count");
+    await wrapper.get(".derived-property-form").trigger("submit");
+    await flushPromises();
+
+    expect(apiMock.post).toHaveBeenCalledWith("/api/branches/branch-1/changes", {
+      changes: [{
+        op: "set_derived_property",
+        object_type_api_name: "customer",
+        api_name: "linked_customer_count",
+        display_name: "关联客户数",
+        description: "",
+        terminal_property_api_name: "name",
+        aggregation: "count",
+        data_type: "integer",
+        path: [{ link_api_name: "customer_site", direction: "outgoing" }],
       }],
     });
   });

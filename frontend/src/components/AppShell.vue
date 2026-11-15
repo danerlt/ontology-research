@@ -1,14 +1,28 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref } from "vue";
+import { computed, nextTick, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { api } from "../api/client";
 import { useAuthStore } from "../stores/auth";
+import type { ProjectSummary } from "../stores/auth";
 import type { ActionDefinition, AgentDefinition, AgentSession, LinkType, ObjectRecord, ObjectType, Ontology, Proposal } from "../types";
 
 const route = useRoute();
 const router = useRouter();
 const auth = useAuthStore();
 const revision = ref(1);
+const projectLoading = ref(true);
+const projectReady = ref(false);
+const projectError = ref("");
+const projectDialogOpen = ref(false);
+const projectSaving = ref(false);
+const projectSaveError = ref("");
+const projectForm = ref({ api_name: "", display_name: "", description: "" });
+const memberDialogOpen = ref(false);
+const memberSaving = ref(false);
+const memberError = ref("");
+const memberNotice = ref("");
+const projectMembers = ref<Array<{ id: string; user_id: string; email: string; role: "admin" | "editor" | "viewer" }>>([]);
+const memberForm = ref({ email: "", role: "editor" as "admin" | "editor" | "viewer" });
 const searchOpen = ref(false);
 const searchQuery = ref("");
 const searchResults = ref<Array<{ key: string; kind: string; title: string; subtitle: string; to: string }>>([]);
@@ -22,6 +36,7 @@ const navigationSections = [
   {
     heading: "本体管理",
     items: [
+      { label: "本体画布", to: "/ontology/canvas", icon: "⌘" },
       { label: "本体资源", to: "/ontology", icon: "◇" },
       { label: "对象浏览", to: "/objects", icon: "▦" },
       { label: "分支管理", to: "/branches", icon: "⌘" },
@@ -39,6 +54,7 @@ const navigationSections = [
 const titles: Record<string, string> = {
   overview: "工作区总览",
   ontology: "本体结构",
+  "ontology-canvas": "本体关系画布",
   objects: "对象数据",
   proposals: "变更提案",
   branches: "本体分支",
@@ -72,6 +88,101 @@ function closeGlobalSearch() {
 
 function fulfilled<T>(result: PromiseSettledResult<T>, fallback: T): T {
   return result.status === "fulfilled" ? result.value : fallback;
+}
+
+async function loadRevision() {
+  try {
+    const ontologies = await api.get<Ontology[]>("/api/ontology");
+    revision.value = ontologies[0]?.revision ?? 1;
+  } catch {
+    revision.value = 1;
+  }
+}
+
+async function loadProjectContext() {
+  projectLoading.value = true;
+  projectError.value = "";
+  try {
+    const projects = await api.get<ProjectSummary[]>("/api/projects");
+    auth.setProjects(projects);
+    if (!projects.length) {
+      projectError.value = "当前账号尚未加入项目，请联系项目管理员。";
+      return;
+    }
+    projectReady.value = Boolean(auth.activeProjectId);
+    await loadRevision();
+  } catch (cause) {
+    projectError.value = cause instanceof Error ? cause.message : "项目列表暂时无法加载。";
+  } finally {
+    projectLoading.value = false;
+  }
+}
+
+function changeProject() {
+  auth.setActiveProjectId(auth.activeProjectId);
+}
+
+function openProjectDialog() {
+  projectForm.value = { api_name: "", display_name: "", description: "" };
+  projectSaveError.value = "";
+  projectDialogOpen.value = true;
+}
+
+async function createProject() {
+  if (projectSaving.value) return;
+  projectSaving.value = true;
+  projectSaveError.value = "";
+  try {
+    const project = await api.post<ProjectSummary>("/api/projects", projectForm.value);
+    auth.setProjects([...auth.projects, project]);
+    auth.setActiveProjectId(project.id);
+    projectReady.value = true;
+    projectDialogOpen.value = false;
+    await loadRevision();
+  } catch (cause) {
+    projectSaveError.value = cause instanceof Error ? cause.message : "项目创建失败，请检查输入后重试。";
+  } finally {
+    projectSaving.value = false;
+  }
+}
+
+async function openMemberDialog() {
+  memberDialogOpen.value = true;
+  memberError.value = "";
+  memberNotice.value = "";
+  memberForm.value = { email: "", role: "editor" };
+  await loadProjectMembers();
+}
+
+async function loadProjectMembers() {
+  if (!auth.activeProjectId) return;
+  try {
+    projectMembers.value = await api.get<typeof projectMembers.value>(`/api/projects/${auth.activeProjectId}/members`);
+  } catch (cause) {
+    memberError.value = cause instanceof Error ? cause.message : "成员列表暂时无法加载。";
+  }
+}
+
+async function saveProjectMember() {
+  if (memberSaving.value || !auth.activeProjectId) return;
+  memberSaving.value = true;
+  memberError.value = "";
+  memberNotice.value = "";
+  try {
+    const member = await api.put<typeof projectMembers.value[number]>(
+      `/api/projects/${auth.activeProjectId}/members`,
+      { ...memberForm.value },
+    );
+    const existingIndex = projectMembers.value.findIndex((item) => item.user_id === member.user_id);
+    if (existingIndex < 0) projectMembers.value.push(member);
+    else projectMembers.value.splice(existingIndex, 1, member);
+    memberForm.value.email = "";
+    memberNotice.value = "项目成员角色已保存。只有已注册账号可以加入项目。";
+  } catch (cause) {
+    memberError.value = cause instanceof Error ? cause.message : "成员角色更新失败。";
+  } finally {
+    memberSaving.value = false;
+  }
 }
 
 async function runGlobalSearch() {
@@ -147,14 +258,11 @@ function handleSearchKeydown(event: KeyboardEvent) {
   }
 }
 
-onMounted(async () => {
-  try {
-    const ontologies = await api.get<Ontology[]>("/api/ontology");
-    revision.value = ontologies[0]?.revision ?? 1;
-  } catch {
-    revision.value = 1;
-  }
+watch(() => auth.activeProjectId, () => {
+  if (projectReady.value) void loadRevision();
 });
+
+onMounted(loadProjectContext);
 </script>
 
 <template>
@@ -174,10 +282,14 @@ onMounted(async () => {
     </aside>
     <main class="workspace-main">
       <header class="topbar">
-        <div class="breadcrumbs"><span>运营知识图谱</span><span class="crumb-divider">/</span><strong>{{ titles[String(route.name)] || "工作区" }}</strong></div>
-        <div class="topbar-actions"><button class="global-search-trigger" data-action="open-global-search" aria-label="打开全局搜索" @click="openGlobalSearch"><span>⌕</span>搜索对象、类型、Action 或 Agent<kbd>Ctrl K</kbd></button><span class="revision-pill">结构版本 <b>v{{ revision }}</b></span><span class="user-chip"><span class="avatar">{{ auth.user?.email.slice(0, 1).toUpperCase() || "U" }}</span>{{ auth.user?.email }}<em>{{ auth.role }}</em></span><button class="logout-button" @click="signOut">退出</button></div>
+        <div class="breadcrumbs"><span>{{ auth.activeProject?.display_name || "项目" }}</span><span class="crumb-divider">/</span><strong>{{ titles[String(route.name)] || "工作区" }}</strong></div>
+        <div class="topbar-actions"><label class="project-context-label">项目<select v-model="auth.activeProjectId" aria-label="切换项目" :disabled="projectLoading || auth.projects.length < 2" @change="changeProject"><option v-for="project in auth.projects" :key="project.id" :value="project.id">{{ project.display_name }}</option></select></label><button v-if="auth.user?.role === 'admin'" class="button button-secondary project-create-trigger" data-action="create-project" @click="openProjectDialog">新建项目</button><button v-if="auth.role === 'admin'" class="button button-quiet project-create-trigger" data-action="manage-project-members" @click="openMemberDialog">项目成员</button><button class="global-search-trigger" data-action="open-global-search" aria-label="打开全局搜索" @click="openGlobalSearch"><span>⌕</span>搜索对象、类型、Action 或 Agent<kbd>Ctrl K</kbd></button><span class="revision-pill">结构版本 <b>v{{ revision }}</b></span><span class="user-chip"><span class="avatar">{{ auth.user?.email.slice(0, 1).toUpperCase() || "U" }}</span>{{ auth.user?.email }}<em>{{ auth.role }}</em></span><button class="logout-button" @click="signOut">退出</button></div>
       </header>
-      <section class="page-frame"><RouterView /></section>
+      <section class="page-frame">
+        <div v-if="projectLoading" class="project-loading" role="status">正在加载可访问的项目…</div>
+        <div v-else-if="projectError" class="notice notice-error" role="alert">{{ projectError }}</div>
+        <RouterView v-else-if="projectReady" :key="auth.activeProjectId" />
+      </section>
     </main>
     <div v-if="searchOpen" class="global-search-backdrop" @click.self="closeGlobalSearch">
       <section class="global-search-dialog" role="dialog" aria-modal="true" aria-labelledby="global-search-title" @keydown="handleSearchKeydown">
@@ -190,6 +302,35 @@ onMounted(async () => {
         <div v-else-if="hasSearched && !searchLoading && !searchError" class="global-search-empty"><strong>没有找到匹配项</strong><span>尝试对象显示名称、API 名称或关键字。</span></div>
         <div v-else class="global-search-empty"><strong>搜索范围</strong><span>{{ searchHint }}。只会返回当前账号有权访问的资源。</span></div>
         <footer><span><kbd>↑</kbd><kbd>↓</kbd> 选择结果</span><span><kbd>Enter</kbd> 打开 · <kbd>Esc</kbd> 关闭</span></footer>
+      </section>
+    </div>
+    <div v-if="projectDialogOpen" class="global-search-backdrop" @click.self="projectDialogOpen = false">
+      <section class="project-create-dialog" role="dialog" aria-modal="true" aria-labelledby="project-create-title">
+        <header><div><span class="eyebrow">项目管理</span><h2 id="project-create-title">创建工作区项目</h2></div><button class="search-close-button" aria-label="关闭项目创建" @click="projectDialogOpen = false">关闭</button></header>
+        <form class="project-create-form" @submit.prevent="createProject">
+          <label>显示名称<input v-model="projectForm.display_name" aria-label="项目显示名称" required minlength="2" maxlength="160" placeholder="例如：供应链本体" /></label>
+          <label>API 名称<input v-model="projectForm.api_name" aria-label="项目 API 名称" required minlength="2" maxlength="80" pattern="[a-z][a-z0-9_]*" placeholder="例如：supply_chain" /></label>
+          <label>项目说明<textarea v-model="projectForm.description" aria-label="项目说明" rows="3" maxlength="2000" placeholder="说明项目的业务范围与责任边界" /></label>
+          <p v-if="projectSaveError" class="global-search-error" role="alert">{{ projectSaveError }}</p>
+          <footer><span>创建后会将此项目设为当前工作区。</span><button type="submit" class="button button-primary" data-action="save-project" :disabled="projectSaving">{{ projectSaving ? "正在创建…" : "创建项目" }}</button></footer>
+        </form>
+      </section>
+    </div>
+    <div v-if="memberDialogOpen" class="global-search-backdrop" @click.self="memberDialogOpen = false">
+      <section class="project-create-dialog project-members-dialog" role="dialog" aria-modal="true" aria-labelledby="project-members-title">
+        <header><div><span class="eyebrow">项目访问控制</span><h2 id="project-members-title">{{ auth.activeProject?.display_name }} · 成员</h2></div><button class="search-close-button" aria-label="关闭成员管理" @click="memberDialogOpen = false">关闭</button></header>
+        <p class="member-management-note">项目成员角色限制本体结构、数据源、Agent 与评审操作。只能添加已注册账号。</p>
+        <div class="project-member-list" aria-label="当前项目成员">
+          <div v-for="member in projectMembers" :key="member.user_id" class="project-member-row"><span class="avatar">{{ member.email.slice(0, 1).toUpperCase() }}</span><strong>{{ member.email }}</strong><span class="member-role-badge">{{ member.role === "admin" ? "管理员" : member.role === "editor" ? "编辑者" : "只读者" }}</span></div>
+          <p v-if="!projectMembers.length && !memberError" class="canvas-empty-note">正在读取项目成员…</p>
+        </div>
+        <form class="project-create-form member-form" @submit.prevent="saveProjectMember">
+          <label>成员邮箱<input v-model="memberForm.email" aria-label="项目成员邮箱" type="email" required placeholder="name@example.com" /></label>
+          <label>项目角色<select v-model="memberForm.role" aria-label="项目成员角色"><option value="admin">管理员</option><option value="editor">编辑者</option><option value="viewer">只读者</option></select></label>
+          <p v-if="memberError" class="global-search-error" role="alert">{{ memberError }}</p>
+          <p v-if="memberNotice" class="member-success-note" role="status">{{ memberNotice }}</p>
+          <footer><span>已存在的成员会更新角色。</span><button type="submit" class="button button-primary" :disabled="memberSaving">{{ memberSaving ? "保存中…" : "保存成员" }}</button></footer>
+        </form>
       </section>
     </div>
   </div>

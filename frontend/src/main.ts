@@ -11,6 +11,7 @@ const router = createAppRouter(pinia);
 const auth = useAuthStore(pinia);
 api.configure({
   tokenProvider: () => auth.accessToken || null,
+  projectProvider: () => auth.activeProjectId || null,
   onUnauthorized: () => {
     auth.clearSession();
     if (router.currentRoute.value.name !== "login") router.push({ name: "login" });

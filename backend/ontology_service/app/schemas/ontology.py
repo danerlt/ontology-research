@@ -1,6 +1,12 @@
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+
+
+class OntologyCreate(BaseModel):
+    api_name: str = Field(min_length=2, max_length=80, pattern=r"^[a-z][a-z0-9_]*$")
+    display_name: str = Field(min_length=2, max_length=160)
+    description: str = Field(default="", max_length=2000)
 
 
 class OntologyResponse(BaseModel):
@@ -52,5 +58,7 @@ class LinkTypeResponse(BaseModel):
     description: str
     source_type_id: UUID
     target_type_id: UUID
+    source_cardinality: str = "many"
+    target_cardinality: str = "many"
 
     model_config = ConfigDict(from_attributes=True)

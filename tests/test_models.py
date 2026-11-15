@@ -17,6 +17,7 @@ from backend.ontology_service.app.models import (
     ObjectType,
     Ontology,
     PropertyDefinition,
+    Project,
     User,
 )
 
@@ -38,8 +39,16 @@ class DomainModelTests(unittest.TestCase):
             password_hash="test-hash",
             role="admin",
         )
-        self.ontology = Ontology(api_name="operations", display_name="运营本体", revision=1)
-        self.session.add_all([self.user, self.ontology])
+        self.project = Project(api_name="test_project", display_name="测试项目")
+        self.session.add_all([self.user, self.project])
+        self.session.flush()
+        self.ontology = Ontology(
+            project_id=self.project.id,
+            api_name="operations",
+            display_name="运营本体",
+            revision=1,
+        )
+        self.session.add(self.ontology)
         self.session.commit()
 
     def tearDown(self) -> None:
@@ -114,6 +123,7 @@ class DomainModelTests(unittest.TestCase):
 
     def test_audit_event_has_actor_and_timestamp(self) -> None:
         event = AuditEvent(
+            project_id=self.project.id,
             actor_id=self.user.id,
             event_type="schema.proposal.created",
             resource_type="proposal",

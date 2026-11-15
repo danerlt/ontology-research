@@ -180,6 +180,8 @@ def apply_schema_changes(session: Session, ontology_id: UUID, changes: list[dict
                     description=change.get("description", ""),
                     source_type_id=source_type.id,
                     target_type_id=target_type.id,
+                    source_cardinality=change.get("source_cardinality", "many"),
+                    target_cardinality=change.get("target_cardinality", "many"),
                 )
             )
             session.flush()
@@ -194,9 +196,72 @@ def apply_schema_changes(session: Session, ontology_id: UUID, changes: list[dict
             )
             if link is None:
                 raise HTTPException(status_code=422, detail="待修改的链接类型不存在")
-            for field in ("display_name", "description"):
+            for field in ("display_name", "description", "source_cardinality", "target_cardinality"):
                 if field in change:
                     setattr(link, field, change[field])
+            session.flush()
+            continue
+
+        if operation == "set_derived_property":
+            object_type = session.scalar(
+                select(ObjectType).where(
+                    ObjectType.ontology_id == ontology_id,
+                    ObjectType.api_name == change["object_type_api_name"],
+                )
+            )
+            if object_type is None:
+                raise HTTPException(status_code=422, detail="派生属性所属的对象类型不存在")
+            existing = session.scalar(
+                select(PropertyDefinition).where(
+                    PropertyDefinition.object_type_id == object_type.id,
+                    PropertyDefinition.api_name == change["api_name"],
+                )
+            )
+            if existing is not None and not existing.options.get("derived_property"):
+                raise HTTPException(status_code=409, detail="该 API 名已被原生属性占用")
+            terminal_type = _derived_terminal_type(session, ontology_id, change)
+            terminal_property = session.scalar(
+                select(PropertyDefinition).where(
+                    PropertyDefinition.object_type_id == terminal_type.id,
+                    PropertyDefinition.api_name == change["terminal_property_api_name"],
+                )
+            )
+            if terminal_property is None:
+                raise HTTPException(status_code=422, detail="派生属性终点字段不存在")
+            definition = {key: value for key, value in change.items() if key != "op"}
+            values = {
+                "display_name": change["display_name"],
+                "data_type": change["data_type"],
+                "required": False,
+                "editable": False,
+                "unique_value": False,
+                "sensitive": terminal_property.sensitive,
+                "options": {"derived_property": definition},
+            }
+            if existing is None:
+                session.add(PropertyDefinition(object_type_id=object_type.id, api_name=change["api_name"], **values))
+            else:
+                for field, value in values.items():
+                    setattr(existing, field, value)
+            session.flush()
+            continue
+
+        if operation == "remove_derived_property":
+            object_type = session.scalar(
+                select(ObjectType).where(
+                    ObjectType.ontology_id == ontology_id,
+                    ObjectType.api_name == change["object_type_api_name"],
+                )
+            )
+            prop = session.scalar(
+                select(PropertyDefinition).where(
+                    PropertyDefinition.object_type_id == object_type.id,
+                    PropertyDefinition.api_name == change["api_name"],
+                )
+            ) if object_type is not None else None
+            if prop is None or not prop.options.get("derived_property"):
+                raise HTTPException(status_code=422, detail="待删除的派生属性不存在")
+            session.delete(prop)
             session.flush()
             continue
 
@@ -307,3 +372,28 @@ def merge_proposal(session: Session, proposal_id: UUID, actor: Actor) -> tuple[C
     session.commit()
     session.refresh(proposal)
     return proposal, ontology.revision
+
+
+def _derived_terminal_type(session: Session, ontology_id: UUID, definition: dict[str, Any]) -> ObjectType:
+    object_type = session.scalar(
+        select(ObjectType).where(
+            ObjectType.ontology_id == ontology_id,
+            ObjectType.api_name == definition["object_type_api_name"],
+        )
+    )
+    if object_type is None:
+        raise HTTPException(status_code=422, detail="派生属性所属的对象类型不存在")
+    for step in definition["path"]:
+        link = session.scalar(
+            select(LinkType).where(
+                LinkType.ontology_id == ontology_id,
+                LinkType.api_name == step["link_api_name"],
+            )
+        )
+        if link is None:
+            raise HTTPException(status_code=422, detail="派生属性路径引用的链接类型不存在")
+        next_type_id = link.target_type_id if step["direction"] == "outgoing" else link.source_type_id
+        object_type = session.get(ObjectType, next_type_id)
+        if object_type is None:
+            raise HTTPException(status_code=422, detail="派生属性路径终点对象类型不存在")
+    return object_type

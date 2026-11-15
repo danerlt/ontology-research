@@ -62,6 +62,7 @@ def create_agent(
         allowed_actions=body.allowed_actions,
     )
     agent = AgentDefinition(
+        project_id=UUID(actor.project_id),
         api_name=body.api_name,
         display_name=body.display_name,
         description=body.description,

@@ -17,9 +17,10 @@ async function signIn() {
   try {
     const result = await api.post<{
       access_token: string;
+      project_id: string | null;
       user: { id: string; email: string; role: "admin" | "editor" | "viewer" };
     }>("/api/auth/login", { email: email.value, password: password.value });
-    auth.setSession(result.access_token, result.user);
+    auth.setSession(result.access_token, result.user, result.project_id);
     await router.push({ name: "overview" });
   } catch (cause) {
     error.value = readableError(cause);

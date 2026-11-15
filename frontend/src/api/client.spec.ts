@@ -6,6 +6,27 @@ describe("API 错误提示", () => {
     expect(readableError(new Error("Network Error"))).toBe("服务暂不可用，请检查网络后重试");
   });
 
+  it("每次业务请求都附带当前项目上下文", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      status: 200,
+      ok: true,
+      json: async () => [],
+    });
+    vi.stubGlobal("fetch", fetchMock);
+    const client = new ApiClient();
+    client.configure({
+      tokenProvider: () => "token-1",
+      projectProvider: () => "project-1",
+      onUnauthorized: () => undefined,
+    });
+
+    await client.get("/api/ontology");
+
+    const request = fetchMock.mock.calls[0][1] as RequestInit;
+    expect(new Headers(request.headers).get("X-Project-ID")).toBe("project-1");
+    vi.unstubAllGlobals();
+  });
+
   it("优先展示服务端的中文说明", () => {
     expect(readableError({ detail: "当前账号没有此操作权限" })).toBe("当前账号没有此操作权限");
   });

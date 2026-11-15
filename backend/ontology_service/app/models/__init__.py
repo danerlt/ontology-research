@@ -6,6 +6,7 @@ from backend.ontology_service.app.models.data_sources import DataImportRun, Data
 from backend.ontology_service.app.models.governance import ActionDefinition, ChangeProposal
 from backend.ontology_service.app.models.objects import ObjectLink, ObjectRecord
 from backend.ontology_service.app.models.ontology import LinkType, ObjectType, Ontology, PropertyDefinition
+from backend.ontology_service.app.models.projects import Project, ProjectMembership
 
 __all__ = [
     "ActionDefinition",
@@ -25,6 +26,8 @@ __all__ = [
     "Ontology",
     "OntologyBranch",
     "PropertyDefinition",
+    "Project",
+    "ProjectMembership",
     "ProposalResourceReview",
     "User",
 ]

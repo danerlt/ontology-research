@@ -7,9 +7,11 @@ import jwt
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from pwdlib import PasswordHash
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.ontology_service.app.database import get_db
+from backend.ontology_service.app.models.projects import ProjectMembership
 from backend.ontology_service.app.models.user import User
 
 password_hash = PasswordHash.recommended()
@@ -21,6 +23,7 @@ class Actor:
     id: str
     email: str
     role: str
+    project_id: str | None = None
 
 
 def hash_password(password: str) -> str:
@@ -51,7 +54,7 @@ def create_access_token(
     return jwt.encode(claims, settings.jwt_secret, algorithm="HS256")
 
 
-def get_current_user(
+def get_authenticated_user(
     request: Request,
     credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)],
     session: Annotated[Session, Depends(get_db)],
@@ -78,6 +81,44 @@ def get_current_user(
     if user is None or not user.enabled:
         raise unauthorized
     return Actor(id=str(user.id), email=user.email, role=user.role)
+
+
+def get_current_user(
+    request: Request,
+    actor: Annotated[Actor, Depends(get_authenticated_user)],
+    session: Annotated[Session, Depends(get_db)],
+) -> Actor:
+    project_header = request.headers.get("X-Project-ID", "").strip()
+    if project_header:
+        try:
+            project_id = UUID(project_header)
+        except ValueError:
+            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="当前项目标识无效") from None
+        membership = session.scalar(
+            select(ProjectMembership).where(
+                ProjectMembership.project_id == project_id,
+                ProjectMembership.user_id == UUID(actor.id),
+            )
+        )
+        if membership is None:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="当前账号不属于所选项目")
+    else:
+        membership = session.scalar(
+            select(ProjectMembership)
+            .where(ProjectMembership.user_id == UUID(actor.id))
+            .order_by(ProjectMembership.created_at, ProjectMembership.project_id)
+        )
+        if membership is None:
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="当前账号尚未加入任何项目")
+        project_id = membership.project_id
+
+    session.info["project_id"] = project_id
+    return Actor(
+        id=actor.id,
+        email=actor.email,
+        role=membership.role,
+        project_id=str(project_id),
+    )
 
 
 def require_role(*allowed_roles: str):

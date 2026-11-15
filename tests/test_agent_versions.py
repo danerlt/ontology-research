@@ -10,7 +10,7 @@ from backend.agent_service.app.dependencies import get_ontology_client, get_redi
 from backend.agent_service.app.main import create_app
 from backend.ontology_service.app.config import Settings
 from backend.ontology_service.app.database import Base, get_db
-from backend.ontology_service.app.models import AgentEvent, AgentSession, User
+from backend.ontology_service.app.models import AgentEvent, AgentSession, Project, ProjectMembership, User
 from backend.ontology_service.app.security import Actor, create_access_token, hash_password
 
 
@@ -39,7 +39,7 @@ class FakeOntologyClient:
     def __init__(self) -> None:
         self.calls: list[tuple[str, dict]] = []
 
-    def search_objects(self, _token: str, arguments: dict) -> dict:
+    def search_objects(self, _token: str, _project_id: str | None, arguments: dict) -> dict:
         self.calls.append(("search_objects", arguments))
         return {"items": [], "total": 0}
 
@@ -73,8 +73,14 @@ class AgentVersionApiTests(unittest.TestCase):
         self.settings = Settings(jwt_secret="unit-test-secret-long-enough-for-hmac-sha256")
         self.admin = User(email="admin@example.com", password_hash=hash_password("admin-pass"), role="admin")
         self.editor = User(email="editor@example.com", password_hash=hash_password("editor-pass"), role="editor")
+        self.project = Project(api_name="test_project", display_name="测试项目")
         with self.session_factory() as session:
-            session.add_all([self.admin, self.editor])
+            session.add_all([self.admin, self.editor, self.project])
+            session.flush()
+            session.add_all([
+                ProjectMembership(project_id=self.project.id, user_id=self.admin.id, role="admin"),
+                ProjectMembership(project_id=self.project.id, user_id=self.editor.id, role="editor"),
+            ])
             session.commit()
 
         self.redis = FakeRedis()

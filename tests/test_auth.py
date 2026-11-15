@@ -10,6 +10,7 @@ from sqlalchemy.pool import StaticPool
 from backend.ontology_service.app.config import Settings
 from backend.ontology_service.app.database import Base, get_db
 from backend.ontology_service.app.main import create_app
+from backend.ontology_service.app.models import Project, ProjectMembership
 from backend.ontology_service.app.models.user import User
 from backend.ontology_service.app.security import (
     Actor,
@@ -41,12 +42,15 @@ class AuthTests(unittest.IsolatedAsyncioTestCase):
 
         self.app.dependency_overrides[get_db] = override_get_db
         with self.session_factory() as session:
-            session.add_all(
-                [
-                    User(email="admin@example.com", password_hash=hash_password("admin-pass"), role="admin"),
-                    User(email="viewer@example.com", password_hash=hash_password("viewer-pass"), role="viewer"),
-                ]
-            )
+            admin = User(email="admin@example.com", password_hash=hash_password("admin-pass"), role="admin")
+            viewer = User(email="viewer@example.com", password_hash=hash_password("viewer-pass"), role="viewer")
+            project = Project(api_name="auth_tests", display_name="认证测试项目")
+            session.add_all([admin, viewer, project])
+            session.flush()
+            session.add_all([
+                ProjectMembership(project_id=project.id, user_id=admin.id, role="admin"),
+                ProjectMembership(project_id=project.id, user_id=viewer.id, role="viewer"),
+            ])
             session.commit()
         self.client = AsyncClient(
             transport=ASGITransport(app=self.app),
@@ -72,6 +76,7 @@ class AuthTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.json()["token_type"], "bearer")
         self.assertTrue(response.json()["access_token"])
         self.assertEqual(response.json()["user"]["role"], "admin")
+        self.assertTrue(response.json()["project_id"])
 
     async def test_invalid_credentials_are_rejected(self) -> None:
         response = await self.client.post(

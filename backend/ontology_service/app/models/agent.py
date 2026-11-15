@@ -12,9 +12,13 @@ json_document = JSON().with_variant(JSONB(), "postgresql")
 
 class AgentDefinition(Base):
     __tablename__ = "agent_definitions"
+    __table_args__ = (UniqueConstraint("project_id", "api_name", name="uq_agents_project_api_name"),)
 
     id: Mapped[UUID] = mapped_column(Uuid(as_uuid=True), primary_key=True, default=uuid4)
-    api_name: Mapped[str] = mapped_column(String(80), unique=True, index=True)
+    project_id: Mapped[UUID] = mapped_column(
+        Uuid(as_uuid=True), ForeignKey("projects.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    api_name: Mapped[str] = mapped_column(String(80), index=True)
     display_name: Mapped[str] = mapped_column(String(160), nullable=False)
     description: Mapped[str] = mapped_column(String(2000), default="", nullable=False)
     allowed_tools: Mapped[list[str]] = mapped_column(json_document, nullable=False, default=list)

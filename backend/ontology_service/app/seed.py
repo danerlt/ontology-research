@@ -14,6 +14,8 @@ from backend.ontology_service.app.models import (
     ObjectType,
     Ontology,
     PropertyDefinition,
+    Project,
+    ProjectMembership,
     User,
 )
 from backend.ontology_service.app.security import hash_password
@@ -28,16 +30,42 @@ def seed_demo_data() -> None:
         _seed_user(session, settings.admin_email, "admin", settings.admin_password)
         _seed_user(session, "editor@example.com", "editor", "local-editor-password")
         _seed_user(session, "viewer@example.com", "viewer", "local-viewer-password")
+        session.flush()
 
-        ontology = session.scalar(select(Ontology).where(Ontology.api_name == "operations"))
+        project = session.scalar(select(Project).where(Project.api_name == "operations"))
+        if project is None:
+            project = Project(
+                api_name="operations",
+                display_name="运营知识图谱",
+                description="运营本体、数据来源和智能体的演示项目。",
+            )
+            session.add(project)
+            session.flush()
+
+        for user in session.scalars(select(User)).all():
+            membership = session.scalar(
+                select(ProjectMembership).where(
+                    ProjectMembership.project_id == project.id,
+                    ProjectMembership.user_id == user.id,
+                )
+            )
+            if membership is None:
+                session.add(ProjectMembership(project_id=project.id, user_id=user.id, role=user.role))
+
+        ontology = session.scalar(
+            select(Ontology).where(Ontology.project_id == project.id, Ontology.api_name == "operations")
+        )
         if ontology is None:
             ontology = Ontology(
+                project_id=project.id,
                 api_name="operations",
                 display_name="运营知识图谱",
                 description="围绕客户、订单与运营 Action 建立的演示本体。",
             )
             session.add(ontology)
             session.flush()
+        elif ontology.project_id != project.id:
+            ontology.project_id = project.id
 
         customer_type = _get_or_create_type(session, ontology.id, "customer", "客户")
         order_type = _get_or_create_type(session, ontology.id, "order", "订单")
@@ -119,7 +147,10 @@ def seed_demo_data() -> None:
                 )
             )
         agent = session.scalar(
-            select(AgentDefinition).where(AgentDefinition.api_name == "operations_assistant")
+            select(AgentDefinition).where(
+                AgentDefinition.project_id == project.id,
+                AgentDefinition.api_name == "operations_assistant",
+            )
         )
         if agent is None:
             draft_config = {
@@ -142,6 +173,7 @@ def seed_demo_data() -> None:
                 "session_completion": {"mode": "stays_open", "output_schema": {}},
             }
             agent = AgentDefinition(
+                project_id=project.id,
                 api_name="operations_assistant",
                 display_name="运营助理",
                 description="可查找和读取本体对象，并在授权下调整客户等级。",
@@ -160,6 +192,8 @@ def seed_demo_data() -> None:
                     created_by=admin_user.id if admin_user else None,
                 )
             )
+        elif agent.project_id is None:
+            agent.project_id = project.id
         session.commit()
     logger.info("演示数据已就绪：运营知识图谱、客户/订单对象、Action 和运营助理。")
 

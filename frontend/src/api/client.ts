@@ -23,10 +23,16 @@ export function readableError(error: unknown): string {
 
 export class ApiClient {
   private tokenProvider: () => string | null = () => null;
+  private projectProvider: () => string | null = () => null;
   private unauthorizedHandler: () => void = () => undefined;
 
-  configure(options: { tokenProvider: () => string | null; onUnauthorized: () => void }): void {
+  configure(options: {
+    tokenProvider: () => string | null;
+    projectProvider?: () => string | null;
+    onUnauthorized: () => void;
+  }): void {
     this.tokenProvider = options.tokenProvider;
+    this.projectProvider = options.projectProvider ?? (() => null);
     this.unauthorizedHandler = options.onUnauthorized;
   }
 
@@ -58,7 +64,9 @@ export class ApiClient {
     headers.set("Accept", "application/json");
     if (init.body !== undefined) headers.set("Content-Type", "application/json");
     const token = this.tokenProvider();
+    const projectId = this.projectProvider();
     if (token) headers.set("Authorization", `Bearer ${token}`);
+    if (projectId) headers.set("X-Project-ID", projectId);
     let response: Response;
     try {
       response = await fetch(path, { ...init, headers });

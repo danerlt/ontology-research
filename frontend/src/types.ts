@@ -43,6 +43,58 @@ export interface LinkType {
   description: string;
   source_type_id: string;
   target_type_id: string;
+  source_cardinality: "one" | "many";
+  target_cardinality: "one" | "many";
+}
+
+export interface DerivedPathStep {
+  link_api_name: string;
+  direction: "outgoing" | "incoming";
+}
+
+export interface DerivedPropertyDefinition {
+  object_type_api_name: string;
+  api_name: string;
+  display_name: string;
+  description: string;
+  data_type: string;
+  path: DerivedPathStep[];
+  terminal_property_api_name: string;
+  aggregation: "count" | "sum" | "average" | "minimum" | "maximum" | "collect_list" | "collect_set" | null;
+}
+
+export interface OntologyCanvasNodeResource {
+  id: string;
+  type: "objectType" | "sourceSystem" | "action";
+  data: Record<string, any>;
+}
+
+export interface OntologyCanvasEdgeResource {
+  id: string;
+  source: string;
+  target: string;
+  type: "ontologyLink" | "sourceMapping" | "actionAssociation";
+  data: Record<string, any>;
+}
+
+export interface OntologyCanvasResponse {
+  ontology: Pick<Ontology, "id" | "api_name" | "display_name" | "revision">;
+  branch: { id: string; name: string; status: string } | null;
+  nodes: OntologyCanvasNodeResource[];
+  edges: OntologyCanvasEdgeResource[];
+}
+
+export interface DerivedPropertyPreview {
+  object_id: string;
+  api_name: string;
+  value: unknown;
+  result_type: string;
+  aggregation: string | null;
+  matched_count: number;
+  path_object_count: number;
+  ignored_null_count: number;
+  trace: Array<Record<string, unknown>>;
+  warnings: string[];
 }
 
 export interface ObjectRecord {
@@ -147,6 +199,8 @@ export interface OntologyBranch {
       description?: string;
       source_type_api_name: string;
       target_type_api_name: string;
+      source_cardinality?: "one" | "many";
+      target_cardinality?: "one" | "many";
     }>;
     actions?: Array<{
       api_name: string;

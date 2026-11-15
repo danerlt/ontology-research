@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import { api, readableError } from "../api/client";
 import type { Ontology, OntologyBranch } from "../types";
 
-type ResourceKind = "object_type" | "property" | "link_type" | "action";
+type ResourceKind = "object_type" | "property" | "link_type" | "action" | "derived_property";
 
 const ontologies = ref<Ontology[]>([]);
 const branches = ref<OntologyBranch[]>([]);
@@ -27,6 +27,7 @@ const resourceKinds: Array<{ value: ResourceKind; label: string }> = [
   { value: "property", label: "属性" },
   { value: "link_type", label: "链接" },
   { value: "action", label: "Action" },
+  { value: "derived_property", label: "派生属性" },
 ];
 const branchForm = ref({ name: "", description: "" });
 const proposalTitle = ref("");
@@ -46,7 +47,7 @@ const propertyForm = ref({
   sensitive: false,
   enum_choices: "",
 });
-const linkForm = ref({ api_name: "", display_name: "", description: "", source_type_api_name: "", target_type_api_name: "" });
+const linkForm = ref({ api_name: "", display_name: "", description: "", source_type_api_name: "", target_type_api_name: "", source_cardinality: "many", target_cardinality: "many" });
 const actionForm = ref({
   api_name: "",
   display_name: "",
@@ -57,6 +58,15 @@ const actionForm = ref({
   parameters_schema_json: "",
   enabled: true,
 });
+const derivedForm = ref({
+  object_type_api_name: "",
+  api_name: "",
+  display_name: "",
+  description: "",
+  terminal_property_api_name: "",
+  aggregation: "",
+});
+const derivedPath = ref([{ selection: "" }]);
 
 const selectedOntology = computed(() => ontologies.value.find((item) => item.id === selectedOntologyId.value) ?? null);
 const selectedBranch = computed(() => branches.value.find((item) => item.id === selectedBranchId.value) ?? null);
@@ -73,6 +83,26 @@ const editableProperties = computed(() => objectTypes.value.flatMap((item) => it
   label: `${item.display_name} · ${property.display_name} · ${property.api_name}`,
 }))));
 const selectedActionType = computed(() => objectTypes.value.find((item) => item.api_name === actionForm.value.object_type_api_name) ?? null);
+const derivedTargetType = computed(() => {
+  let current = derivedForm.value.object_type_api_name;
+  for (const step of derivedPath.value) {
+    if (!step.selection) return null;
+    const [apiName, direction] = step.selection.split("|");
+    const link = selectedBranch.value?.snapshot.link_types.find((item) => item.api_name === apiName);
+    if (!link) return null;
+    if (direction === "outgoing" && link.source_type_api_name === current) current = link.target_type_api_name;
+    else if (direction === "incoming" && link.target_type_api_name === current) current = link.source_type_api_name;
+    else return null;
+  }
+  return objectTypes.value.find((item) => item.api_name === current) ?? null;
+});
+const derivedTerminalProperties = computed(() => derivedTargetType.value?.properties.filter((item) => !item.options?.derived_property) ?? []);
+const derivedResultType = computed(() => {
+  if (derivedForm.value.aggregation === "count") return "integer";
+  if (["sum", "average", "minimum", "maximum"].includes(derivedForm.value.aggregation)) return "number";
+  if (["collect_list", "collect_set"].includes(derivedForm.value.aggregation)) return "json";
+  return derivedTerminalProperties.value.find((item) => item.api_name === derivedForm.value.terminal_property_api_name)?.data_type ?? "";
+});
 const titleKeyOptions = computed(() => [
   { api_name: objectTypeForm.value.primary_key_property.trim(), display_name: "主键属性" },
   ...(objectTypeMode.value === "edit"
@@ -153,6 +183,37 @@ function splitCsv(value: string) {
   return [...new Set(value.split(",").map((item) => item.trim()).filter(Boolean))];
 }
 
+function derivedLinkOptions(index: number) {
+  let current = derivedForm.value.object_type_api_name;
+  for (const step of derivedPath.value.slice(0, index)) {
+    if (!step.selection) return [];
+    const [apiName, direction] = step.selection.split("|");
+    const link = selectedBranch.value?.snapshot.link_types.find((item) => item.api_name === apiName);
+    if (!link) return [];
+    current = direction === "outgoing" ? link.target_type_api_name : link.source_type_api_name;
+  }
+  const options: Array<{ value: string; label: string }> = [];
+  for (const link of selectedBranch.value?.snapshot.link_types ?? []) {
+    if (link.source_type_api_name === current) {
+      const cardinality = link.source_cardinality ?? "many";
+      options.push({ value: `${link.api_name}|outgoing`, label: `${link.display_name} · 出向到 ${link.target_type_api_name} · ${cardinality === "many" ? "多对象" : "单对象"}` });
+    }
+    if (link.target_type_api_name === current) {
+      const cardinality = link.target_cardinality ?? "many";
+      options.push({ value: `${link.api_name}|incoming`, label: `${link.display_name} · 入向到 ${link.source_type_api_name} · ${cardinality === "many" ? "多对象" : "单对象"}` });
+    }
+  }
+  return options;
+}
+
+function addDerivedPathStep() {
+  if (derivedPath.value.length < 3) derivedPath.value.push({ selection: "" });
+}
+
+function removeDerivedPathStep(index: number) {
+  if (derivedPath.value.length > 1) derivedPath.value.splice(index, 1);
+}
+
 function addObjectProperty() {
   const index = objectTypeProperties.value.length + 1;
   objectTypeProperties.value.push({
@@ -219,6 +280,8 @@ function loadLinkForEdit(apiName: string) {
     description: link.description || "",
     source_type_api_name: link.source_type_api_name,
     target_type_api_name: link.target_type_api_name,
+    source_cardinality: link.source_cardinality || "many",
+    target_cardinality: link.target_cardinality || "many",
   };
 }
 
@@ -313,9 +376,30 @@ function buildChanges(): Array<Record<string, unknown>> {
   if (resourceKind.value === "link_type") {
     if (linkMode.value === "edit") {
       if (!selectedLink.value) throw new Error("请选择要修改的链接类型");
-      return [{ op: "update_link_type", api_name: linkForm.value.api_name, display_name: linkForm.value.display_name.trim(), description: linkForm.value.description.trim() }];
+      return [{ op: "update_link_type", api_name: linkForm.value.api_name, display_name: linkForm.value.display_name.trim(), description: linkForm.value.description.trim(), source_cardinality: linkForm.value.source_cardinality, target_cardinality: linkForm.value.target_cardinality }];
     }
     return [{ op: "add_link_type", ...linkForm.value }];
+  }
+
+  if (resourceKind.value === "derived_property") {
+    if (!derivedForm.value.object_type_api_name) throw new Error("请选择派生属性的起始对象类型");
+    if (!derivedTargetType.value) throw new Error("请选择一条连续的链接路径");
+    if (!derivedForm.value.terminal_property_api_name) throw new Error("请选择终点原生属性");
+    const path = derivedPath.value.map((step) => {
+      const [link_api_name, direction] = step.selection.split("|");
+      if (!link_api_name || !direction) throw new Error("请补齐每个链接步骤");
+      return { link_api_name, direction };
+    });
+    if (!derivedResultType.value) throw new Error("请选择有效的终点属性或聚合方式");
+    return [{
+      op: "set_derived_property",
+      ...derivedForm.value,
+      api_name: derivedForm.value.api_name.trim(),
+      display_name: derivedForm.value.display_name.trim(),
+      data_type: derivedResultType.value,
+      path,
+      aggregation: derivedForm.value.aggregation || null,
+    }];
   }
 
   if (actionMode.value === "edit" && !selectedAction.value) throw new Error("请选择要修改的 Action");
@@ -434,6 +518,15 @@ async function proposeBranch() {
 onMounted(loadWorkspace);
 watch(() => objectTypeForm.value.primary_key_property, (next, previous) => {
   if (objectTypeForm.value.title_key_property === previous) objectTypeForm.value.title_key_property = next;
+});
+watch(() => derivedForm.value.object_type_api_name, () => {
+  derivedPath.value = [{ selection: "" }];
+  derivedForm.value.terminal_property_api_name = "";
+});
+watch(() => derivedPath.value.map((step) => step.selection).join("/"), () => {
+  if (!derivedTerminalProperties.value.some((item) => item.api_name === derivedForm.value.terminal_property_api_name)) {
+    derivedForm.value.terminal_property_api_name = "";
+  }
 });
 </script>
 
@@ -604,7 +697,26 @@ watch(() => objectTypeForm.value.primary_key_property, (next, previous) => {
               <label v-else>源对象类型<input v-model="linkForm.source_type_api_name" aria-label="源对象类型" readonly /></label>
               <label v-if="linkMode === 'create'">目标对象类型<select v-model="linkForm.target_type_api_name" aria-label="目标对象类型" required><option value="" disabled>选择终点</option><option v-for="type in objectTypes" :key="type.api_name" :value="type.api_name">{{ type.display_name }}</option></select></label>
               <label v-else>目标对象类型<input v-model="linkForm.target_type_api_name" aria-label="目标对象类型" readonly /></label>
+              <label>起点可连接数<select v-model="linkForm.source_cardinality" aria-label="起点可连接数"><option value="one">单个对象</option><option value="many">多个对象</option></select></label>
+              <label>终点可连接数<select v-model="linkForm.target_cardinality" aria-label="终点可连接数"><option value="one">单个对象</option><option value="many">多个对象</option></select></label>
               <button class="button button-primary" aria-label="暂存分支修改" :disabled="busy || !selectedBranchCanEdit">暂存修改</button>
+            </form>
+
+            <form v-else-if="resourceKind === 'derived_property'" class="branch-edit-form derived-property-form" @submit.prevent="stageChange">
+              <p class="derived-editor-note">声明从当前对象沿本体链接读取终点原生属性。最多三跳，经过多对象关系时需要聚合。</p>
+              <label>起始对象<select v-model="derivedForm.object_type_api_name" aria-label="派生属性起始对象" required><option value="" disabled>选择起始对象类型</option><option v-for="type in objectTypes" :key="type.api_name" :value="type.api_name">{{ type.display_name }} · {{ type.api_name }}</option></select></label>
+              <label>派生属性 API 名称<input v-model="derivedForm.api_name" aria-label="派生属性 API 名称" required pattern="[a-z][a-z0-9_]*" placeholder="total_spend" /></label>
+              <label>显示名称<input v-model="derivedForm.display_name" aria-label="派生属性显示名称" required placeholder="累计消费" /></label>
+              <label>说明<textarea v-model="derivedForm.description" aria-label="派生属性说明" rows="2" /></label>
+              <fieldset class="derived-path-builder"><legend>推理路径 · {{ derivedPath.length }} / 3 跳</legend>
+                <div v-for="(step, index) in derivedPath" :key="index" class="derived-path-step"><span class="derived-path-index">{{ index + 1 }}</span><select v-model="step.selection" :aria-label="`推理路径第 ${index + 1} 步`" required><option value="" disabled>选择连续链接</option><option v-for="option in derivedLinkOptions(index)" :key="option.value" :value="option.value">{{ option.label }}</option></select><button v-if="derivedPath.length > 1" type="button" class="text-button" :aria-label="`移除第 ${index + 1} 跳`" @click="removeDerivedPathStep(index)">移除</button></div>
+                <button v-if="derivedPath.length < 3" type="button" class="button button-quiet" data-action="add-derived-hop" :disabled="!derivedPath.at(-1)?.selection" @click="addDerivedPathStep">添加下一跳</button>
+                <p v-if="derivedTargetType" class="derived-path-target">当前路径终点：{{ derivedTargetType.display_name }} · {{ derivedTargetType.api_name }}</p>
+              </fieldset>
+              <label>读取终点属性<select v-model="derivedForm.terminal_property_api_name" aria-label="派生属性终点属性" required><option value="" disabled>选择终点原生属性</option><option v-for="property in derivedTerminalProperties" :key="property.api_name" :value="property.api_name">{{ property.display_name }} · {{ property.api_name }} · {{ property.data_type }}{{ property.sensitive ? " · 敏感" : "" }}</option></select></label>
+              <label>聚合方式<select v-model="derivedForm.aggregation" aria-label="派生属性聚合方式"><option value="">不聚合（单值路径）</option><option value="count">计数</option><option value="sum">求和</option><option value="average">平均值</option><option value="minimum">最小值</option><option value="maximum">最大值</option><option value="collect_list">收集列表</option><option value="collect_set">收集去重集合</option></select></label>
+              <div class="derived-result-line"><span>结果类型</span><strong>{{ derivedResultType || "待选择" }}</strong><span v-if="derivedPath.some((step) => step.selection && derivedLinkOptions(derivedPath.indexOf(step)).some((item) => item.value === step.selection && item.label.includes('多对象')))" class="derived-requires-aggregation">多对象路径需聚合</span></div>
+              <button class="button button-primary" aria-label="暂存分支修改" :disabled="busy || !selectedBranchCanEdit">暂存派生属性</button>
             </form>
 
             <form v-else class="branch-edit-form" @submit.prevent="stageChange">

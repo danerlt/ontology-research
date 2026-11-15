@@ -9,7 +9,7 @@ from sqlalchemy.pool import StaticPool
 from backend.ontology_service.app.config import Settings
 from backend.ontology_service.app.database import Base, get_db
 from backend.ontology_service.app.main import create_app
-from backend.ontology_service.app.models import ActionDefinition, LinkType, ObjectType, Ontology, PropertyDefinition, User
+from backend.ontology_service.app.models import ActionDefinition, LinkType, ObjectType, Ontology, Project, ProjectMembership, PropertyDefinition, User
 from backend.ontology_service.app.security import Actor, create_access_token, hash_password
 
 
@@ -32,9 +32,16 @@ class OntologyBranchApiTests(unittest.IsolatedAsyncioTestCase):
         self.settings = Settings(jwt_secret="unit-test-secret-long-enough-for-hmac-sha256")
         self.admin = User(email="admin@example.com", password_hash=hash_password("admin-pass"), role="admin")
         self.editor = User(email="editor@example.com", password_hash=hash_password("editor-pass"), role="editor")
-        self.ontology = Ontology(api_name="operations", display_name="运营本体", revision=1)
+        self.project = Project(api_name="test_project", display_name="测试项目")
         with self.session_factory() as session:
-            session.add_all([self.admin, self.editor, self.ontology])
+            session.add_all([self.admin, self.editor, self.project])
+            session.flush()
+            self.ontology = Ontology(project_id=self.project.id, api_name="operations", display_name="运营本体", revision=1)
+            session.add_all([
+                self.ontology,
+                ProjectMembership(project_id=self.project.id, user_id=self.admin.id, role="admin"),
+                ProjectMembership(project_id=self.project.id, user_id=self.editor.id, role="editor"),
+            ])
             session.commit()
         self.app = create_app(self.settings)
 
@@ -160,6 +167,53 @@ class OntologyBranchApiTests(unittest.IsolatedAsyncioTestCase):
 
         self.assertFalse(branch.json()["validation"]["valid"])
         self.assertTrue(any("标题键" in item["message"] for item in branch.json()["validation"]["errors"]))
+
+    async def test_many_link_path_requires_an_aggregation(self) -> None:
+        branch_id = await self.create_branch()
+        await self.stage(branch_id, [
+            {"op": "add_object_type", "api_name": "customer", "display_name": "客户"},
+            {"op": "add_object_type", "api_name": "order", "display_name": "订单"},
+            {"op": "add_property", "object_type_api_name": "order", "api_name": "amount", "display_name": "金额", "data_type": "number"},
+            {"op": "add_link_type", "api_name": "customer_orders", "display_name": "客户订单", "source_type_api_name": "customer", "target_type_api_name": "order", "source_cardinality": "many", "target_cardinality": "one"},
+            {"op": "set_derived_property", "object_type_api_name": "customer", "api_name": "total_spend", "display_name": "累计消费", "data_type": "number", "path": [{"link_api_name": "customer_orders", "direction": "outgoing"}], "terminal_property_api_name": "amount"},
+        ])
+
+        branch = await self.client.get(f"/api/branches/{branch_id}", headers=self.headers_for(self.editor))
+
+        self.assertFalse(branch.json()["validation"]["valid"])
+        self.assertTrue(any("必须选择聚合器" in issue["message"] for issue in branch.json()["validation"]["errors"]))
+
+    async def test_derived_property_is_published_after_resource_review(self) -> None:
+        branch_id = await self.create_branch()
+        await self.stage(branch_id, [
+            {"op": "add_object_type", "api_name": "customer", "display_name": "客户"},
+            {"op": "add_object_type", "api_name": "order", "display_name": "订单"},
+            {"op": "add_property", "object_type_api_name": "order", "api_name": "amount", "display_name": "金额", "data_type": "number"},
+            {"op": "add_link_type", "api_name": "customer_orders", "display_name": "客户订单", "source_type_api_name": "customer", "target_type_api_name": "order", "source_cardinality": "many", "target_cardinality": "one"},
+            {"op": "set_derived_property", "object_type_api_name": "customer", "api_name": "total_spend", "display_name": "累计消费", "data_type": "number", "path": [{"link_api_name": "customer_orders", "direction": "outgoing"}], "terminal_property_api_name": "amount", "aggregation": "sum"},
+        ])
+        branch = await self.client.get(f"/api/branches/{branch_id}", headers=self.headers_for(self.editor))
+        proposal_id = await self.propose(branch_id)
+        proposal = await self.client.get(f"/api/proposals", headers=self.headers_for(self.editor), params={"ontology_id": str(self.ontology.id)})
+        submitted = next(item for item in proposal.json() if item["id"] == proposal_id)
+        for review in submitted["resource_reviews"]:
+            approved = await self.client.post(
+                f"/api/proposals/{proposal_id}/resources/{review['resource_key']}/review",
+                headers=self.headers_for(self.admin),
+                json={"status": "approved", "comment": "已检查派生路径、字段权限与聚合类型"},
+            )
+            self.assertEqual(approved.status_code, 200, approved.text)
+        merged = await self.client.post(f"/api/proposals/{proposal_id}/merge", headers=self.headers_for(self.admin))
+        object_types = await self.client.get(
+            "/api/object-types", headers=self.headers_for(self.editor), params={"ontology_id": str(self.ontology.id)}
+        )
+
+        self.assertTrue(branch.json()["validation"]["valid"], branch.json()["validation"])
+        self.assertEqual(merged.status_code, 200, merged.text)
+        customer = next(item for item in object_types.json() if item["api_name"] == "customer")
+        derived = next(item for item in customer["properties"] if item["api_name"] == "total_spend")
+        self.assertFalse(derived["editable"])
+        self.assertEqual(derived["options"]["derived_property"]["aggregation"], "sum")
 
     async def test_existing_object_and_property_metadata_can_be_updated_through_review(self) -> None:
         branch_id = await self.create_branch()

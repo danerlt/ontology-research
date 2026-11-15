@@ -69,7 +69,7 @@ def invoke_session_tool(
         if actor.role not in {"admin", "editor"}:
             _deny(session, redis_client, agent_session, tool_name, "当前账号没有执行业务 Action 的权限")
     try:
-        result = _execute_tool(ontology_client, token, tool_name, arguments)
+        result = _execute_tool(ontology_client, token, actor.project_id, tool_name, arguments)
     except ValueError as exc:
         append_event(
             session,
@@ -107,16 +107,17 @@ def invoke_session_tool(
 def _execute_tool(
     client: OntologyApiClient,
     token: str,
+    project_id: str | None,
     tool_name: str,
     arguments: dict[str, Any],
 ) -> Any:
     if tool_name == "search_objects":
         allowed = {"ontology_id", "object_type_api_name", "query", "page", "page_size"}
         _ensure_arguments(arguments, allowed, set())
-        return client.search_objects(token, arguments)
+        return client.search_objects(token, project_id, arguments)
     if tool_name == "get_object":
         _ensure_arguments(arguments, {"object_id"}, {"object_id"})
-        return client.get_object(token, str(UUID(arguments["object_id"])))
+        return client.get_object(token, project_id, str(UUID(arguments["object_id"])))
     if tool_name == "execute_action":
         required = {"action_api_name", "object_id", "expected_version", "parameters"}
         _ensure_arguments(arguments, required, required)
@@ -131,6 +132,7 @@ def _execute_tool(
             raise ValueError("Action 参数必须是对象")
         return client.execute_action(
             token,
+            project_id,
             action_api_name,
             {
                 "object_id": object_id,

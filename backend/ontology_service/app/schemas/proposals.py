@@ -86,6 +86,8 @@ class AddLinkTypeChange(BaseModel):
     description: str = Field(default="", max_length=2000)
     source_type_api_name: ApiName
     target_type_api_name: ApiName
+    source_cardinality: Literal["one", "many"] = "many"
+    target_cardinality: Literal["one", "many"] = "many"
 
 
 class UpdateLinkTypeChange(BaseModel):
@@ -93,6 +95,8 @@ class UpdateLinkTypeChange(BaseModel):
     api_name: ApiName
     display_name: str | None = Field(default=None, min_length=1, max_length=160)
     description: str | None = Field(default=None, max_length=2000)
+    source_cardinality: Literal["one", "many"] | None = None
+    target_cardinality: Literal["one", "many"] | None = None
 
     @model_validator(mode="after")
     def require_changes(self) -> "UpdateLinkTypeChange":
@@ -100,6 +104,32 @@ class UpdateLinkTypeChange(BaseModel):
         if not changed_fields or any(getattr(self, field) is None for field in changed_fields):
             raise ValueError("至少提供一个链接类型字段修改")
         return self
+
+
+class DerivedPathStep(BaseModel):
+    link_api_name: ApiName
+    direction: Literal["outgoing", "incoming"]
+
+
+class DerivedPropertyDefinitionInput(BaseModel):
+    object_type_api_name: ApiName
+    api_name: ApiName
+    display_name: str = Field(min_length=1, max_length=160)
+    description: str = Field(default="", max_length=2000)
+    data_type: Literal["string", "integer", "number", "boolean", "date", "datetime", "enum", "json"]
+    path: list[DerivedPathStep] = Field(min_length=1, max_length=3)
+    terminal_property_api_name: ApiName
+    aggregation: Literal["count", "sum", "average", "minimum", "maximum", "collect_list", "collect_set"] | None = None
+
+
+class SetDerivedPropertyChange(DerivedPropertyDefinitionInput):
+    op: Literal["set_derived_property"]
+
+
+class RemoveDerivedPropertyChange(BaseModel):
+    op: Literal["remove_derived_property"]
+    object_type_api_name: ApiName
+    api_name: ApiName
 
 
 class AddActionChange(BaseModel):
@@ -139,6 +169,8 @@ SchemaChange = Annotated[
     | UpdatePropertyChange
     | AddLinkTypeChange
     | UpdateLinkTypeChange
+    | SetDerivedPropertyChange
+    | RemoveDerivedPropertyChange
     | AddActionChange
     | UpdateActionChange,
     Field(discriminator="op"),
