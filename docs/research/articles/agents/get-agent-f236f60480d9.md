@@ -1,5 +1,5 @@
 <!-- 页面 URL：https://www.palantir.com/docs/foundry/api/v2/aip-agents-v2-resources/agents/get-agent -->
-<!-- 研读状态：未开始 -->
+<!-- 研读状态：已完成 -->
 
 # Get Chatbot Studio Agent • API Reference • Palantir
 
@@ -10,30 +10,37 @@
 - 相关性：direct；Agent REST API v2 参考
 - 官方更新时间：2026-11-12T17:46:46.917Z
 - 目录核对时间：2026-11-14T14:56:07Z
-- 产品状态：待核对 Beta、预览、弃用或更名信息
+- 产品状态：预览（Preview；请求需显式启用 `preview=true`）
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> 【待研读：摘录并翻译短句】
+> “If not specified, the latest published version will be returned.”
 
 ## 摘录译文
 
-【待填写】
+如果未指定版本，则返回最新已发布版本。
 
 ## 中文要点
 
-【用自己的话概括本页解决的问题、对象和关键操作。】
+- Get Agent 以 Agent RID 读取定义；可选 `version` 固定版本，省略时返回最新已发布版本。
+- 响应包含 Agent RID、实例版本、metadata 与参数 schema；参数用于向提示传入自定义值以控制 Agent 行为。
+- 端点为 Preview，需要 `preview=true` 与 `api:aip-agents-read`；如果没有发布版本且未指定版本会失败。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| 【待填写】 | 【待填写】 | 【待填写】 |
+| Metadata | 元数据 | 展示名称、描述、建议提示语等 |
+| Parameter | 参数 | Agent 可在请求提示中读取的变量定义 |
+| Published version | 已发布版本 | 省略 version 时的默认读取目标 |
+| READ_ONLY | 只读访问 | 示例中的参数访问模式 |
 
 ## 疑问与待验证项
 
-- 【记录文档未说明之处、与其他页面的差异，以及需要验证的假设。】
+- 参数的访问控制枚举和运行时注入接口应与 Execute/Session 文档联合确认。
+- 响应未展示完整对话/工具配置，不能只靠此读端点复现整个 Agent。
 
 ## 复刻启示
 
-- 【写出对本体管理系统的数据模型、治理流程、权限或 Agent 接入的具体启示。】
+- Agent 运行配置固定到已发布版本；参数以声明式 schema 管理，应用调用时校验取值并限制敏感写入。
+- 版本和参数变更应进入审计与分支评审；不要直接把未发布编辑态暴露给生产调用者。

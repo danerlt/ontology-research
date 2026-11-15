@@ -1,5 +1,5 @@
 <!-- 页面 URL：https://www.palantir.com/docs/foundry/api/v2/aip-agents-v2-resources/agents/agent-basics -->
-<!-- 研读状态：未开始 -->
+<!-- 研读状态：已完成 -->
 
 # Chatbot Studio Agent basics • API Reference • Palantir
 
@@ -10,30 +10,34 @@
 - 相关性：direct；Agent REST API v2 参考
 - 官方更新时间：2026-11-12T17:46:46.917Z
 - 目录核对时间：2026-11-14T14:56:06Z
-- 产品状态：待核对 Beta、预览、弃用或更名信息
+- 产品状态：API 基础概念页（无 Preview 标注）
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> 【待研读：摘录并翻译短句】
+> “An Agent represents an AIP Chatbot created in AIP Chatbot Studio.”
 
 ## 摘录译文
 
-【待填写】
+Agent 表示在 AIP Chatbot Studio 中创建的聊天机器人。
 
 ## 中文要点
 
-【用自己的话概括本页解决的问题、对象和关键操作。】
+- API 中的 Agent 对象指 Chatbot Studio 创建的 AIP Chatbot；AIP Agent Studio 是其旧名称。
+- 文档为向后兼容保留“Agent”这一 API 名称；概念名称更新不等于资源 RID 或接口路径立即变更。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| 【待填写】 | 【待填写】 | 【待填写】 |
+| AIP Chatbot | AIP 聊天机器人 | 当前产品文档使用的产品名称 |
+| AIP Agent Studio | AIP Agent Studio | 旧产品名称 |
+| Backward compatibility | 向后兼容 | API 暂保留 Agent 术语 |
 
 ## 疑问与待验证项
 
-- 【记录文档未说明之处、与其他页面的差异，以及需要验证的假设。】
+- Agent API 与 Chatbot Studio 管理界面的发布、草稿和权限模型对应关系，需由其他页面补全。
 
 ## 复刻启示
 
-- 【写出对本体管理系统的数据模型、治理流程、权限或 Agent 接入的具体启示。】
+- 本地领域模型可将 Chatbot/Agent 设为带 `displayName` 的 AgentDefinition，但外部兼容层保留原 API 名称。
+- 产品文案使用当前名称，同时在导入映射中识别旧名，避免按展示名称推断资源类型。
