@@ -12,6 +12,10 @@ export function readableError(error: unknown): string {
   if (typeof error === "object" && error !== null && "detail" in error) {
     const detail = (error as { detail?: unknown }).detail;
     if (typeof detail === "string" && detail.trim()) return detail;
+    if (typeof detail === "object" && detail !== null && "message" in detail) {
+      const message = (detail as { message?: unknown }).message;
+      if (typeof message === "string" && message.trim()) return message;
+    }
   }
   if (error instanceof ApiError && error.message) return error.message;
   return "服务暂不可用，请检查网络后重试";
@@ -39,6 +43,13 @@ export class ApiClient {
     return this.request<T>(`${base}${path}`, {
       method: "POST",
       body: body === undefined ? undefined : JSON.stringify(body),
+    });
+  }
+
+  put<T>(path: string, body: unknown, base = ""): Promise<T> {
+    return this.request<T>(`${base}${path}`, {
+      method: "PUT",
+      body: JSON.stringify(body),
     });
   }
 
