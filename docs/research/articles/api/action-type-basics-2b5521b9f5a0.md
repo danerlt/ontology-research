@@ -1,5 +1,5 @@
 <!-- 页面 URL：https://www.palantir.com/docs/foundry/api/v1/ontology-resources/action-types/action-type-basics -->
-<!-- 研读状态：未开始 -->
+<!-- 研读状态：已完成 -->
 
 # Action Type basics (v1) • API Reference • Palantir
 
@@ -10,30 +10,34 @@
 - 相关性：direct；Ontology API v1 端点参考；保留作兼容性对照，并优先关注 v2
 - 官方更新时间：2026-11-12T17:46:46.923Z
 - 目录核对时间：2026-11-14T14:55:29Z
-- 产品状态：待核对 Beta、预览、弃用或更名信息
+- 产品状态：v1 Action Type 概念页，无 Preview 标记
 
 ## 英文原文短摘录（每个来源不超过 25 词）
 
-> 【待研读：摘录并翻译短句】
+> “An action type represents a set of changes and logic that can be applied in the Ontology.”
 
 ## 摘录译文
 
-【待填写】
+Action Type 表示一组可应用于本体的变更与逻辑。
 
 ## 中文要点
 
-【用自己的话概括本页解决的问题、对象和关键操作。】
+Action Type 是一种由 Ontology Manager 创建的操作定义，声明在本体上可执行的一组变更及逻辑。配套接口会将其呈现为参数 schema、状态和可执行操作。它是本体写入工具的治理边界，区别于直接修改数据库记录，也区别于某次 Action 执行实例。
 
 ## 术语对照
 
 | 英文术语 | 中文译法 | 本页语境 |
 |---|---|---|
-| 【待填写】 | 【待填写】 | 【待填写】 |
+| Action Type | 动作类型 | 由 Ontology Manager 管理的变更/逻辑定义 |
+| Parameter | 参数 | 执行动作时提供的输入值 |
+| Action | 动作 | 某动作类型的一次应用 |
 
 ## 疑问与待验证项
 
-- 【记录文档未说明之处、与其他页面的差异，以及需要验证的假设。】
+- 基础页未说明类型创建、参数校验、提交条件、对象权限和分支发布规则，需联合用户文档及 API 端点研读。
+- API 参考不能证明某个动作对当前用户或 Agent 可见/可执行，权限需独立判断。
 
 ## 复刻启示
 
-- 【写出对本体管理系统的数据模型、治理流程、权限或 Agent 接入的具体启示。】
+- 画布将 Action Type 作为操作节点，以参数/目标对象边表示其输入与影响；将状态和治理信息放在节点检查器。
+- Agent 工具目录以 Action Type 暴露受权限约束的操作，调用前先做本地参数 schema 校验和预检查。
